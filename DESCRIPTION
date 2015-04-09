@@ -1,9 +1,14 @@
 Package: riskr
 Type: Package
-Title: What the package does (short line)
+Title: A set of function to make easy the validation of scores (models).
 Version: 1.0
 Date: 2015-04-09
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
+Authors@R: person("Joshua", "Kunst", email = "jbkust@gmail.com", role = c("aut", "cre"))
+Maintainer: Joshua Kunst <jbkunst@gmail.com>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
+URL: https://github.com/jbkunst/riskr
+BugReports: https://github.com/jbkunst/riskr/issues
+Imports:
+    dplyr,
+    ggplot2
