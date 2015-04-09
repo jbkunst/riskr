@@ -7,6 +7,7 @@
 #' set.seed(1313)
 #' x <- sample(letters[1:10], size = 100, prob = 1:10/10, replace = TRUE)
 #' ft(x)
+#' @export
 ft <- function (x) {
   
   library("dplyr")

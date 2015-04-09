@@ -9,6 +9,13 @@ Description: More about what it does (maybe more than one line)
 License: What license is it under?
 URL: https://github.com/jbkunst/riskr
 BugReports: https://github.com/jbkunst/riskr/issues
-Imports:
+Imports: 
+    caret,
     dplyr,
-    ggplot2
+    ggplot2,
+    plyr,
+    randomForest,
+    ROCR,
+    scales
+Suggests: knitr
+VignetteBuilder: knitr
