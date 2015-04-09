@@ -2,7 +2,7 @@
 % Please edit documentation in R/score_indicators.R
 \name{ks}
 \alias{ks}
-\title{Calculate Kolmogorv}
+\title{Calculate Kolmogorov-Smirnov statistic}
 \usage{
 ks(score, target)
 }
@@ -15,7 +15,7 @@ ks(score, target)
 The KS statistic
 }
 \description{
-Calculate Kolmogorv
+Calculate Kolmogorov-Smirnov statistic
 }
 \examples{
 ks(score, target)

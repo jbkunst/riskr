@@ -1,4 +1,4 @@
-#' Calculate Kolmogorv
+#' Calculate Kolmogorov-Smirnov statistic
 #'
 #' @param score A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)

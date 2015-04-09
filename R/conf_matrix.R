@@ -1,7 +1,15 @@
+#' Create confusion matrix
+#'
+#' @param pred_class A vector numeric binary (0, 1) of predictions
+#' @param target A numeric binary vector (0, 1)
+#' @return A list
+#' @examples
+#' conf_matrix()
+#' @export
+#' @references http://www2.cs.uregina.ca/~dbd/cs831/notes/confusion_matrix/confusion_matrix.html
 conf_matrix <- function(pred_class, target) {
   
-  t <- table( true = target, prediction = pred_class)
-  # http://www2.cs.uregina.ca/~dbd/cs831/notes/confusion_matrix/confusion_matrix.html
+  t <- table(true = target, prediction = pred_class)
   #                     Prediction
   #                 NegPred   PosPred
   # real NegOutcome
@@ -26,26 +34,5 @@ conf_matrix <- function(pred_class, target) {
                    indicators = t3,
                    indicators.t = setNames(data.frame(t(t3$value)), t3$term.short))
   
-  return(response)
-}
-
-conf_matrix_cut <- function(score, target, nbreaks = 100){
-  
-  cut_off_points <- as.numeric(quantile(score, seq(nbreaks-2)/(nbreaks-1)))
-  
-  cuts_indicators <- plyr::ldply(cut_off_points, function(cut_off_point){ # cut_off_point <- sample(cut_off_points, size = 1)
-    daux <- cbind(score = cut_off_point,
-                  conf_matrix(as.numeric(score > cut_off_point), target)$indicators[,c(2:3)])
-    daux
-  }, .progress="text")
-  
-  p <- ggplot2::ggplot(cuts_indicators) +
-    geom_smooth(aes(score, value, color=term.short), size = 1.2) + 
-    scale_y_continuous(targets = scales::percent) +
-    scale_color_manual(values= c("#7CB5EC","#434348","#90ED7D","#F7A35C","#8085E9","#F15C80"))
-  
-  d <- reshape2::dcast(cuts_indicators, score ~ term.short)
-  
-  response <- list(score.values = d, plot = p)  
   return(response)
 }
