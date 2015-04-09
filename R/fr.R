@@ -7,8 +7,7 @@
 #' x <- sample(letters[1:10], size = 100, prob = 1:10/10, replace = TRUE)
 #' ft(x)
 ft <- function(x) {
-  require("dplyr")
-  
+
   if (any(is.na(x))) {
     x <- addNA(x)
   }
