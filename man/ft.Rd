@@ -10,13 +10,14 @@ ft(x)
 \item{x}{A vector}
 }
 \value{
-The frecuency table of \code{x}. Frecuency and percents (adding \code{tbl_df} class)
+The frecuency table of \code{x}. Frecuencies and percents are returned in a
+\code{data.frame} object (adding \code{tbl_df} class).
 }
 \description{
 Create a frecueny table from a vector
 }
 \examples{
-setseed(1313)
+set.seed(1313)
 x <- sample(letters[1:10], size = 100, prob = 1:10/10, replace = TRUE)
 ft(x)
 }
