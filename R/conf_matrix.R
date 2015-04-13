@@ -15,11 +15,11 @@ conf_matrix <- function(pred_class, target) {
   # real NegOutcome
   # real PosOutcome
   AC <- sum(diag(t))/sum(t) #Accuracy (AC) is the he proportion of the total number of score that were correct.
-  TP <- t[2,2]/sum(t[2,])   #Recall or true positive rate (TP) is the proportion of positive cases that were correctly identified. (BB)
-  FP <- t[1,2]/sum(t[1,])   #False positive rate (FP) is the proportion of negatives cases that were incorrectly classified as positive
-  TN <- t[1,1]/sum(t[1,])   #True negative rate (TN) is defined as the proportion of negatives cases that were classified correctly (MM)
-  FN <- t[2,1]/sum(t[2,])   #False negative rate (FN) is the proportion of positives cases that were incorrectly classified as negative
-  P <- t[2,2]/sum(t[,2])    #Precision (P) is the proportion of the predicted positive cases that were correct
+  TP <- t[2,2]/sum(t[2,1:2])   #Recall or true positive rate (TP) is the proportion of positive cases that were correctly identified. (BB)
+  FP <- t[1,2]/sum(t[1,1:2])   #False positive rate (FP) is the proportion of negatives cases that were incorrectly classified as positive
+  TN <- t[1,1]/sum(t[1,1:2])   #True negative rate (TN) is defined as the proportion of negatives cases that were classified correctly (MM)
+  FN <- t[2,1]/sum(t[2,1:2])   #False negative rate (FN) is the proportion of positives cases that were incorrectly classified as negative
+  P <- t[2,2]/sum(t[1:2,2])    #Precision (P) is the proportion of the predicted positive cases that were correct
   
   t2 <-  as.data.frame.matrix(t, row.names = NULL)
   names(t2) <- paste("pred", colnames(t))
