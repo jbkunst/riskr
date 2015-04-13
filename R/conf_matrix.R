@@ -14,7 +14,7 @@ conf_matrix <- function(pred_class, target) {
   #                 NegPred   PosPred
   # real NegOutcome
   # real PosOutcome
-  AC <- sum(diag(t))/sum(t) #Accuracy (AC) is the he proportion of the total number of score that were correct.
+  AC <- sum(t[1,1]+t[2,2])/sum(t[1:2,1:2]) #Accuracy (AC) is the he proportion of the total number of score that were correct.
   TP <- t[2,2]/sum(t[2,1:2])   #Recall or true positive rate (TP) is the proportion of positive cases that were correctly identified. (BB)
   FP <- t[1,2]/sum(t[1,1:2])   #False positive rate (FP) is the proportion of negatives cases that were incorrectly classified as positive
   TN <- t[1,1]/sum(t[1,1:2])   #True negative rate (TN) is defined as the proportion of negatives cases that were classified correctly (MM)
