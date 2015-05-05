@@ -1,10 +1,8 @@
-#' Create confusion matrix
-#'
+#' Calculating A Confusion Matrix
+#' @description Function to calculate the confusion matrix given to vectors
 #' @param pred_class A vector numeric binary (0, 1) of predictions
 #' @param target A numeric binary vector (0, 1)
-#' @return A list
-#' @examples
-#' conf_matrix()
+#' @return A list with: the confusion matrix, some summaries.
 #' @export
 #' @references http://www2.cs.uregina.ca/~dbd/cs831/notes/confusion_matrix/confusion_matrix.html
 conf_matrix <- function(pred_class, target) {

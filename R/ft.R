@@ -5,10 +5,10 @@
 #' \code{data.frame} object (adding \code{tbl_df} class).
 #' @examples
 #' set.seed(1313)
-#' x <- sample(letters[1:10], size = 100, prob = 1:10/10, replace = TRUE)
+#' x <- sample(LETTERS[1:10], size = 100, prob = 1:10/10, replace = TRUE)
 #' ft(x)
 #' @export
-ft <- function (x) {
+ft <- function(x) {
   
   library("dplyr")
   
@@ -16,11 +16,7 @@ ft <- function (x) {
     x <- addNA(x)
   }
   
-  freqt <- data.frame(class = x) %>%
-    tbl_df
-    group_by(class) %>%
-    summarise(freq = n(), percent = freq/nrow(.))
-    
+  freqt <- data.frame(class = x) %>% gb_sm(class)
+  
   return(freqt)
 }
-  

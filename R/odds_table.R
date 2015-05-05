@@ -1,11 +1,17 @@
 odds_table <- function(score, target, breaks = NULL, nclass = 10, quantile = TRUE){
-  library(ggplot2)
   
-  if(missing(breaks) & quantile){
+  library("ggplot2")
+  
+  if (missing(breaks) & quantile) {
+    
     score_cat <- cut_number(score, n = nclass)
+    
   } else if (missing(breaks) & !quantile) {
+    
     score_cat <- cut_interval(score, n = nclass)
+    
   } else {
+    
     score_cat <- cut(score, breaks = breaks)
   }
   

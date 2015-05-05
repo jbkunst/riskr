@@ -1,20 +1,18 @@
 Package: riskr
 Type: Package
-Title: A set of function to make easy the validation of scores (models).
 Version: 1.0
-Date: 2015-04-09
-Authors@R: person("Joshua", "Kunst", email = "jbkust@gmail.com", role = c("aut", "cre"))
+Title: Functions to make easy the validation of scores from predictive models
+Description: The main functions are wrappers of ROCR functions (among others) with a simple sintax aiming to have
+  a simpler code
+Author: person("Joshua", "Kunst", email = "jbkust@gmail.com", role = c("aut", "cre"))
 Maintainer: Joshua Kunst <jbkunst@gmail.com>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+License: No
 URL: https://github.com/jbkunst/riskr
 BugReports: https://github.com/jbkunst/riskr/issues
 Imports: 
-    caret,
     dplyr,
     ggplot2,
     plyr,
-    randomForest,
     ROCR,
     scales
 Suggests: knitr
