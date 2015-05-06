@@ -23,7 +23,7 @@ You can install the latest development version from github with
 
 ### Odds Table
 
-```{r, message = FALSE, results='asis'}
+```{r}
 library("riskr")
 
 data("predictions")
@@ -33,7 +33,7 @@ target <- predictions$target
 ```
 
 ```{r, echo=TRUE, results='hide'}
-knitr::kable(odds_table(score, target, nclass = 4))
+odds_table(score, target, nclass = 4)
 ```
 
 ```{r, echo=FALSE, results='asis'}

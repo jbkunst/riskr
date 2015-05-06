@@ -25,7 +25,7 @@ target <- predictions$target
 ```
 
 ``` r
-knitr::kable(odds_table(score, target, nclass = 4))
+odds_table(score, target, nclass = 4)
 ```
 
 | class     |  count|  percent|  count\_target|  rate\_target|  percent\_target|      odds|
