@@ -1,4 +1,4 @@
-#' Create a frecueny table from a vector
+#' Frecueny table from a vector
 #'
 #' @param x A vector
 #' @return The frecuency table of \code{x}. Frecuencies and percents are returned in a

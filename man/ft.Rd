@@ -2,7 +2,7 @@
 % Please edit documentation in R/ft.R
 \name{ft}
 \alias{ft}
-\title{Create a frecueny table from a vector}
+\title{Frecueny table from a vector}
 \usage{
 ft(x)
 }
@@ -14,7 +14,7 @@ The frecuency table of \code{x}. Frecuencies and percents are returned in a
 \code{data.frame} object (adding \code{tbl_df} class).
 }
 \description{
-Create a frecueny table from a vector
+Frecueny table from a vector
 }
 \examples{
 set.seed(1313)

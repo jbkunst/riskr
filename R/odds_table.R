@@ -1,6 +1,26 @@
-odds_table <- function(score, target, breaks = NULL, nclass = 10, quantile = TRUE){
+#' Calculating Odd table
+#' @description This function calculate a odds table.
+#' @param score A numeric vector of predictions
+#' @param target A numeric binary vector {0,1}
+#' @param nclass A numeric input for determinate the number of classes if \code{breaks} is not given.
+#' @param quantile A boolean to set if the cuts are made by quantile or counts. This parameter is udes if \code{breaks} is not given. 
+#' @param breaks An optional numeric vector to set the intervals to use
+#' @return A data_frame object with the counts, percents and odds
+#' @examples
+#' data(predictions)
+#' 
+#' score <- round(predictions$score * 1000)
+#' target <- predictions$target
+#'
+#' odds_table(score, target, nclass = 5)
+#' odds_table(score, target, nclass = 5, quantile = FALSE)
+#' odds_table(score, target, breaks = c(-Inf, 250, 750, Inf))
+#'  
+#' @export
+odds_table <- function(score, target, nclass = 10, quantile = TRUE, breaks = NULL){
   
   library("ggplot2")
+  library("dplyr")
   
   if (missing(breaks) & quantile) {
     
@@ -15,25 +35,6 @@ odds_table <- function(score, target, breaks = NULL, nclass = 10, quantile = TRU
     score_cat <- cut(score, breaks = breaks)
   }
   
-  t <- table(score_cat, target)
+  df <- biv_table(score_cat, target)
   
-  nclass <- dim(t)[1]
-  
-  N <- sum(t)
-  
-  ot <- data.frame(Class          = row.names(t),
-                   Freq           = (t[,1]+t[,2]),
-                   FreqRel        = (t[,1]+t[,2])/N,
-                   FreqRelAcum    = cumsum((t[,1]+t[,2])/N),
-                   FreqRelDesAcum = c(1,((sum(t[,1]+t[,2])-cumsum(t[,1]+t[,2]))/N)[1:(nclass-1)]),
-                   FreqBad        = t[,1],
-                   FreqRelBad     = t[,1]/sum(t[,1]),
-                   FreqRelBadAcum = cumsum(t[,1]/sum(t[,1])),
-                   FreqRelBadDesAcum  = c(1,((sum(t[,1])-cumsum(t[,1]))/sum(t[,1]))[1:(nclass-1)]),
-                   BadRate        = t[,1]/(t[,1]+t[,2]),
-                   BadRateAcum    = cumsum(t[,1])/cumsum((t[,1]+t[,2])),
-                   BadRateDesacum = c((cumsum(t[,1])/cumsum((t[,1]+t[,2])))[nclass],((sum(t[,1])-cumsum(t[,1]))/(sum(t[,1]+t[,2])-cumsum(t[,1]+t[,2])))[1:(nclass-1)]),
-                   Odds           =  t[,2]/ t[,1], row.names = NULL)
-  
-  return(ot)
 }

@@ -5,8 +5,10 @@
 #' @return A list with psi index (value) a label and the table for with counts, percents, woe.
 #' @examples
 #' set.seed(1313)
+#' 
 #' actual <- sample(letters[1:3], size = 1000, prob = c(1,1,2), replace = TRUE)
 #' new <- sample(letters[1:3], size = 3000, prob = c(1,2,2), replace = TRUE)
+#' 
 #' psi(actual, new)
 #' @export
 psi <- function(actual, new){
