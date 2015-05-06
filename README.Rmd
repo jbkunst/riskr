@@ -7,7 +7,7 @@ output:
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.path = "README-")
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.path = "README-", message = FALSE)
 ```
 
 # riskr
@@ -30,12 +30,12 @@ data("predictions")
 
 score <- round(predictions$score * 1000)
 target <- predictions$target
+```
 
+```{r, echo=TRUE, results='hide'}
 knitr::kable(odds_table(score, target, nclass = 4))
+```
 
-knitr::kable(odds_table(score, target, nclass = 4, quantile = FALSE))
-
-knitr::kable(odds_table(score, target, breaks = c(-Inf, 250, 750, Inf)))
-
-
+```{r, echo=FALSE, results='asis'}
+knitr::kable(odds_table(score, target, nclass = 4))
 ```
