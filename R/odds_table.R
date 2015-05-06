@@ -37,4 +37,6 @@ odds_table <- function(score, target, nclass = 10, quantile = TRUE, breaks = NUL
   
   df <- biv_table(score_cat, target)
   
+  df
+  
 }

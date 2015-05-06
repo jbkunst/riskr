@@ -1,0 +1,41 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.path = "README-")
+```
+
+# riskr
+
+riskr is the next ite
+
+You can install the latest development version from github with
+
+    ```R
+    devtools::install_github("jbkunst/riskr")
+    ```
+## Some functions
+
+### Odds Table
+
+```{r, message = FALSE}
+library("riskr")
+
+data("predictions")
+
+score <- round(predictions$score * 1000)
+target <- predictions$target
+
+odds_table(score, target, nclass = 4)
+
+odds_table(score, target, nclass = 4, quantile = FALSE)
+
+odds_table(score, target, breaks = c(-Inf, 250, 750, Inf))
+
+
+```
