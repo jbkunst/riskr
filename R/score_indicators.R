@@ -5,8 +5,10 @@
 #' @return The KS statistic
 #' @examples
 #' data(predictions)
+#' 
 #' score <- predictions$score
 #' target <- predictions$target
+#' 
 #' ks(score, target)
 #' @export
 ks <- function(score, target){
@@ -22,6 +24,22 @@ ks <- function(score, target){
   return(ks)
 }
 
+#' Calculate Kolmogorov-Smirnov statistic
+#'
+#' @param score1 A numeric vector containing scores or probabilities
+#' @param score2 A numeric vector containing scores or probabilities
+#' @return The KS statistic
+#' @examples
+#' data(predictions)
+#' 
+#' score <- predictions$score
+#' target <- predictions$target
+#' 
+#' score1 <- score[target == 1]
+#' score1 <- score[target != 1]
+#' 
+#' ks2(score, target)
+#' @export
 ks2 <- function(score1, score2){
   
   value <- as.numeric(suppressWarnings(ks.test(score1, score2)[["statistic"]]))
@@ -29,35 +47,51 @@ ks2 <- function(score1, score2){
   return(value)
 }
 
+
+#' Calculate Area Under ROC Curve
+#'
+#' @param score A numeric vector containing scores or probabilities
+#' @param target A numeric binary vector (0, 1)
+#' @return The AUROC Curve
+#' @examples
+#' data(predictions)
+#' 
+#' score <- predictions$score
+#' target <- predictions$target
+#' 
+#' aucroc(score, target)
+#' @export
 aucroc <- function(score, target){
   
   library("ROCR")
   
-  pred <- prediction(score,target)
+  pred <- prediction(score, target)
   
-  perf <- performance(pred,"tpr","fpr")
+  perf <- performance(pred, "tpr", "fpr")
   
-  aucroc <- attr(performance(pred,"auc"),"y.values")[[1]]
+  aucroc <- attr(performance(pred, "auc"), "y.values")[[1]]
   
   return(aucroc)
 }
 
+#' Calculate Gini Coefficient
+#'
+#' @param score A numeric vector containing scores or probabilities
+#' @param target A numeric binary vector (0, 1)
+#' @return The Gini Coefficient
+#' @examples
+#' data(predictions)
+#' 
+#' score <- predictions$score
+#' target <- predictions$target
+#' 
+#' gini(score, target)
+#' @export
 gini <- function(score, target){
   
   gini <- 2*as.numeric(aucroc(score, target)) - 1
   
   return(gini)
-}
-
-divergence <- function(score, target){
-  
-  s.good <- score[target == 1]
-  
-  s.bad <- score[target == 0]
-  
-  divergence <- (mean(s.good) - mean(s.bad))^2 / (var(s.good) + var(s.bad))*2
-  
-  return(divergence)
 }
 
 gain <- function(score, target, percents = c(0.10, 0.20, 0.30, 0.40, 0.50)){
@@ -73,19 +107,13 @@ gain <- function(score, target, percents = c(0.10, 0.20, 0.30, 0.40, 0.50)){
 
 score_indicators <- function(score, target){ 
   
-  res <- c(Size = length(score),
-           Goods = length(score[target == 1]),
-           Bads = length(score[target == 0]),
-           BadRate = 1 - mean(target),
-           KS = ks(score, target),
-           AUCROC = aucroc(score, target),
-           Gini = gini(score, target),
-           Divergence = divergence(score, target),
-           Gain = gain(score, target))
+  res <- c(count = length(score),
+           count_target = length(score[target == 1]),
+           rate_target = 1 - mean(target),
+           ks = ks(score, target),
+           aucroc = aucroc(score, target))
   
   res <- data.frame(t(res))
-  
-  names(res) <- gsub("\\.", "", names(res))
   
   return(res)
 }

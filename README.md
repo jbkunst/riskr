@@ -6,9 +6,9 @@ riskr is the next ite
 
 You can install the latest development version from github with
 
-    ```R
-    devtools::install_github("jbkunst/riskr")
-    ```
+``` r
+devtools::install_github("jbkunst/riskr")
+```
 
 Some functions
 --------------
