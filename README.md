@@ -65,14 +65,14 @@ score_indicators(score, target)
 plot_roc(score, target)
 ```
 
-![](README-unnamed-chunk-3-1.png)
+![](vignettes/figures/unnamed-chunk-3-1.png)
 
 ``` r
 
 plot_gain(score, target)
 ```
 
-![](README-unnamed-chunk-3-2.png)
+![](vignettes/figures/unnamed-chunk-3-2.png)
 
 ``` r
 
@@ -177,7 +177,7 @@ biv_table(credit$age_bin, credit$bad)
 plot_biv_table(credit$age_bin, credit$bad) + ggtitle("Age")
 ```
 
-![](README-unnamed-chunk-3-3.png)
+![](vignettes/figures/unnamed-chunk-3-3.png)
 
 ``` r
 
@@ -186,4 +186,4 @@ plot_biv_table(credit$flag_res_phone, credit$bad,
   theme_light() + ggtitle("Flag Response Phone")
 ```
 
-![](README-unnamed-chunk-3-4.png)
+![](vignettes/figures/unnamed-chunk-3-4.png)
