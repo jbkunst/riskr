@@ -94,6 +94,19 @@ gini <- function(score, target){
   return(gini)
 }
 
+#' Calculate Gains
+#'
+#' @param score A numeric vector containing scores or probabilities
+#' @param target A numeric binary vector (0, 1)
+#' @return The Gini Coefficient
+#' @examples
+#' data(predictions)
+#' 
+#' score <- predictions$score
+#' target <- predictions$target
+#' 
+#' gain(score, target)
+#' @export
 gain <- function(score, target, percents = c(0.10, 0.20, 0.30, 0.40, 0.50)){
   
   library("scales")
@@ -105,13 +118,27 @@ gain <- function(score, target, percents = c(0.10, 0.20, 0.30, 0.40, 0.50)){
   g
 }
 
+#' Summary of Performance
+#'
+#' @param score A numeric vector containing scores or probabilities
+#' @param target A numeric binary vector (0, 1)
+#' @return A 1 row data frame with the summary of the performance.
+#' @examples
+#' data(predictions)
+#' 
+#' score <- predictions$score
+#' target <- predictions$target
+#' 
+#' score_indicators(score, target)
+#' @export
 score_indicators <- function(score, target){ 
   
   res <- c(count = length(score),
            count_target = length(score[target == 1]),
            rate_target = 1 - mean(target),
            ks = ks(score, target),
-           aucroc = aucroc(score, target))
+           aucroc = aucroc(score, target),
+           gini = gini(score, target))
   
   res <- data.frame(t(res))
   

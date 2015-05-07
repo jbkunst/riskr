@@ -1,43 +1,87 @@
 ---
 output:
-  md_document:
-    variant: markdown_github
+  html_document:
+    number_sections: no
+    toc: yes
 ---
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 ```{r, echo = FALSE}
+knitr::opts_knit$set(upload.fun = knitr::imgur_upload)
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.path = "README-", message = FALSE)
 ```
 
 # riskr
 
-riskr is the next ite
+riskr help to validate performance of models via wrapper or shortcuts from ROCR functions.
 
-You can install the latest development version from github with
+### Installation
 
+You can install the latest development version from github with:
 
 ```{r, eval=FALSE}
 devtools::install_github("jbkunst/riskr")
 ```
 
-## Some functions
+### Facts
 
-### Odds Table
+`riskr` assume the target variable is binary with numeric values: 0 and 1. Usually 1 means the characteristic of interest)
+
+### Functions
+
+#### Performance Indicators
 
 ```{r}
 library("riskr")
 
 data("predictions")
 
-score <- round(predictions$score * 1000)
+head(predictions)
+
+str(predictions)
+
+score <- predictions$score
 target <- predictions$target
-```
 
-```{r, echo=TRUE, results='hide'}
+ks(score, target)
+
+aucroc(score, target)
+
+gini(score, target)
+
+score_indicators(score, target)
+
+plot_roc(score, target)
+
+plot_gain(score, target)
+
+score <- round(predictions$score * 1000)
+
 odds_table(score, target, nclass = 4)
+
+odds_table(score, target, breaks = c(0, 300, 700, 1000))
+
+
+score_cat <- ifelse(score < 500, 0, 1)
+
+conf_matrix(score_cat, target)
+
+data("credit")
+
+str(credit)
+
+biv_table(credit$marital_status, credit$bad)
+
+library("ggplot2")
+
+credit$age_bin <- cut_interval(credit$age, 4)
+
+biv_table(credit$age_bin, credit$bad) 
+
+plot_biv_table(credit$age_bin, credit$bad) + ggtitle("Age")
+
+plot_biv_table(credit$flag_res_phone, credit$bad,
+               count.labels = TRUE, target.labels = TRUE) +
+  theme_light() + ggtitle("Flag Response Phone")
+
 ```
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(odds_table(score, target, nclass = 4))
-```
