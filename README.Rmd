@@ -1,7 +1,6 @@
 ---
 output:
   html_document:
-    number_sections: no
     toc: yes
 ---
 <!-- README.md is generated from README.Rmd. Please edit that file -->
