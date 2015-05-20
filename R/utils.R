@@ -4,15 +4,13 @@
 #' @return The same df with \code{tbl_df} class, lower names.
 #' @examples
 #' df <- data.frame(LETTERS, AA = rnorm(length(LETTERS)), leTTers2 = letters)
+#' df[c(1, 4),2] <- NA
 #' str(df)
 #' str(sd_df(df))
 #' @export
-sd_df <- function(df, to.lower.df.names = TRUE, factor.to.string = TRUE){
+sd_df <- function(df, to.lower.df.names = TRUE, factor.to.string = TRUE, fill.num.na = TRUE, fill.chr.na = TRUE){
   
-  library("plyr")
-  library("dplyr")
-  
-  df <- df %>% tbl_df()
+  df <- df %>% dplyr::tbl_df()
   
   if (to.lower.df.names) {
     names(df) <- tolower(names(df))  
@@ -20,9 +18,9 @@ sd_df <- function(df, to.lower.df.names = TRUE, factor.to.string = TRUE){
   
   if (factor.to.string) {
     
-    df[,laply(df, is.factor)] <- lapply(df[,laply(df, is.factor)] , as.character)
+    df[,laply(df, is.factor)] <- lapply(df[,plyr::laply(df, is.factor)] , as.character)
   
-  }
+  } 
   
   df
   
