@@ -22,15 +22,17 @@
 #' 
 #' plot_biv_table(var, target)
 #' plot_biv_table(var, target) + theme_light()
+#' plot_biv_table(var, target) + theme_gray()
 #' @export
 plot_biv_table <- function(var,
                            target,
                            count.labels = FALSE,
                            target.labels = FALSE,
+                           arrange.plot.by = "variable",
                            coord.flip = FALSE,
                            add.legend = TRUE,
                            legend.color = "gray80",
-                           rate.color = "darkred",
+                           rate.color = "darkblue",
                            bar.color = "gray80",
                            bar.width = .6,
                            rate.size = 1,
@@ -43,35 +45,41 @@ plot_biv_table <- function(var,
   require("dplyr")
   require("scales")
   
-  
   #### DATA ####  
-  daux <- data_frame(var, target) %>%
+  daux <- data_frame(var = addNA(var), target) %>%
     group_by(var) %>%
-    summarise(count = n(), percent = count/nrow(.), targetRate = mean(target)) %>%
-    mutate(var = factor(var),
-           id = seq(nrow(.)),
+    summarise(count = n(), percent = count/nrow(.), target_rate = mean(target)) %>%
+    mutate(id = seq(nrow(.)),
            count_format = prettyNum(count, big.mark = ".", decimal.mark = ", "),
-           targetRate_format = percent(targetRate))
+           target_rate_format = percent(target_rate))
+  
+  if (arrange.plot.by == "variable") {
+    daux <- daux %>% arrange(desc(count))
+  } else if (arrange.plot.by == "target") {
+    daux <- daux %>% arrange(desc(target_rate))
+  }
+  
+  daux <- daux %>% mutate(var = factor(var))
   
   #### MAIN PLOT ###
   p <- ggplot(daux)
   
   if (add.legend) {
     
-    cols <- c("PercentCatergory" = bar.color, "targetRate" = rate.color)
+    cols <- c("percent_category" = bar.color, "target_rate" = rate.color)
     
     p <- p + 
-      geom_bar(aes(var, percent, fill = "PercentCatergory"),
+      geom_bar(aes(var, percent, fill = "percent_category"),
                stat = "identity", width = bar.width, colour =  bar.color) +
-      geom_line(aes(id, targetRate, colour = "targetRate"), size = rate.size) +
-      geom_point(aes(id, targetRate), colour = rate.color) +
+      geom_line(aes(id, target_rate, colour = "target_rate"), size = rate.size) +
+      geom_point(aes(id, target_rate), colour = rate.color) +
       scale_fill_manual("", values = cols) +
       scale_colour_manual(name = "", values = cols) 
   } else {
     p <- p + 
       geom_bar(aes(var, percent), stat = "identity", width = bar.width, fill = bar.color) +
-      geom_line(aes(id, targetRate), colour = rate.color, size = rate.size) +
-      geom_point(aes(id, targetRate), colour = rate.color) 
+      geom_line(aes(id, target_rate), colour = rate.color, size = rate.size) +
+      geom_point(aes(id, target_rate), colour = rate.color) 
   }
   
   p <- p + scale_y_continuous(labels = percent)
@@ -93,15 +101,23 @@ plot_biv_table <- function(var,
   #### LABELS TARGET ####
   if (target.labels) {
     if (coord.flip) {
-      p <- p + geom_text(aes(var, targetRate, label = targetRate_format),
+      p <- p + geom_text(aes(var, target_rate, label = target_rate_format),
                          size = size.text, hjust = -1, colour = "darkred")
     } else {
-      p <- p + geom_text(aes(var, targetRate, label = targetRate_format),
+      p <- p + geom_text(aes(var, target_rate, label = target_rate_format),
                          size = size.text, vjust = -.5, colour = "darkred")
     }
   }
   
   p <- p + xlab(NULL) + ylab(NULL)
+  
+  p <- p + theme(rect = element_rect(fill = "#FFFFFF", linetype = 0, colour = NA),
+                 title = element_text(hjust = 0.5), axis.title.x = element_text(hjust = 0.5), 
+                 axis.title.y = element_text(hjust = 0.5), panel.grid.major.y = element_line(color = "gray"), 
+                 panel.grid.minor.y = element_blank(), panel.grid.major.x = element_blank(), 
+                 panel.grid.minor.x = element_blank(), panel.border = element_blank(), 
+                 panel.background = element_blank(), legend.position = "bottom", 
+                 legend.key = element_rect(fill = "#FFFFFF00"))
   
   p
 }

@@ -6,7 +6,7 @@
 \usage{
 plot_biv_table(var, target, count.labels = FALSE, target.labels = FALSE,
   coord.flip = FALSE, add.legend = TRUE, legend.color = "gray80",
-  rate.color = "darkred", bar.color = "gray80", bar.width = 0.6,
+  rate.color = "darkblue", bar.color = "gray80", bar.width = 0.6,
   rate.size = 1, size.text = 4, size.text2 = 10, remove.axis.y = FALSE)
 }
 \arguments{

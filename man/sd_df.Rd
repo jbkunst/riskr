@@ -4,7 +4,8 @@
 \alias{sd_df}
 \title{Standarize a data frame}
 \usage{
-sd_df(df, to.lower.df.names = TRUE, factor.to.string = TRUE)
+sd_df(df, to.lower.df.names = TRUE, factor.to.string = TRUE,
+  fill.num.na = TRUE, fill.chr.na = TRUE)
 }
 \arguments{
 \item{df}{A data frame}
@@ -17,6 +18,7 @@ This function standarize a data frame converting factors to characters, setting 
 }
 \examples{
 df <- data.frame(LETTERS, AA = rnorm(length(LETTERS)), leTTers2 = letters)
+df[c(1, 4),2] <- NA
 str(df)
 str(sd_df(df))
 }
