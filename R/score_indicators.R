@@ -134,7 +134,7 @@ gain <- function(score, target, percents = c(0.10, 0.20, 0.30, 0.40, 0.50)){
 score_indicators <- function(score, target){ 
   
   res <- c(count = length(score),
-           count_target = length(score[target == 1]),
+           target_count = length(score[target == 1]),
            target_rate = mean(target),
            ks = ks(score, target),
            aucroc = aucroc(score, target),
