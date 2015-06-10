@@ -135,7 +135,7 @@ score_indicators <- function(score, target){
   
   res <- c(count = length(score),
            count_target = length(score[target == 1]),
-           rate_target = 1 - mean(target),
+           target_rate = mean(target),
            ks = ks(score, target),
            aucroc = aucroc(score, target),
            gini = gini(score, target))
