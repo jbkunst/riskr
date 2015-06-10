@@ -20,16 +20,16 @@ biv_table <- function(variable, target){
 
   library("dplyr")
   
-  df <- data_frame(class = variable, target) %>% 
-    group_by(class) %>% 
+  df <- data_frame(variable = as.character(addNA(variable)), target) %>% 
+    group_by(variable) %>% 
     summarise(count = n(),
               percent = n()/nrow(.),
-              count_target = sum(target),
-              rate_target = count_target/count,
-              percent_target = count_target,
-              odds = count_target/(count - count_target)) %>% 
+              target_count = sum(target),
+              target_rate = target_count/count,
+              target_percent = target_count,
+              odds = target_count/(count - target_count)) %>% 
     ungroup() %>% 
-    mutate(percent_target = count_target/sum(.$count_target))
+    mutate(target_percent = target_count/sum(.$target_count))
   
   df
 }
