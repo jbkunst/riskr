@@ -21,4 +21,5 @@ gb_sm <- function(data, ...){
     group_by(...) %>%
     summarise(count = n(), percent = count/nrow(.)) %>%
     ungroup()
+
 }
