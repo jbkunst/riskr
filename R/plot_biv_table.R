@@ -1,13 +1,13 @@
-#' Plot Bivariate Analysis
+#' Plot Bivariableiate Analysis
 #'
-#' @param var A numeric vector containing scores or probabilities
+#' @param variable A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
 #' @param count.labels A par
 #' @param target.labels A par
 #' @param coord.flip A par
 #' @param add.legend A par
 #' @param legend.color A par
-#' @param rate.color A par
+#' @param target.color A par
 #' @param bar.width A par
 #' @param rate.size A par
 #' @param size.text A par
@@ -17,14 +17,19 @@
 #' @examples
 #' data("credit")
 #' 
-#' var <- credit$sex
+#' variable <- credit$quant_add_cards
 #' target <- credit$bad
 #' 
-#' plot_biv_table(var, target)
-#' plot_biv_table(var, target) + theme_light()
-#' plot_biv_table(var, target) + theme_gray()
+#' plot_biv_table(variable, target)
+#' plot_biv_table(variable, target) + theme_light()
+#' plot_biv_table(variable, target) + theme_gray()
+#' plot_biv_table(variable, target, coord.flip = TRUE)
+#' plot_biv_table(variable, target, add.legend = FALSE)
+#' plot_biv_table(variable, target, count.labels = TRUE, coord.flip = TRUE)
+#' plot_biv_table(variable, target, target.labels = TRUE)
+#' plot_biv_table(variable, target, count.labels = TRUE, target.labels = TRUE)
 #' @export
-plot_biv_table <- function(var,
+plot_biv_table <- function(variable,
                            target,
                            count.labels = FALSE,
                            target.labels = FALSE,
@@ -32,7 +37,7 @@ plot_biv_table <- function(var,
                            coord.flip = FALSE,
                            add.legend = TRUE,
                            legend.color = "gray80",
-                           rate.color = "darkblue",
+                           target.color = "darkblue",
                            bar.color = "gray80",
                            bar.width = .6,
                            rate.size = 1,
@@ -45,41 +50,39 @@ plot_biv_table <- function(var,
   require("dplyr")
   require("scales")
   
-  #### DATA ####  
-  daux <- data_frame(var = addNA(var), target) %>%
-    group_by(var) %>%
-    summarise(count = n(), percent = count/nrow(.), target_rate = mean(target)) %>%
+  #### DATA ####
+  daux <- biv_table(addNA(variable), target) %>% 
     mutate(id = seq(nrow(.)),
            count_format = prettyNum(count, big.mark = ".", decimal.mark = ", "),
            target_rate_format = percent(target_rate))
   
-  if (arrange.plot.by == "variable") {
+  if (arrange.plot.by == "variableiable") {
     daux <- daux %>% arrange(desc(count))
   } else if (arrange.plot.by == "target") {
     daux <- daux %>% arrange(desc(target_rate))
   }
   
-  daux <- daux %>% mutate(var = factor(var))
+  daux <- daux %>% mutate(variable = factor(variable))
   
   #### MAIN PLOT ###
   p <- ggplot(daux)
   
   if (add.legend) {
     
-    cols <- c("percent_category" = bar.color, "target_rate" = rate.color)
+    cols <- c("percent_category" = bar.color, "target_rate" = target.color)
     
     p <- p + 
-      geom_bar(aes(var, percent, fill = "percent_category"),
+      geom_bar(aes(variable, percent, fill = "percent_category"),
                stat = "identity", width = bar.width, colour =  bar.color) +
       geom_line(aes(id, target_rate, colour = "target_rate"), size = rate.size) +
-      geom_point(aes(id, target_rate), colour = rate.color) +
+      geom_point(aes(id, target_rate), colour = target.color) +
       scale_fill_manual("", values = cols) +
       scale_colour_manual(name = "", values = cols) 
   } else {
     p <- p + 
-      geom_bar(aes(var, percent), stat = "identity", width = bar.width, fill = bar.color) +
-      geom_line(aes(id, target_rate), colour = rate.color, size = rate.size) +
-      geom_point(aes(id, target_rate), colour = rate.color) 
+      geom_bar(aes(variable, percent), stat = "identity", width = bar.width, fill = bar.color) +
+      geom_line(aes(id, target_rate), colour = target.color, size = rate.size) +
+      geom_point(aes(id, target_rate), colour = target.color) 
   }
   
   p <- p + scale_y_continuous(labels = percent)
@@ -90,10 +93,10 @@ plot_biv_table <- function(var,
   #### LABELS COUNT ###
   if (count.labels) {
     if (coord.flip) {
-      p <- p + geom_text(aes(var, percent, label = count_format),
+      p <- p + geom_text(aes(variable, percent, label = count_format),
                          size = size.text, hjust = 1.2, colour = "white")
     } else {
-      p <- p + geom_text(aes(var, percent, label = count_format),
+      p <- p + geom_text(aes(variable, percent, label = count_format),
                          size = size.text, vjust = 1.5, colour = "white")
     }
   }
@@ -101,23 +104,39 @@ plot_biv_table <- function(var,
   #### LABELS TARGET ####
   if (target.labels) {
     if (coord.flip) {
-      p <- p + geom_text(aes(var, target_rate, label = target_rate_format),
-                         size = size.text, hjust = -1, colour = "darkred")
+      p <- p + geom_text(aes(variable, target_rate, label = target_rate_format),
+                         size = size.text, hjust = -1, colour = target.color)
     } else {
-      p <- p + geom_text(aes(var, target_rate, label = target_rate_format),
-                         size = size.text, vjust = -.5, colour = "darkred")
+      p <- p + geom_text(aes(variable, target_rate, label = target_rate_format),
+                         size = size.text, vjust = -.5, colour = target.color)
     }
   }
   
+  #### THEME #### 
   p <- p + xlab(NULL) + ylab(NULL)
   
   p <- p + theme(rect = element_rect(fill = "#FFFFFF", linetype = 0, colour = NA),
-                 title = element_text(hjust = 0.5), axis.title.x = element_text(hjust = 0.5), 
-                 axis.title.y = element_text(hjust = 0.5), panel.grid.major.y = element_line(color = "gray"), 
-                 panel.grid.minor.y = element_blank(), panel.grid.major.x = element_blank(), 
-                 panel.grid.minor.x = element_blank(), panel.border = element_blank(), 
-                 panel.background = element_blank(), legend.position = "bottom", 
+                 title = element_text(hjust = 0.5),
+                 axis.title.x = element_text(hjust = 0.5), 
+                 axis.title.y = element_text(hjust = 0.5),
+                 panel.border = element_blank(), 
+                 panel.background = element_blank(),
                  legend.key = element_rect(fill = "#FFFFFF00"))
+  
+  if (!coord.flip) {
+    p <- p + theme(panel.grid.major.y = element_line(color = "gray"),
+                   panel.grid.minor.y = element_blank(),
+                   panel.grid.major.x = element_blank(), 
+                   panel.grid.minor.x = element_blank(),
+                   legend.position = "bottom")
+  } else {
+    p <- p + theme(panel.grid.major.x = element_line(color = "gray"),
+                   panel.grid.minor.x = element_blank(),
+                   panel.grid.major.y = element_blank(), 
+                   panel.grid.minor.y = element_blank(),
+                   legend.position = "right")
+  }
   
   p
 }
+
