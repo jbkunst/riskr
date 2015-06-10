@@ -2,15 +2,16 @@
 % Please edit documentation in R/plot_biv_table.R
 \name{plot_biv_table}
 \alias{plot_biv_table}
-\title{Plot Bivariate Analysis}
+\title{Plot Bivariableiate Analysis}
 \usage{
-plot_biv_table(var, target, count.labels = FALSE, target.labels = FALSE,
-  coord.flip = FALSE, add.legend = TRUE, legend.color = "gray80",
-  rate.color = "darkblue", bar.color = "gray80", bar.width = 0.6,
-  rate.size = 1, size.text = 4, size.text2 = 10, remove.axis.y = FALSE)
+plot_biv_table(variable, target, count.labels = FALSE,
+  target.labels = FALSE, arrange.plot.by = "variable", coord.flip = FALSE,
+  add.legend = TRUE, legend.color = "gray80", target.color = "darkblue",
+  bar.color = "gray80", bar.width = 0.6, rate.size = 1, size.text = 4,
+  size.text2 = 10, remove.axis.y = FALSE)
 }
 \arguments{
-\item{var}{A numeric vector containing scores or probabilities}
+\item{variable}{A numeric vector containing scores or probabilities}
 
 \item{target}{A numeric binary vector (0, 1)}
 
@@ -24,7 +25,7 @@ plot_biv_table(var, target, count.labels = FALSE, target.labels = FALSE,
 
 \item{legend.color}{A par}
 
-\item{rate.color}{A par}
+\item{target.color}{A par}
 
 \item{bar.width}{A par}
 
@@ -40,15 +41,21 @@ plot_biv_table(var, target, count.labels = FALSE, target.labels = FALSE,
 A ggplot2 object
 }
 \description{
-Plot Bivariate Analysis
+Plot Bivariableiate Analysis
 }
 \examples{
 data("credit")
 
-var <- credit$sex
+variable <- credit$quant_add_cards
 target <- credit$bad
 
-plot_biv_table(var, target)
-plot_biv_table(var, target) + theme_light()
+plot_biv_table(variable, target)
+plot_biv_table(variable, target) + theme_light()
+plot_biv_table(variable, target) + theme_gray()
+plot_biv_table(variable, target, coord.flip = TRUE)
+plot_biv_table(variable, target, add.legend = FALSE)
+plot_biv_table(variable, target, count.labels = TRUE, coord.flip = TRUE)
+plot_biv_table(variable, target, target.labels = TRUE)
+plot_biv_table(variable, target, count.labels = TRUE, target.labels = TRUE)
 }
 

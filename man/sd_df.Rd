@@ -5,7 +5,7 @@
 \title{Standarize a data frame}
 \usage{
 sd_df(df, to.lower.df.names = TRUE, factor.to.string = TRUE,
-  fill.num.na = TRUE, fill.chr.na = TRUE)
+  fill.num.na.with = 0, fill.chr.na.with = "<NA>")
 }
 \arguments{
 \item{df}{A data frame}
@@ -17,8 +17,11 @@ The same df with \code{tbl_df} class, lower names.
 This function standarize a data frame converting factors to characters, setting to lowercase the column names.
 }
 \examples{
-df <- data.frame(LETTERS, AA = rnorm(length(LETTERS)), leTTers2 = letters)
+df <- data.frame(leTters = LETTERS[1:10], AA = rnorm(10), leTTers2 = letters[1:10])
+
 df[c(1, 4),2] <- NA
+df[c(2, 5),1] <- NA
+
 str(df)
 str(sd_df(df))
 }
