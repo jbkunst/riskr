@@ -13,7 +13,7 @@
 #' str(sd_df(df))
 #' @export
 sd_df <- function(df, to.lower.df.names = TRUE, factor.to.string = TRUE,
-                  fill.num.na.with = 0, fill.chr.na.with = "<NA>"){
+                  fill.num.na.with = 0, fill.chr.na.with = ""){
   
   require("plyr")
   
