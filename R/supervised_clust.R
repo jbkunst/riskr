@@ -1,3 +1,4 @@
+#' @export
 supervised_clust <- function(target, variable){
   
   library(party)

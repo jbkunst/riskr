@@ -17,7 +17,7 @@
 #' @examples
 #' data("credit")
 #' 
-#' variable <- credit$quant_add_cards
+#' variable <- credit$sex
 #' target <- credit$bad
 #' 
 #' plot_biv_table(variable, target)
@@ -33,7 +33,7 @@ plot_biv_table <- function(variable,
                            target,
                            count.labels = FALSE,
                            target.labels = FALSE,
-                           arrange.plot.by = "variable",
+                           arrange.plot.by = NULL, # options: variable, target
                            coord.flip = FALSE,
                            add.legend = TRUE,
                            legend.color = "gray80",
@@ -49,20 +49,30 @@ plot_biv_table <- function(variable,
   require("ggplot2")
   require("dplyr")
   require("scales")
-  
+
   #### DATA ####
   daux <- biv_table(addNA(variable), target) %>% 
     mutate(id = seq(nrow(.)),
            count_format = prettyNum(count, big.mark = ".", decimal.mark = ", "),
            target_rate_format = percent(target_rate))
   
-  if (arrange.plot.by == "variableiable") {
-    daux <- daux %>% arrange(desc(count))
-  } else if (arrange.plot.by == "target") {
-    daux <- daux %>% arrange(desc(target_rate))
+  if (!is.null(arrange.plot.by)) {
+    if (arrange.plot.by == "variable") {
+      daux <- daux %>% arrange(desc(count))
+    } else if (arrange.plot.by == "target") {
+      daux <- daux %>% arrange(desc(target_rate))
+    }
+    
+    daux <- daux %>% mutate(variable = factor(variable))
+    
+  } else {
+    if (is.factor(variable)) {
+      lvls <- levels(variable)
+      daux <- daux %>% mutate(variable = factor(variable, levels = lvls))  
+    } else {
+      daux <- daux %>% mutate(variable = factor(variable))  
+    }
   }
-  
-  daux <- daux %>% mutate(variable = factor(variable))
   
   #### MAIN PLOT ###
   p <- ggplot(daux)
@@ -73,16 +83,18 @@ plot_biv_table <- function(variable,
     
     p <- p + 
       geom_bar(aes(variable, percent, fill = "percent_category"),
-               stat = "identity", width = bar.width, colour =  bar.color) +
+               stat = "identity", width = bar.width, colour = bar.color) +
       geom_line(aes(id, target_rate, colour = "target_rate"), size = rate.size) +
       geom_point(aes(id, target_rate), colour = target.color) +
       scale_fill_manual("", values = cols) +
-      scale_colour_manual(name = "", values = cols) 
+      scale_colour_manual(name = "", values = cols)
+    
   } else {
     p <- p + 
       geom_bar(aes(variable, percent), stat = "identity", width = bar.width, fill = bar.color) +
       geom_line(aes(id, target_rate), colour = target.color, size = rate.size) +
       geom_point(aes(id, target_rate), colour = target.color) 
+    
   }
   
   p <- p + scale_y_continuous(labels = percent)
