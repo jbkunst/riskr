@@ -13,7 +13,7 @@
 #' @export
 ks <- function(score, target){
   
-  library("ROCR")
+  suppressMessages(library("ROCR"))
   
   pred <- prediction(score, target)
   
@@ -21,7 +21,7 @@ ks <- function(score, target){
   
   ks <- max(abs(attr(perf, "y.values")[[1]] - attr(perf, "x.values")[[1]]))
   
-  return(ks)
+  return(as.numeric(ks))
 }
 
 #' Calculate Kolmogorov-Smirnov statistic
@@ -63,7 +63,7 @@ ks2 <- function(score1, score2){
 #' @export
 aucroc <- function(score, target){
   
-  library("ROCR")
+  suppressMessages(library("ROCR"))
   
   pred <- prediction(score, target)
   

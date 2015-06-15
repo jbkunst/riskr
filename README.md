@@ -3,9 +3,9 @@
 
 
 
-# Introducction
+# Introduction
 
-riskr help to validate performance of models via wrapper or shortcuts from ROCR functions.
+The `riskr` package helps to validate performance of models via wrapper or shortcuts from ROCR functions. 
 
 # Installation
 
@@ -49,13 +49,6 @@ score <- predictions$score
 target <- predictions$target
 
 ks(score, target)
-#> Loading required package: gplots
-#> 
-#> Attaching package: 'gplots'
-#> 
-#> The following object is masked from 'package:stats':
-#> 
-#>     lowess
 #> [1] 0.2544475
 
 aucroc(score, target)

@@ -5,6 +5,7 @@ output:
     keep_md: yes
     toc: yes
   md_document:
+    toc: true
     variant: markdown_github
 ---
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -13,9 +14,9 @@ output:
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.path = "vignettes/figures/")
 ```
 
-# Introducction
+# Introduction
 
-riskr help to validate performance of models via wrapper or shortcuts from ROCR functions.
+The `riskr` package helps to validate performance of models via wrapper or shortcuts from ROCR functions. 
 
 # Installation
 
