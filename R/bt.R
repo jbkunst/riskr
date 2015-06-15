@@ -1,4 +1,4 @@
-#' bivariate Analysis
+#' Bivariate Table
 #' @description This function calculate a bivariate table.
 #' @param variable A variable 
 #' @param target A numeric binary vector {0,1}
@@ -9,14 +9,14 @@
 #' variable <- credit$marital_status
 #' target <- 1 - credit$bad
 #'
-#' biv_table(variable, target)
+#' bt(variable, target)
 #' 
 #' variable <- cut(credit$payment_day, breaks = c(-Inf, 10, 20, Inf))
 #' 
-#' biv_table(variable, target)
+#' bt(variable, target)
 #'  
 #' @export
-biv_table <- function(variable, target){
+bt <- function(variable, target){
 
   library("dplyr")
   
@@ -31,5 +31,19 @@ biv_table <- function(variable, target){
     ungroup() %>% 
     mutate(target_percent = target_count/sum(.$target_count))
   
+  if (is.factor(variable)) {
+    
+    lvls <- levels(variable)
+    df <- df %>% mutate(variable = factor(variable, levels = lvls))
+    df <- df[order(df$variable),]
+    
+  }
+  
   df
+}
+
+#' @export
+biv_table <- function(...){
+  message("This function 'biv_table' will be deprecated, use 'bt' instead.")
+  bt(...)
 }

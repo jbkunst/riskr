@@ -20,8 +20,7 @@
 odds_table <- function(score, target, nclass = 10, quantile = TRUE, breaks = NULL){
   
   library("ggplot2")
-  library("dplyr")
-  
+
   if (missing(breaks) & quantile) {
     
     score_cat <- cut_number(score, n = nclass)
@@ -35,7 +34,7 @@ odds_table <- function(score, target, nclass = 10, quantile = TRUE, breaks = NUL
     score_cat <- cut(score, breaks = breaks)
   }
   
-  df <- biv_table(score_cat, target)
+  df <- bt(variable = score_cat, target = target)
   
   df
   

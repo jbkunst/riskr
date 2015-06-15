@@ -1,21 +1,23 @@
 ---
+title: "Riskr"
 output:
+  html_document:
+    keep_md: yes
+    toc: yes
   md_document:
     variant: markdown_github
 ---
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
-                      fig.path = "vignettes/figures/")
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.path = "vignettes/figures/")
 ```
 
-# riskr
+# Introducction
 
 riskr help to validate performance of models via wrapper or shortcuts from ROCR functions.
 
-### Installation
+# Installation
 
 You can install the latest development version from github with:
 
@@ -23,13 +25,13 @@ You can install the latest development version from github with:
 devtools::install_github("jbkunst/riskr")
 ```
 
-### Facts
+# Facts
 
-`riskr` assume the target variable is binary with numeric values: 0 and 1. Usually 1 means the characteristic of interest)
+`riskr` assume the target variable is binary with numeric values: 0 and 1. Usually 1 means the characteristic of interest.
 
-### Functions
+# Functions
 
-#### Performance Indicators
+## Performance Indicators
 
 ```{r}
 library("riskr")
@@ -41,6 +43,7 @@ head(predictions)
 str(predictions)
 
 score <- predictions$score
+
 target <- predictions$target
 
 ks(score, target)
@@ -70,19 +73,20 @@ data("credit")
 
 str(credit)
 
-biv_table(credit$marital_status, credit$bad)
+ft(credit$marital_status)
+
+bt(credit$marital_status, credit$bad)
 
 library("ggplot2")
 
 credit$age_bin <- cut_interval(credit$age, 4)
 
-biv_table(credit$age_bin, credit$bad) 
+bt(credit$age_bin, credit$bad)
 
-plot_biv_table(credit$age_bin, credit$bad) + ggtitle("Age")
+plot_bt(credit$age_bin, credit$bad) + ggtitle("Age")
 
-plot_biv_table(credit$flag_res_phone, credit$bad,
-               count.labels = TRUE, target.labels = TRUE) +
-  theme_light() + ggtitle("Flag Response Phone")
-
+plot_bt(credit$flag_res_phone, credit$bad,
+        count.labels = TRUE, target.labels = TRUE) +
+  ggtitle("Flag Response Phone")
 ```
 

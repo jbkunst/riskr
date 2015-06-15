@@ -20,16 +20,16 @@
 #' variable <- credit$sex
 #' target <- credit$bad
 #' 
-#' plot_biv_table(variable, target)
-#' plot_biv_table(variable, target) + theme_light()
-#' plot_biv_table(variable, target) + theme_gray()
-#' plot_biv_table(variable, target, coord.flip = TRUE)
-#' plot_biv_table(variable, target, add.legend = FALSE)
-#' plot_biv_table(variable, target, count.labels = TRUE, coord.flip = TRUE)
-#' plot_biv_table(variable, target, target.labels = TRUE)
-#' plot_biv_table(variable, target, count.labels = TRUE, target.labels = TRUE)
+#' plot_bt(variable, target)
+#' plot_bt(variable, target) + theme_light()
+#' plot_bt(variable, target) + theme_gray()
+#' plot_bt(variable, target, coord.flip = TRUE)
+#' plot_bt(variable, target, add.legend = FALSE)
+#' plot_bt(variable, target, count.labels = TRUE, coord.flip = TRUE)
+#' plot_bt(variable, target, target.labels = TRUE)
+#' plot_bt(variable, target, count.labels = TRUE, target.labels = TRUE)
 #' @export
-plot_biv_table <- function(variable,
+plot_bt <- function(variable,
                            target,
                            count.labels = FALSE,
                            target.labels = FALSE,
@@ -51,7 +51,7 @@ plot_biv_table <- function(variable,
   require("scales")
 
   #### DATA ####
-  daux <- biv_table(addNA(variable), target) %>% 
+  daux <- bt(addNA(variable), target) %>% 
     mutate(id = seq(nrow(.)),
            count_format = prettyNum(count, big.mark = ".", decimal.mark = ", "),
            target_rate_format = percent(target_rate))
@@ -150,5 +150,11 @@ plot_biv_table <- function(variable,
   }
   
   p
+}
+
+#' @export
+plot_biv_table <- function(...){
+  message("This function 'plot_biv_table' will be deprecated, use 'plot_bt' instead.")
+  plot_bt(...)
 }
 
