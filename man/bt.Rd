@@ -2,7 +2,7 @@
 % Please edit documentation in R/bt.R
 \name{bt}
 \alias{bt}
-\title{bivariate Analysis}
+\title{Bivariate Table}
 \usage{
 bt(variable, target)
 }

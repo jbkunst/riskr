@@ -2,7 +2,7 @@
 #'
 #' @param score A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
-#' @return The KS statistic
+#' @return the plot
 #' @examples
 #' data(predictions)
 #' 
@@ -39,7 +39,7 @@ plot_roc <- function(score, target){
 #' @description Return a ggplot object. 
 #' @param score A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
-#' @return The KS statistic
+#' @return the plot
 #' @examples
 #' data(predictions)
 #' 
@@ -64,5 +64,50 @@ plot_gain <- function(score, target){
     scale_y_continuous("Target Cumulative Percents",
                        label = percent_format(),
                        limits = c(0, 1))
+  p
+}
+
+#' Plot to compare cumulatives distrbutions
+#'
+#' @description Return a ggplot object. 
+#' @param score A numeric vector containing scores or probabilities
+#' @param target A numeric binary vector (0, 1)
+#' @return The plot
+#' @examples
+#' data(predictions)
+#' 
+#' score <- predictions$score
+#' target <- predictions$target
+#' 
+#' plot_ks(score, target)
+#' @export
+plot_ks <- function(score, target){
+  
+  library("ggplot2")
+  library("dplyr")
+  library("scales")
+  
+  n.length <- 50
+  
+  ecd.0 <- ecdf(score[target == 0])
+  ecd.1 <- ecdf(score[target == 1])
+  
+  cuts <- seq(min(score), max(score), length = n.length)
+  
+  df <- data_frame(score = rep(cuts, 2),
+                   class = rep(c("Target 0", "Target 1"), each = 50)) %>% 
+    mutate(ecdf = ifelse(class == "Target 0", ecd.0(score), ecd.1(score)))
+
+  cut <- cuts[abs(ecd.1(cuts) - ecd.0(cuts)) == max(abs(ecd.1(cuts) - ecd.0(cuts)))]  
+  
+  p <- ggplot(df) +
+    geom_line(aes(score, ecdf, colour = class), size = 1.2) + 
+    scale_colour_manual(values = c("darkred", "darkblue")) + 
+    scale_y_continuous("ecdf", label = percent_format(), limits = c(0, 1)) + 
+    xlab("score") 
+  
+#   p <- p + geom_segment(aes(x = cut, xend = cut, y = ecd.1(cut), yend = ecd.0(cut)),
+#                         colour = grey(.6), size = 1.0)
+    
   p
 }

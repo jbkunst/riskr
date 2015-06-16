@@ -12,7 +12,7 @@ plot_roc(score, target)
 \item{target}{A numeric binary vector (0, 1)}
 }
 \value{
-The KS statistic
+the plot
 }
 \description{
 Plot AUC Curve
