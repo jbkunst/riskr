@@ -6,7 +6,6 @@ output:
     toc: yes
   md_document:
     toc: true
-    variant: markdown_github
 ---
 <!-- README.md is generated from README.Rmd -->
 
