@@ -5,20 +5,7 @@
 
 ## Introduction
 
-First Header  | Second Header
-------------- | -------------
-Content Cell  | Content Cell
-Content Cell  | Content Cell
-
-asda
-
-
- score   target
-------  -------
- 0.202        1
- 0.806        1
-
-The `riskr` package facilitate repetitive *bussines risk* [^](or other areas) tasks. In general this package helps to:
+The `riskr` package facilitate repetitive *bussines risk* (or other areas) tasks. In general this package helps to:
 
  1. Measure in a easy way the performance of models via wrapper or shortcuts from ROCR functions.
  2. Visualize relationships between variables.
@@ -52,14 +39,14 @@ head(predictions)
 
 
 
- score   target
-------  -------
- 0.202        1
- 0.806        1
- 0.513        1
- 0.052        0
- 0.329        1
- 0.246        0
+| score| target|
+|-----:|------:|
+| 0.202|      1|
+| 0.806|      1|
+| 0.513|      1|
+| 0.052|      0|
+| 0.329|      1|
+| 0.246|      0|
 
 ```r
 
@@ -93,9 +80,9 @@ score_indicators(score, target)
 
 
 
- count   target_count   target_rate      ks   aucroc    gini
-------  -------------  ------------  ------  -------  ------
- 10000           6990         0.699   0.254    0.676   0.353
+| count| target_count| target_rate|    ks| aucroc|  gini|
+|-----:|------------:|-----------:|-----:|------:|-----:|
+| 10000|         6990|       0.699| 0.254|  0.676| 0.353|
 
 ```r
 
@@ -125,12 +112,12 @@ odds_table(score, target, nclass = 4)
 
 
 
-variable     count   percent   target_count   target_rate   target_percent   odds
-----------  ------  --------  -------------  ------------  ---------------  -----
-[1,199]       2502     0.250           1304         0.521            0.187   1.09
-(199,430]     2504     0.250           1661         0.663            0.238   1.97
-(430,683]     2502     0.250           1894         0.757            0.271   3.12
-(683,996]     2492     0.249           2131         0.855            0.305   5.90
+|variable  | count| percent| target_count| target_rate| target_percent| odds|
+|:---------|-----:|-------:|------------:|-----------:|--------------:|----:|
+|[1,199]   |  2502|   0.250|         1304|       0.521|          0.187| 1.09|
+|(199,430] |  2504|   0.250|         1661|       0.663|          0.238| 1.97|
+|(430,683] |  2502|   0.250|         1894|       0.757|          0.271| 3.12|
+|(683,996] |  2492|   0.249|         2131|       0.855|          0.305| 5.90|
 
 ```r
 
@@ -139,11 +126,11 @@ odds_table(score, target, breaks = c(0, 300, 700, 999))
 
 
 
-variable     count   percent   target_count   target_rate   target_percent   odds
-----------  ------  --------  -------------  ------------  ---------------  -----
-(0,300]       3675     0.368           2052         0.558            0.294   1.26
-(300,700]     3978     0.398           2926         0.736            0.419   2.78
-(700,999]     2347     0.235           2012         0.857            0.288   6.01
+|variable  | count| percent| target_count| target_rate| target_percent| odds|
+|:---------|-----:|-------:|------------:|-----------:|--------------:|----:|
+|(0,300]   |  3675|   0.368|         2052|       0.558|          0.294| 1.26|
+|(300,700] |  3978|   0.398|         2926|       0.736|          0.419| 2.78|
+|(700,999] |  2347|   0.235|         2012|       0.857|          0.288| 6.01|
 
 ### Confusion Matrix
 
@@ -202,13 +189,13 @@ ft(credit$marital_status)
 
 
 
-class    count   percent
-------  ------  --------
-C        17097     0.344
-D         2142     0.043
-O         2776     0.056
-S        25249     0.508
-V         2430     0.049
+|class | count| percent|
+|:-----|-----:|-------:|
+|C     | 17097|   0.344|
+|D     |  2142|   0.043|
+|O     |  2776|   0.056|
+|S     | 25249|   0.508|
+|V     |  2430|   0.049|
 
 ```r
 
@@ -217,13 +204,13 @@ bt(credit$marital_status, credit$bad)
 
 
 
-variable    count   percent   target_count   target_rate   target_percent    odds
----------  ------  --------  -------------  ------------  ---------------  ------
-C           17097     0.344           2483         0.145            0.253   0.170
-D            2142     0.043            322         0.150            0.033   0.177
-O            2776     0.056            660         0.238            0.067   0.312
-S           25249     0.508           6059         0.240            0.617   0.316
-V            2430     0.049            289         0.119            0.029   0.135
+|variable | count| percent| target_count| target_rate| target_percent|  odds|
+|:--------|-----:|-------:|------------:|-----------:|--------------:|-----:|
+|C        | 17097|   0.344|         2483|       0.145|          0.253| 0.170|
+|D        |  2142|   0.043|          322|       0.150|          0.033| 0.177|
+|O        |  2776|   0.056|          660|       0.238|          0.067| 0.312|
+|S        | 25249|   0.508|         6059|       0.240|          0.617| 0.316|
+|V        |  2430|   0.049|          289|       0.119|          0.029| 0.135|
 
 ```r
 
@@ -236,12 +223,12 @@ bt(credit$age_bin, credit$bad)
 
 
 
-variable    count   percent   target_count   target_rate   target_percent    odds
----------  ------  --------  -------------  ------------  ---------------  ------
-[15,35]     28377     0.571           7015         0.247            0.715   0.328
-(35,55]     17425     0.351           2473         0.142            0.252   0.165
-(55,75]      3767     0.076            313         0.083            0.032   0.091
-(75,95]       125     0.003             12         0.096            0.001   0.106
+|variable | count| percent| target_count| target_rate| target_percent|  odds|
+|:--------|-----:|-------:|------------:|-----------:|--------------:|-----:|
+|[15,35]  | 28377|   0.571|         7015|       0.247|          0.715| 0.328|
+|(35,55]  | 17425|   0.351|         2473|       0.142|          0.252| 0.165|
+|(55,75]  |  3767|   0.076|          313|       0.083|          0.032| 0.091|
+|(75,95]  |   125|   0.003|           12|       0.096|          0.001| 0.106|
 
 ```r
 
