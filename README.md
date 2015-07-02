@@ -1,13 +1,17 @@
-# Riskr
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+# riskr
+<!-- README.md is generated from README.Rmd -->
 
 
 
-# Introduction
+## Introduction
 
-The `riskr` package helps to validate performance of models via wrapper or shortcuts from ROCR functions. 
+The `riskr` package facilitate repetitive *bussines risk* [^](or other areas) tasks. In general this package helps to:
 
-# Installation
+ 1. Measure in a easy way the performance of models via wrapper or shortcuts from ROCR functions.
+ 2. Visualize relationships between variables.
+ 3. Facilitate the usual and repetitives tasks.
+
+## Installation
 
 You can install the latest development version from github with:
 
@@ -16,13 +20,13 @@ You can install the latest development version from github with:
 devtools::install_github("jbkunst/riskr")
 ```
 
-# Facts
+## Facts
 
 `riskr` assume the target variable is binary with numeric values: 0 and 1. Usually 1 means the characteristic of interest.
 
-# Functions
+## Functions
 
-## Performance Indicators
+Usually we have a data frame with a *target* variable and a *score* (or probability) like this:
 
 
 ```r
@@ -31,13 +35,20 @@ library("riskr")
 data("predictions")
 
 head(predictions)
-#>        score target
-#> 1 0.20233023      1
-#> 2 0.80582411      1
-#> 3 0.51343757      1
-#> 4 0.05247266      0
-#> 5 0.32882210      1
-#> 6 0.24568500      0
+```
+
+
+
+ score   target
+------  -------
+ 0.202        1
+ 0.806        1
+ 0.513        1
+ 0.052        0
+ 0.329        1
+ 0.246        0
+
+```r
 
 str(predictions)
 #> 'data.frame':	10000 obs. of  2 variables:
@@ -47,65 +58,84 @@ str(predictions)
 score <- predictions$score
 
 target <- predictions$target
-
-ks(score, target)
-#> [1] 0.2544475
-
-aucroc(score, target)
-#> [1] 0.676466
-
-gini(score, target)
-#> [1] 0.3529319
-
-score_indicators(score, target)
-#>   count target_count target_rate        ks   aucroc      gini
-#> 1 10000         6990       0.699 0.2544475 0.676466 0.3529319
-
-plot_roc(score, target)
 ```
 
-![](vignettes/figures/unnamed-chunk-3-1.png) 
+### Performance Indicators
+
+The main statistics or indicators are KS, AUCROC so:
+
+
+```r
+ks(score, target)
+#> [1] 0.254
+
+aucroc(score, target)
+#> [1] 0.676
+
+gini(score, target)
+#> [1] 0.353
+
+score_indicators(score, target)
+```
+
+
+
+ count   target_count   target_rate      ks   aucroc    gini
+------  -------------  ------------  ------  -------  ------
+ 10000           6990         0.699   0.254    0.676   0.353
+
+```r
+
+plot_roc(score, target)
+#> Warning: package 'scales' was built under R version 3.2.1
+```
+
+<img src="vignettes/figures/unnamed-chunk-4-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 
 plot_gain(score, target)
 ```
 
-![](vignettes/figures/unnamed-chunk-3-2.png) 
+<img src="vignettes/figures/unnamed-chunk-4-2.png" title="" alt="" style="display: block; margin: auto;" />
+
+### Odds Table
+
+The odds table are other way to show how a score/model performs.
+
 
 ```r
-
 score <- round(predictions$score * 1000)
 
 odds_table(score, target, nclass = 4)
-#> 
-#> Attaching package: 'dplyr'
-#> 
-#> The following object is masked from 'package:stats':
-#> 
-#>     filter
-#> 
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-#> Source: local data frame [4 x 7]
-#> 
-#>    variable count percent target_count target_rate target_percent     odds
-#> 1   [1,199]  2502  0.2502         1304   0.5211831      0.1865522 1.088481
-#> 2 (199,430]  2504  0.2504         1661   0.6633387      0.2376252 1.970344
-#> 3 (430,683]  2502  0.2502         1894   0.7569944      0.2709585 3.115132
-#> 4 (683,996]  2492  0.2492         2131   0.8551364      0.3048641 5.903047
-
-odds_table(score, target, breaks = c(0, 300, 700, 1000))
-#> Source: local data frame [3 x 7]
-#> 
-#>      variable count percent target_count target_rate target_percent
-#> 1     (0,300]  3675  0.3675         2052   0.5583673      0.2935622
-#> 2   (300,700]  3978  0.3978         2926   0.7355455      0.4185980
-#> 3 (700,1e+03]  2347  0.2347         2012   0.8572646      0.2878398
-#> Variables not shown: odds (dbl)
+```
 
 
+
+variable     count   percent   target_count   target_rate   target_percent   odds
+----------  ------  --------  -------------  ------------  ---------------  -----
+[1,199]       2502     0.250           1304         0.521            0.187   1.09
+(199,430]     2504     0.250           1661         0.663            0.238   1.97
+(430,683]     2502     0.250           1894         0.757            0.271   3.12
+(683,996]     2492     0.249           2131         0.855            0.305   5.90
+
+```r
+
+odds_table(score, target, breaks = c(0, 300, 700, 999))
+```
+
+
+
+variable     count   percent   target_count   target_rate   target_percent   odds
+----------  ------  --------  -------------  ------------  ---------------  -----
+(0,300]       3675     0.368           2052         0.558            0.294   1.26
+(300,700]     3978     0.398           2926         0.736            0.419   2.78
+(700,999]     2347     0.235           2012         0.857            0.288   6.01
+
+### Confusion Matrix
+
+
+```r
 score_cat <- ifelse(score < 500, 0, 1)
 
 conf_matrix(score_cat, target)
@@ -115,18 +145,23 @@ conf_matrix(score_cat, target)
 #> 1 true 1   3476   3514
 #> 
 #> $indicators
-#>                               term term.short     value
-#> 1                         Accuracy         AC 0.5744000
-#> 2 Recall | True Positive rate (GG)     Recall 0.5027182
-#> 3              False Positive rate         FP 0.2591362
-#> 4          True Negative rate (BB)         TN 0.7408638
-#> 5              False Negative rate         FN 0.4972818
-#> 6                        Precision          P 0.8183512
+#>                               term term.short value
+#> 1                         Accuracy         AC 0.574
+#> 2 Recall | True Positive rate (GG)     Recall 0.503
+#> 3              False Positive rate         FP 0.259
+#> 4          True Negative rate (BB)         TN 0.741
+#> 5              False Negative rate         FN 0.497
+#> 6                        Precision          P 0.818
 #> 
 #> $indicators.t
-#>       AC    Recall        FP        TN        FN         P
-#> 1 0.5744 0.5027182 0.2591362 0.7408638 0.4972818 0.8183512
+#>      AC Recall    FP    TN    FN     P
+#> 1 0.574  0.503 0.259 0.741 0.497 0.818
+```
 
+### Bivariate Tables
+
+
+```r
 data("credit")
 
 str(credit)
@@ -150,44 +185,57 @@ str(credit)
 #>  $ bad                : int  0 0 1 0 0 0 1 1 0 0 ...
 
 ft(credit$marital_status)
-#> Source: local data frame [5 x 3]
-#> 
-#>   class count    percent
-#> 1     C 17097 0.34404556
-#> 2     D  2142 0.04310380
-#> 3     O  2776 0.05586187
-#> 4     S 25249 0.50808951
-#> 5     V  2430 0.04889926
+```
+
+
+
+class    count   percent
+------  ------  --------
+C        17097     0.344
+D         2142     0.043
+O         2776     0.056
+S        25249     0.508
+V         2430     0.049
+
+```r
 
 bt(credit$marital_status, credit$bad)
-#> Source: local data frame [5 x 7]
-#> 
-#>   variable count    percent target_count target_rate target_percent
-#> 1        C 17097 0.34404556         2483   0.1452302     0.25303169
-#> 2        D  2142 0.04310380          322   0.1503268     0.03281361
-#> 3        O  2776 0.05586187          660   0.2377522     0.06725772
-#> 4        S 25249 0.50808951         6059   0.2399699     0.61744624
-#> 5        V  2430 0.04889926          289   0.1189300     0.02945073
-#> Variables not shown: odds (dbl)
+```
+
+
+
+variable    count   percent   target_count   target_rate   target_percent    odds
+---------  ------  --------  -------------  ------------  ---------------  ------
+C           17097     0.344           2483         0.145            0.253   0.170
+D            2142     0.043            322         0.150            0.033   0.177
+O            2776     0.056            660         0.238            0.067   0.312
+S           25249     0.508           6059         0.240            0.617   0.316
+V            2430     0.049            289         0.119            0.029   0.135
+
+```r
 
 library("ggplot2")
 
 credit$age_bin <- cut_interval(credit$age, 4)
 
 bt(credit$age_bin, credit$bad)
-#> Source: local data frame [4 x 7]
-#> 
-#>   variable count     percent target_count target_rate target_percent
-#> 1  [15,35] 28377 0.571034733         7015  0.24720725    0.714868032
-#> 2  (35,55] 17425 0.350645953         2473  0.14192253    0.252012636
-#> 3  (55,75]  3767 0.075803920          313  0.08308999    0.031896464
-#> 4  (75,95]   125 0.002515394           12  0.09600000    0.001222868
-#> Variables not shown: odds (dbl)
+```
+
+
+
+variable    count   percent   target_count   target_rate   target_percent    odds
+---------  ------  --------  -------------  ------------  ---------------  ------
+[15,35]     28377     0.571           7015         0.247            0.715   0.328
+(35,55]     17425     0.351           2473         0.142            0.252   0.165
+(55,75]      3767     0.076            313         0.083            0.032   0.091
+(75,95]       125     0.003             12         0.096            0.001   0.106
+
+```r
 
 plot_bt(credit$age_bin, credit$bad) + ggtitle("Age")
 ```
 
-![](vignettes/figures/unnamed-chunk-3-3.png) 
+<img src="vignettes/figures/unnamed-chunk-7-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 
@@ -196,5 +244,6 @@ plot_bt(credit$flag_res_phone, credit$bad,
   ggtitle("Flag Response Phone")
 ```
 
-![](vignettes/figures/unnamed-chunk-3-4.png) 
+<img src="vignettes/figures/unnamed-chunk-7-2.png" title="" alt="" style="display: block; margin: auto;" />
+
 

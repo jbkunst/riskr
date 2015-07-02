@@ -1,5 +1,5 @@
 ---
-title: "Riskr"
+title: "riskr"
 output:
   html_document:
     keep_md: yes
@@ -8,17 +8,25 @@ output:
     toc: true
     variant: markdown_github
 ---
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- README.md is generated from README.Rmd -->
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.path = "vignettes/figures/")
+library("printr")
+options(digits = 3)
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
+                      fig.path = "vignettes/figures/", fig.width = 7,
+                      fig.align = "center", dpi = 72)
 ```
 
-# Introduction
+## Introduction
 
-The `riskr` package helps to validate performance of models via wrapper or shortcuts from ROCR functions. 
+The `riskr` package facilitate repetitive *bussines risk* [^](or other areas) tasks. In general this package helps to:
 
-# Installation
+ 1. Measure in a easy way the performance of models via wrapper or shortcuts from ROCR functions.
+ 2. Visualize relationships between variables.
+ 3. Facilitate the usual and repetitives tasks.
+
+## Installation
 
 You can install the latest development version from github with:
 
@@ -26,13 +34,13 @@ You can install the latest development version from github with:
 devtools::install_github("jbkunst/riskr")
 ```
 
-# Facts
+## Facts
 
 `riskr` assume the target variable is binary with numeric values: 0 and 1. Usually 1 means the characteristic of interest.
 
-# Functions
+## Functions
 
-## Performance Indicators
+Usually we have a data frame with a *target* variable and a *score* (or probability) like this:
 
 ```{r}
 library("riskr")
@@ -47,6 +55,13 @@ score <- predictions$score
 
 target <- predictions$target
 
+```
+
+### Performance Indicators
+
+The main statistics or indicators are KS, AUCROC so:
+
+```{r}
 ks(score, target)
 
 aucroc(score, target)
@@ -58,18 +73,31 @@ score_indicators(score, target)
 plot_roc(score, target)
 
 plot_gain(score, target)
+```
 
+### Odds Table
+
+The odds table are other way to show how a score/model performs.
+
+```{r}
 score <- round(predictions$score * 1000)
 
 odds_table(score, target, nclass = 4)
 
-odds_table(score, target, breaks = c(0, 300, 700, 1000))
+odds_table(score, target, breaks = c(0, 300, 700, 999))
+```
 
+### Confusion Matrix
 
+```{r}
 score_cat <- ifelse(score < 500, 0, 1)
 
 conf_matrix(score_cat, target)
+```
 
+### Bivariate Tables
+
+```{r}
 data("credit")
 
 str(credit)
@@ -89,5 +117,7 @@ plot_bt(credit$age_bin, credit$bad) + ggtitle("Age")
 plot_bt(credit$flag_res_phone, credit$bad,
         count.labels = TRUE, target.labels = TRUE) +
   ggtitle("Flag Response Phone")
+
 ```
+
 

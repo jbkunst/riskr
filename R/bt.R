@@ -18,7 +18,7 @@
 #' @export
 bt <- function(variable, target){
 
-  library("dplyr")
+  suppressPackageStartupMessages(library("dplyr"))
   
   df <- data_frame(variable = as.character(addNA(variable)), target) %>% 
     group_by(variable) %>% 
