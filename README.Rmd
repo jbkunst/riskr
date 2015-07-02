@@ -19,6 +19,19 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
 
 ## Introduction
 
+First Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell
+Content Cell  | Content Cell
+
+asda
+
+
+ score   target
+------  -------
+ 0.202        1
+ 0.806        1
+
 The `riskr` package facilitate repetitive *bussines risk* [^](or other areas) tasks. In general this package helps to:
 
  1. Measure in a easy way the performance of models via wrapper or shortcuts from ROCR functions.
