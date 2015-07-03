@@ -13,6 +13,11 @@
 #' @export
 plot_roc <- function(score, target){
   
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(score)
+  )
+  
   library("ROCR")
   library("ggplot2")
   library("scales")
@@ -24,7 +29,7 @@ plot_roc <- function(score, target){
   
   p <- ggplot(df, aes(x, y)) +
     geom_line(size = 1.2, colour = "darkred") +
-    geom_path(data= data.frame(x = c(0, 1), y = c(0, 1)), colour = "gray", size = 0.7) +
+    geom_path(data = data.frame(x = c(0, 1), y = c(0, 1)), colour = "gray", size = 0.7) +
     scale_x_continuous("False Positive Rate (1 - Specificity)",
                        label = percent_format(),
                        limits = c(0, 1)) +
@@ -49,6 +54,11 @@ plot_roc <- function(score, target){
 #' plot_gain(score, target)
 #' @export
 plot_gain <- function(score, target){
+  
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(score)
+  )
   
   library("ggplot2")
   
@@ -83,8 +93,13 @@ plot_gain <- function(score, target){
 #' @export
 plot_ks <- function(score, target){
   
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(score)
+  )
+  
+  suppressPackageStartupMessages(library("dplyr"))
   library("ggplot2")
-  library("dplyr")
   library("scales")
   
   n.length <- 50

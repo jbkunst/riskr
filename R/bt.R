@@ -17,6 +17,11 @@
 #'  
 #' @export
 bt <- function(variable, target){
+  
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(variable)
+  )
 
   suppressPackageStartupMessages(library("dplyr"))
   

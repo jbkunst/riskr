@@ -19,7 +19,7 @@ gb_sm <- function(data, ...){
   data %>%
     tbl_df %>%
     group_by(...) %>%
-    summarise(count = n(), percent = count/nrow(.)) %>%
+    dplyr::summarise(count = n(), percent = count/nrow(.)) %>%
     ungroup()
 
 }

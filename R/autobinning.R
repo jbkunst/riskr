@@ -1,20 +1,26 @@
 #' @export
-supervised_clust <- function(target, variable){
+autobinning <- function(target, variable){
   
-  library(party)
-  library(plyr)
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(variable)
+    )
+  
+  library("partykit")
+  library("plyr")
+  library("dplyr")
   
   if(!is.numeric(variable)){
     variable <- factor(variable)
   }
   
-  df <- data.frame(target = factor(target), variable)
+  df <- data_frame(target = factor(target), variable)
   
-  tree <- partykit::ctree(target ~ variable, data = df)
+  tree <- ctree(target ~ variable, data = df)
   
   plot(tree)
   
-  df$variable_clus <- predict(tree, newdata = df, type ="node")
+  df$variable_clus <- predict(tree, newdata = df, type = "node")
   df$variable_clus <- factor(df$variable_clus)
   
   levels(df$variable_clus) <- paste("CAT", seq(length(levels(df$variable_clus))), sep = "_")

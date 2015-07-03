@@ -12,18 +12,25 @@ output:
 ```{r, echo = FALSE}
 library("printr")
 options(digits = 3, knitr.table.format = "markdown")
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
+knitr::opts_chunk$set(collapse = TRUE, comment = ">", warning = FALSE,
                       fig.path = "vignettes/figures/", fig.width = 7,
                       fig.align = "center", dpi = 72)
 ```
 
 ## Introduction
 
-The `riskr` package facilitate repetitive *bussines risk* (or other areas) tasks. In general this package helps to:
+The `riskr` package facilitate *credit scoring* tasks such as measure the scores/models performance and make easy the scoring modelling process.
 
- 1. Measure in a easy way the performance of models via wrapper or shortcuts from ROCR functions.
+There are function to:
+
+ 1. Measure in a simple way the performance of models via wrapper or shortcuts from ROCR functions.
  2. Visualize relationships between variables.
- 3. Facilitate the usual and repetitives tasks.
+ 4. Compute usual values in the credit scoring PSI, WOE, IV, KS, AUCROC, among others.
+ 5. Make easier the scoring modelling process. 
+
+## Assumption
+
+`riskr` assume the target variable is *binary* with numeric values: 0 and 1. Usually 1 means the characteristic of interest.
 
 ## Installation
 
@@ -32,10 +39,6 @@ You can install the latest development version from github with:
 ```{r, eval=FALSE}
 devtools::install_github("jbkunst/riskr")
 ```
-
-## Facts
-
-`riskr` assume the target variable is binary with numeric values: 0 and 1. Usually 1 means the characteristic of interest.
 
 ## Functions
 
@@ -53,7 +56,6 @@ str(predictions)
 score <- predictions$score
 
 target <- predictions$target
-
 ```
 
 ### Performance Indicators
@@ -68,31 +70,54 @@ aucroc(score, target)
 gini(score, target)
 
 score_indicators(score, target)
+```
 
+There are some functions to plot the score/model performance (based on ggplot package).
+
+```{r}
 plot_roc(score, target)
 
 plot_gain(score, target)
+
+plot_ks(1000 * score, target) +
+  ggthemes::theme_hc() +
+  ggtitle(sprintf("The KS statistics is %.0f%%", 100 * ks(score, target)))
 ```
 
-### Odds Table
+### Odds Tables
 
-The odds table are other way to show how a score/model performs.
+The odds tables are other way to show how a score/model performs.
 
 ```{r}
 score <- round(predictions$score * 1000)
 
-odds_table(score, target, nclass = 4)
+odds_table(score, target, nclass = 5) # default is (nclass =) 10 groups of equal size
 
 odds_table(score, target, breaks = c(0, 300, 700, 999))
 ```
 
 ### Confusion Matrix
 
+The `conf_matrix` function return a list with the next elements:
+
 ```{r}
 score_cat <- ifelse(score < 500, 0, 1)
 
-conf_matrix(score_cat, target)
+cm <- conf_matrix(score_cat, target)
 ```
+
+- The confusion matrix:
+```{r}
+cm$confusion.matrix
+```
+
+- The confusion matrix statistics
+```{r}
+cm$indicators
+
+cm$indicators.t
+```
+
 
 ### Bivariate Tables
 
@@ -119,4 +144,7 @@ plot_bt(credit$flag_res_phone, credit$bad,
 
 ```
 
+## Related work
 
+1. [woe](github.com/tomasgreif/woe) package by [tomasgreif](github.com/tomasgreif)
+2. [smbinning](http://cran.r-project.org/web/packages/smbinning) package by [Herman Jopia](github.com/hjopia). [Github repository](https://github.com/cran/smbinning).

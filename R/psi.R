@@ -13,6 +13,10 @@
 #' @export
 psi <- function(actual, new){
   
+  stopifnot(
+    setequal(actual, new)
+  )
+  
   psi_tbl <- psi_table(actual, new)
   
   value <- sum(psi_tbl$index)
@@ -40,6 +44,10 @@ psi <- function(actual, new){
 #' psi_table(actual, new)
 #' @export
 psi_table <- function(actual, new){
+  
+  stopifnot(
+    setequal(actual, new)
+  )
   
   library("dplyr")
   

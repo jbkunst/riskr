@@ -7,6 +7,9 @@
 #' @references http://www2.cs.uregina.ca/~dbd/cs831/notes/confusion_matrix/confusion_matrix.html
 conf_matrix <- function(pred_class, target) {
   
+  stopifnot(setequal(target, c(0, 1)),
+            setequal(pred_class, c(0, 1)))
+  
   t <- table(true = target, prediction = pred_class)
   #                     Prediction
   #                 NegPred   PosPred

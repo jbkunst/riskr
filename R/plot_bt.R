@@ -30,21 +30,26 @@
 #' plot_bt(variable, target, count.labels = TRUE, target.labels = TRUE)
 #' @export
 plot_bt <- function(variable,
-                           target,
-                           count.labels = FALSE,
-                           target.labels = FALSE,
-                           arrange.plot.by = NULL, # options: variable, target
-                           coord.flip = FALSE,
-                           add.legend = TRUE,
-                           legend.color = "gray80",
-                           target.color = "darkblue",
-                           bar.color = "gray80",
-                           bar.width = .6,
-                           rate.size = 1,
-                           size.text = 4,
-                           size.text2 = 10,
-                           remove.axis.y = FALSE
+                    target,
+                    count.labels = FALSE,
+                    target.labels = FALSE,
+                    arrange.plot.by = NULL, # options: variable, target
+                    coord.flip = FALSE,
+                    add.legend = TRUE,
+                    legend.color = "gray80",
+                    target.color = "darkblue",
+                    bar.color = "gray80",
+                    bar.width = .6,
+                    rate.size = 1,
+                    size.text = 4,
+                    size.text2 = 10,
+                    remove.axis.y = FALSE
 ){
+  
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(variable)
+  )
   
   require("ggplot2")
   require("dplyr")

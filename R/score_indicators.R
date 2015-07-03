@@ -13,6 +13,12 @@
 #' @export
 ks <- function(score, target){
   
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(score)
+  )
+  
+  
   suppressMessages(library("ROCR"))
   
   pred <- prediction(score, target)
@@ -63,6 +69,12 @@ ks2 <- function(score1, score2){
 #' @export
 aucroc <- function(score, target){
   
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(score)
+  )
+  
+  
   suppressMessages(library("ROCR"))
   
   pred <- prediction(score, target)
@@ -109,6 +121,11 @@ gini <- function(score, target){
 #' @export
 gain <- function(score, target, percents = c(0.10, 0.20, 0.30, 0.40, 0.50)){
   
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(score)
+  )
+  
   library("scales")
   
   g <- ecdf(score[target == 0])(quantile(score, percents))
@@ -131,7 +148,7 @@ gain <- function(score, target, percents = c(0.10, 0.20, 0.30, 0.40, 0.50)){
 #' 
 #' score_indicators(score, target)
 #' @export
-score_indicators <- function(score, target){ 
+score_indicators <- function(score, target){
   
   res <- c(count = length(score),
            target_count = length(score[target == 1]),

@@ -19,6 +19,11 @@
 #' @export
 odds_table <- function(score, target, nclass = 10, quantile = TRUE, breaks = NULL){
   
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(score)
+  )
+  
   library("ggplot2")
 
   if (missing(breaks) & quantile) {
