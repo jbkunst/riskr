@@ -1,4 +1,4 @@
-#' Standarize a data frame
+#' Make a data frame looks a bit pretty
 #' @description This function standarize a data frame converting factors to characters, setting to lowercase the column names.
 #' @param df A data frame
 #' @return The same df with \code{tbl_df} class, lower names.
@@ -10,12 +10,14 @@
 #' df[c(2, 5),1] <- NA
 #' 
 #' str(df)
-#' str(sd_df(df))
+#' str(pretty_df(df))
 #' @export
-sd_df <- function(df, to.lower.df.names = TRUE, factor.to.string = TRUE,
-                  fill.num.na.with = 0, fill.chr.na.with = ""){
-  
-  require("plyr")
+pretty_df <- function(df,
+                      to.lower.df.names = TRUE,
+                      factor.to.string = TRUE,
+                      fill.num.na.with = 0,
+                      fill.chr.na.with = "",
+                      trim.chr.vars = TRUE){
   
   df <- dplyr::tbl_df(df)
   
@@ -38,6 +40,12 @@ sd_df <- function(df, to.lower.df.names = TRUE, factor.to.string = TRUE,
   if (!is.null(fill.chr.na.with)) {
     df[,laply(df, is.character)] <- lapply(df[,plyr::laply(df, is.character)] , function(x) {
       ifelse(is.na(x), fill.chr.na.with, x)
+    })
+  }
+  
+  if (trim.chr.vars) {
+    df[,laply(df, is.character)] <- lapply(df[,plyr::laply(df, is.character)] , function(x) {
+      gsub("^\\s+|\\s+$", "", x)
     })
   }
   
