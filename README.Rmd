@@ -138,10 +138,15 @@ bt(credit$age_bin, credit$bad)
 
 plot_bt(credit$age_bin, credit$bad) + ggtitle("Age")
 
+
 plot_bt(credit$flag_res_phone, credit$bad,
         count.labels = TRUE, target.labels = TRUE) +
   ggtitle("Flag Response Phone")
 
+```
+
+```{r fig.width = 10, fig.height= 8}
+plot_ba(credit$age_bin, credit$bad)
 ```
 
 ## Related work
