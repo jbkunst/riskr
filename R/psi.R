@@ -1,3 +1,4 @@
+new_percent <- act_percent <- coefficient <- diff_percent <- woe <- NULL
 #' PSI
 #' @description Calculation of  Population Stability Index (PSI)
 #' @param actual A vector of original distribution

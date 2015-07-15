@@ -1,3 +1,4 @@
+target_rate <- count_format <- target_rate_format <- NULL
 #' Plot Bivariableiate Analysis
 #'
 #' @param variable A numeric vector containing scores or probabilities
@@ -57,7 +58,7 @@ plot_bt <- function(variable,
 
   #### DATA ####
   daux <- bt(addNA(variable), target) %>% 
-    mutate(id = seq(nrow(.)),
+    mutate(id = seq(length(variable)),
            count_format = prettyNum(count, big.mark = ".", decimal.mark = ", "),
            target_rate_format = percent(target_rate))
   

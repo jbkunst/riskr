@@ -19,6 +19,9 @@ pretty_df <- function(df,
                       fill.chr.na.with = "",
                       trim.chr.vars = TRUE){
   
+  require("plyr")
+  require("dplyr")
+  
   df <- dplyr::tbl_df(df)
   
   if (to.lower.df.names) {

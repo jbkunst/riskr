@@ -9,8 +9,9 @@ Maintainer: Joshua Kunst <jbkunst@gmail.com>
 License: MIT
 URL: https://github.com/jbkunst/riskr
 BugReports: https://github.com/jbkunst/riskr/issues
-Imports: 
+Imports:
     dplyr,
+    magrittr,
     ggplot2,
     plyr,
     ROCR,

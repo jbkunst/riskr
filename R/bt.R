@@ -1,3 +1,4 @@
+target_count <- . <- NULL
 #' Bivariate Table
 #' @description This function calculate a bivariate table.
 #' @param variable A variable 
@@ -28,13 +29,13 @@ bt <- function(variable, target){
   df <- data_frame(variable = as.character(addNA(variable)), target) %>% 
     group_by(variable) %>% 
     summarise(count = n(),
-              percent = n()/nrow(.),
+              percent = n()/length(target),
               target_count = sum(target),
               target_rate = target_count/count,
               target_percent = target_count,
               odds = target_count/(count - target_count)) %>% 
     ungroup() %>% 
-    mutate(target_percent = target_count/sum(.$target_count))
+    mutate(target_percent = target_count/sum(.[["target_count"]]))
   
   if (is.factor(variable)) {
     
