@@ -146,9 +146,9 @@ gain <- function(score, target, percents = c(0.10, 0.20, 0.30, 0.40, 0.50)){
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' score_indicators(score, target)
+#' perf(score, target)
 #' @export
-score_indicators <- function(score, target){
+perf <- function(score, target){
   
   res <- c(count = length(score),
            target_count = length(score[target == 1]),
@@ -160,6 +160,7 @@ score_indicators <- function(score, target){
   res <- data.frame(t(res))
   
   return(res)
+
 }
 
 

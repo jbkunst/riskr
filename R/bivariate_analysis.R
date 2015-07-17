@@ -25,6 +25,7 @@ bt <- function(variable, target){
     length(target) == length(variable)
   )
 
+  suppressPackageStartupMessages(library("plyr"))
   suppressPackageStartupMessages(library("dplyr"))
   
   tot_target <- sum(target)
@@ -32,16 +33,16 @@ bt <- function(variable, target){
   
   df <- data_frame(variable = as.character(addNA(variable)), target) %>% 
     group_by(variable) %>% 
-    summarise(count = n(),
-              percent = count/nrow(.),
-              target_count = sum(target),
-              target_rate = target_count/count,
-              target_percent = target_count/tot_target,
-              non_target_count = (count - target_count),
-              non_target_percent = (count - target_count)/tot_non_target,
-              odds = target_count/(count - target_count),
-              woe = log(target_percent/non_target_percent),
-              iv = (target_percent - non_target_percent) * woe) %>% 
+    dplyr::summarise(count = length(target),
+                     percent = count/nrow(.),
+                     target_count = sum(target),
+                     target_rate = target_count/count,
+                     target_percent = target_count/tot_target,
+                     non_target_count = (count - target_count),
+                     non_target_percent = (count - target_count)/tot_non_target,
+                     odds = target_count/(count - target_count),
+                     woe = log(target_percent/non_target_percent),
+                     iv = (target_percent - non_target_percent) * woe) %>% 
     ungroup()
 
   if (is.factor(variable)) {
@@ -82,28 +83,30 @@ plot_ba <- function(variable, target){
               non_target_count = sum(non_target_count)) %>% 
     gather(var, total)
   
-  df2 <- left_join(df2, df3, by = "var")
+  df2 <- left_join(df2 %>% mutate(var = as.character(var)),
+                   df3 %>% mutate(var = as.character(var)),
+                   by = "var")
   
   df2 <- df2 %>% 
-    mutate(value_fmt = "",
-           value_fmt = ifelse(var %in% c("count", "target_count", "non_target_count"),
-                              sprintf("%s (%s)",
-                                      prettyNum(value, big.mark = ","),
-                                      paste0(round(100*value/total, 2), "%")),
-                              value_fmt),
-           value_fmt = ifelse(var %in% c("target_rate"),
-                              paste0(round(100*value, 2), "%") , value_fmt),
-           value_fmt = ifelse(var %in% c("odds", "woe"),
-                              round(value, 2) , value_fmt))
+    dplyr::mutate(value_fmt = "",
+                  value_fmt = ifelse(var %in% c("count", "target_count", "non_target_count"),
+                                     sprintf("%s (%s)",
+                                             prettyNum(value, big.mark = ","),
+                                             paste0(round(100*value/total, 2), "%")),
+                                     value_fmt),
+                  value_fmt = ifelse(var %in% c("target_rate"),
+                                     paste0(round(100*value, 2), "%") , value_fmt),
+                  value_fmt = ifelse(var %in% c("odds", "woe"),
+                                     round(value, 2) , value_fmt))
   
   df2 <- df2 %>% 
     mutate(var = factor(var, c("count", "target_count", "non_target_count",
                                "target_rate", "odds", "woe")))
   
   ggplot(df2, aes(variable, value, group = 1)) +
-    geom_bar(data = subset(df2, var == "count"), stat = "identity", fill = "gray80") +
-    geom_bar(data = subset(df2, var == "target_count"), stat = "identity", fill = "gray80") +
-    geom_bar(data = subset(df2, var == "non_target_count"), stat = "identity", fill = "gray80") +
+    geom_bar(data = subset(df2, var == "count"), stat = "identity") +
+    geom_bar(data = subset(df2, var == "target_count"), stat = "identity") +
+    geom_bar(data = subset(df2, var == "non_target_count"), stat = "identity") +
     geom_line(data = subset(df2, var == "target_rate")) +
     geom_point(data = subset(df2, var == "target_rate"), color = "darkblue", size = 2) +
     geom_line(data = subset(df2, var == "odds"), color = "darkblue") +
@@ -112,7 +115,8 @@ plot_ba <- function(variable, target){
     geom_point(data = subset(df2, var == "woe"), color = "darkblue", size = 2) +
     geom_text(aes(label = value_fmt), size = 4, vjust = -0.5) +
     facet_wrap(~var, scales = "free_y") +
-    theme_minimal()
+    xlab(NULL) + ylab(NULL) + 
+    theme(legend.position = "bottom")
   
 }
 
@@ -126,10 +130,6 @@ plot_ba <- function(variable, target){
 #' @param add.legend A par
 #' @param legend.color A par
 #' @param target.color A par
-#' @param bar.width A par
-#' @param rate.size A par
-#' @param size.text A par
-#' @param size.text2 A par
 #' @param remove.axis.y A par
 #' @return A ggplot2 object
 #' @examples
@@ -152,13 +152,8 @@ plot_bt <- function(variable,
                     arrange.plot.by = NULL, # options: variable, target
                     coord.flip = FALSE,
                     add.legend = TRUE,
-                    legend.color = "gray80",
-                    target.color = "darkblue",
-                    bar.color = "gray80",
-                    bar.width = .6,
-                    rate.size = 1,
-                    size.text = 4,
-                    size.text2 = 10,
+                    target.color = "navy",
+                    bar.color = "darkgray",
                     remove.axis.y = FALSE
 ){
   
@@ -204,16 +199,16 @@ plot_bt <- function(variable,
     
     p <- p + 
       geom_bar(aes(variable, percent, fill = "percent_category"),
-               stat = "identity", width = bar.width, colour = bar.color) +
-      geom_line(aes(id, target_rate, colour = "target_rate"), size = rate.size) +
+               stat = "identity", colour = bar.color) +
+      geom_line(aes(id, target_rate, colour = "target_rate")) +
       geom_point(aes(id, target_rate), colour = target.color) +
       scale_fill_manual("", values = cols) +
       scale_colour_manual(name = "", values = cols)
     
   } else {
     p <- p + 
-      geom_bar(aes(variable, percent), stat = "identity", width = bar.width, fill = bar.color) +
-      geom_line(aes(id, target_rate), colour = target.color, size = rate.size) +
+      geom_bar(aes(variable, percent), stat = "identity", fill = bar.color) +
+      geom_line(aes(id, target_rate), colour = target.color) +
       geom_point(aes(id, target_rate), colour = target.color) 
     
   }
@@ -227,10 +222,10 @@ plot_bt <- function(variable,
   if (count.labels) {
     if (coord.flip) {
       p <- p + geom_text(aes(variable, percent, label = count_format),
-                         size = size.text, hjust = 1.2, colour = "white")
+                         hjust = 1.2, colour = "white")
     } else {
       p <- p + geom_text(aes(variable, percent, label = count_format),
-                         size = size.text, vjust = 1.5, colour = "white")
+                         vjust = 1.5, colour = "white")
     }
   }
   
@@ -238,36 +233,20 @@ plot_bt <- function(variable,
   if (target.labels) {
     if (coord.flip) {
       p <- p + geom_text(aes(variable, target_rate, label = target_rate_format),
-                         size = size.text, hjust = -1, colour = target.color)
+                         hjust = -1, colour = target.color)
     } else {
       p <- p + geom_text(aes(variable, target_rate, label = target_rate_format),
-                         size = size.text, vjust = -.5, colour = target.color)
+                         vjust = -.5, colour = target.color)
     }
   }
   
   #### THEME #### 
   p <- p + xlab(NULL) + ylab(NULL)
-  
-  p <- p + theme(rect = element_rect(fill = "#FFFFFF", linetype = 0, colour = NA),
-                 title = element_text(hjust = 0.5),
-                 axis.title.x = element_text(hjust = 0.5), 
-                 axis.title.y = element_text(hjust = 0.5),
-                 panel.border = element_blank(), 
-                 panel.background = element_blank(),
-                 legend.key = element_rect(fill = "#FFFFFF00"))
-  
+
   if (!coord.flip) {
-    p <- p + theme(panel.grid.major.y = element_line(color = "gray"),
-                   panel.grid.minor.y = element_blank(),
-                   panel.grid.major.x = element_blank(), 
-                   panel.grid.minor.x = element_blank(),
-                   legend.position = "bottom")
+    p <- p + theme(legend.position = "bottom")
   } else {
-    p <- p + theme(panel.grid.major.x = element_line(color = "gray"),
-                   panel.grid.minor.x = element_blank(),
-                   panel.grid.major.y = element_blank(), 
-                   panel.grid.minor.y = element_blank(),
-                   legend.position = "right")
+    p <- p + theme(legend.position = "right")
   }
   
   p

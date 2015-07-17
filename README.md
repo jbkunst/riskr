@@ -78,7 +78,7 @@ aucroc(score, target)
 gini(score, target)
 > [1] 0.353
 
-score_indicators(score, target)
+perf(score, target)
 ```
 
 
@@ -106,11 +106,17 @@ plot_gain(score, target)
 ```r
 
 plot_ks(1000 * score, target) +
-  ggthemes::theme_hc() +
   ggtitle(sprintf("The KS statistics is %.0f%%", 100 * ks(score, target)))
 ```
 
 <img src="vignettes/figures/unnamed-chunk-5-3.png" title="" alt="" style="display: block; margin: auto;" />
+
+
+```r
+plot_perf(score, target)
+```
+
+<img src="vignettes/figures/unnamed-chunk-6-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 ### Odds Tables
 
@@ -257,26 +263,25 @@ bt(credit$marital_status, credit$bad)
 
 library("ggplot2")
 
-credit$age_bin <- cut_interval(credit$age, 4)
+credit$age_bin <- cut_interval(credit$age, 3)
 
 bt(credit$age_bin, credit$bad)
 ```
 
 
 
-|variable | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent|  odds|    woe|    iv|
-|:--------|-----:|-------:|------------:|-----------:|--------------:|----------------:|------------------:|-----:|------:|-----:|
-|[15,35]  | 28377|   0.571|         7015|       0.247|          0.715|            21362|              0.536| 0.328|  0.289| 0.052|
-|(35,55]  | 17425|   0.351|         2473|       0.142|          0.252|            14952|              0.375| 0.165| -0.397| 0.049|
-|(55,75]  |  3767|   0.076|          313|       0.083|          0.032|             3454|              0.087| 0.091| -0.999| 0.055|
-|(75,95]  |   125|   0.003|           12|       0.096|          0.001|              113|              0.003| 0.106| -0.840| 0.001|
+|variable    | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent|  odds|    woe|    iv|
+|:-----------|-----:|-------:|------------:|-----------:|--------------:|----------------:|------------------:|-----:|------:|-----:|
+|[15,41.7]   | 35654|   0.717|         8174|       0.229|          0.833|            27480|              0.689| 0.297|  0.190| 0.027|
+|(41.7,68.3] | 13313|   0.268|         1585|       0.119|          0.162|            11728|              0.294| 0.135| -0.599| 0.079|
+|(68.3,95]   |   727|   0.015|           54|       0.074|          0.006|              673|              0.017| 0.080| -1.121| 0.013|
 
 ```r
 
 plot_bt(credit$age_bin, credit$bad) + ggtitle("Age")
 ```
 
-<img src="vignettes/figures/unnamed-chunk-10-1.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="vignettes/figures/unnamed-chunk-11-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 
@@ -286,14 +291,22 @@ plot_bt(credit$flag_res_phone, credit$bad,
   ggtitle("Flag Response Phone")
 ```
 
-<img src="vignettes/figures/unnamed-chunk-10-2.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="vignettes/figures/unnamed-chunk-11-2.png" title="" alt="" style="display: block; margin: auto;" />
 
 
 ```r
 plot_ba(credit$age_bin, credit$bad)
 ```
 
-<img src="vignettes/figures/unnamed-chunk-11-1.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="vignettes/figures/unnamed-chunk-12-1.png" title="" alt="" style="display: block; margin: auto;" />
+
+```r
+
+score_cat_2 <- cut(score, breaks = c(0, 250, 500, 750, 999))
+plot_ba(score_cat_2, target)
+```
+
+<img src="vignettes/figures/unnamed-chunk-12-2.png" title="" alt="" style="display: block; margin: auto;" />
 
 ## Related work
 

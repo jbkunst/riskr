@@ -104,25 +104,149 @@ plot_ks <- function(score, target){
   
   n.length <- 50
   
-  ecd.0 <- ecdf(score[target == 0])
-  ecd.1 <- ecdf(score[target == 1])
+  ecd_0 <- ecdf(score[target == 0])
+  ecd_1 <- ecdf(score[target == 1])
   
   cuts <- seq(min(score), max(score), length = n.length)
   
   df <- data_frame(score = rep(cuts, 2),
                    class = rep(c("Target 0", "Target 1"), each = 50)) %>% 
-    mutate(ecdf = ifelse(class == "Target 0", ecd.0(score), ecd.1(score)))
+    mutate(ecdf = ifelse(class == "Target 0", ecd_0(score), ecd_1(score)))
 
-  cut <- cuts[abs(ecd.1(cuts) - ecd.0(cuts)) == max(abs(ecd.1(cuts) - ecd.0(cuts)))]  
+  cut <- cuts[abs(ecd_1(cuts) - ecd_0(cuts)) == max(abs(ecd_1(cuts) - ecd_0(cuts)))]  
   
   p <- ggplot(df) +
     geom_line(aes(score, ecdf, colour = class), size = 1.2) + 
     scale_colour_manual(values = c("darkred", "darkblue")) + 
     scale_y_continuous("ecdf", label = percent_format(), limits = c(0, 1)) + 
-    xlab("score") 
+    xlab("score") +
+    theme(legend.position = "bottom")
   
-#   p <- p + geom_segment(aes(x = cut, xend = cut, y = ecd.1(cut), yend = ecd.0(cut)),
-#                         colour = grey(.6), size = 1.0)
-    
   p
+}
+
+#' Plot to compare distrbutions
+#'
+#' @description Return a ggplot object. 
+#' @param score A numeric vector containing scores or probabilities
+#' @param target A numeric binary vector (0, 1)
+#' @return The plot
+#' @examples
+#' data(predictions)
+#' 
+#' score <- predictions$score
+#' target <- predictions$target
+#' 
+#' plot_dists(score, target)
+#' @export
+plot_dists <- function(score, target){
+  
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(score)
+  )
+  
+  suppressPackageStartupMessages(library("dplyr"))
+  library("ggplot2")
+  library("scales")
+  
+  df <- data_frame(score,
+                   target,
+                   target_label = ifelse(target == 1, "target", "non taget"))
+  
+  p <- ggplot(df) +
+    geom_density(aes(score, fill = target_label), alpha = 0.5) + 
+    scale_fill_manual(values = c("darkred", "darkblue")) + 
+    theme(legend.position = "bottom")
+  
+  p
+}
+
+#' Plot Performance
+#'
+#' @description Return a ggplot object. 
+#' @param score A numeric vector containing scores or probabilities
+#' @param target A numeric binary vector (0, 1)
+#' @return The plot
+#' @examples
+#' data(predictions)
+#' 
+#' score <- 1000 * predictions$score
+#' target <- predictions$target
+#' 
+#' plot_perf(score, target)
+#' @export
+plot_perf <- function(score, target){
+  
+  library("ROCR")
+  library("plyr")
+  suppressPackageStartupMessages(library("dplyr"))
+  library("ggplot2")
+  library("scales")
+  
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(score)
+  )
+  
+  # roc data ------
+  pred <- prediction(score, target)
+  perf <- performance(pred, "tpr", "fpr")
+  df1 <- data_frame(x = unlist(perf@"x.values"),
+                    y = unlist(perf@"y.values"),
+                    plot = "roc curve")
+  
+  # gain data
+  df2 <- data_frame(x = seq(0, 1, length = 100),
+                    y = gain(score, target , seq(0, 1, length = 100)),
+                    plot = "gain")
+  
+  # ks data
+  n.length <- 50
+  ecd_0 <- ecdf(score[target == 0])
+  ecd_1 <- ecdf(score[target == 1])
+  cuts <- seq(min(score), max(score), length = n.length)
+  
+  df3 <- data_frame(x = rep(cuts, 2),
+                    target = rep(c(0, 1), each = 50),
+                    target_label = ifelse(target == 1, "target", "non taget"),
+                    y = ifelse(target == 0, ecd_0(x), ecd_1(x)),
+                    plot = "cumulative")
+
+  
+  # dist data
+  # http://stats.stackexchange.com/questions/78711/how-to-find-estimate-probability-density-function-from-density-function-in-r
+  ds_0 <- approxfun(density(score[target == 0]))
+  ds_1 <- approxfun(density(score[target == 1]))
+  df4 <- data_frame(x = score,
+                    target,
+                    target_label = ifelse(target == 1, "target", "non taget"),
+                    y = ifelse(target == 0, ds_0(x), ds_1(x)),
+                    plot = "distributions")
+  
+  df <- rbind.fill(df1, df2, df3, df4) %>% tbl_df()
+  
+  ggplot(df, aes(x, y, group = 1)) + 
+    # roc
+    geom_line(data = subset(df, plot == "roc curve"), size = 1.2) +
+    geom_segment(data = subset(df, plot == "roc curve")[1,],
+                 aes(x = 0,y = 0,xend = 1,yend = 1), alpha = 0.5) +
+    # gain
+    geom_line(data = subset(df, plot == "gain"), size = 1.2) +
+    geom_segment(data = subset(df, plot == "gain")[1, ],
+                 aes(x = 0,y = 0,xend = 1,yend = 1), alpha = 0.5) +
+    # ecdf
+    geom_line(data = subset(df, plot == "cumulative"),
+              aes(color = target_label, group = target_label), size = 1.2) +
+    # densities
+    geom_line(data = subset(df, plot == "distributions"),
+              aes(color = target_label, group = target_label)) +
+    geom_area(data = subset(df, plot == "distributions"),
+              aes(color = target_label, group = target_label, fill = target_label), alpha = 0.25) +
+    # style
+    scale_color_manual(values = c("darkred", "darkblue")) +
+    scale_fill_manual(values = c("darkred", "darkblue")) +
+    facet_wrap(~plot, scales = "free") +
+    theme(legend.position = "bottom")
+  
 }

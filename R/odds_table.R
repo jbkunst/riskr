@@ -23,7 +23,8 @@ odds_table <- function(score, target, nclass = 10, quantile = TRUE, breaks = NUL
     setequal(target, c(0, 1)),
     length(target) == length(score)
   )
-  
+  library("plyr")
+  library("dplyr")
   library("ggplot2")
 
   if (missing(breaks) & quantile) {

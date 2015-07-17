@@ -1,4 +1,5 @@
-# This is so dirty! :/
+# I fell so dirty with this :/
+# I want to be on CRAN :D
 
 # ggplot2 ----
 # dput(ls("package:ggplot2"))

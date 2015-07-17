@@ -6,9 +6,8 @@
 \usage{
 plot_bt(variable, target, count.labels = FALSE, target.labels = FALSE,
   arrange.plot.by = NULL, coord.flip = FALSE, add.legend = TRUE,
-  legend.color = "gray80", target.color = "darkblue",
-  bar.color = "gray80", bar.width = 0.6, rate.size = 1, size.text = 4,
-  size.text2 = 10, remove.axis.y = FALSE)
+  bar.width = 0.6, rate.size = 1, size.text = 4, size.text2 = 10,
+  remove.axis.y = FALSE)
 }
 \arguments{
 \item{variable}{A numeric vector containing scores or probabilities}
@@ -23,10 +22,6 @@ plot_bt(variable, target, count.labels = FALSE, target.labels = FALSE,
 
 \item{add.legend}{A par}
 
-\item{legend.color}{A par}
-
-\item{target.color}{A par}
-
 \item{bar.width}{A par}
 
 \item{rate.size}{A par}
@@ -36,6 +31,10 @@ plot_bt(variable, target, count.labels = FALSE, target.labels = FALSE,
 \item{size.text2}{A par}
 
 \item{remove.axis.y}{A par}
+
+\item{legend.color}{A par}
+
+\item{target.color}{A par}
 }
 \value{
 A ggplot2 object

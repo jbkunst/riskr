@@ -9,4 +9,12 @@ plot_ba(variable, target)
 \description{
 This function calculate a bivariate table.
 }
+\examples{
+data("credit")
+
+variable <- credit$sex
+target <- credit$bad
+
+plot_ba(variable, target)
+}
 

@@ -69,7 +69,7 @@ aucroc(score, target)
 
 gini(score, target)
 
-score_indicators(score, target)
+perf(score, target)
 ```
 
 There are some functions to plot the score/model performance (based on ggplot package).
@@ -80,8 +80,11 @@ plot_roc(score, target)
 plot_gain(score, target)
 
 plot_ks(1000 * score, target) +
-  ggthemes::theme_hc() +
   ggtitle(sprintf("The KS statistics is %.0f%%", 100 * ks(score, target)))
+```
+
+```{r fig.width = 13, fig.height= 8, warning=FALSE, message=FALSE}
+plot_perf(score, target)
 ```
 
 ### Odds Tables
@@ -132,7 +135,7 @@ bt(credit$marital_status, credit$bad)
 
 library("ggplot2")
 
-credit$age_bin <- cut_interval(credit$age, 4)
+credit$age_bin <- cut_interval(credit$age, 3)
 
 bt(credit$age_bin, credit$bad)
 
@@ -145,8 +148,11 @@ plot_bt(credit$flag_res_phone, credit$bad,
 
 ```
 
-```{r fig.width = 10, fig.height= 8}
+```{r fig.width = 13, fig.height= 8}
 plot_ba(credit$age_bin, credit$bad)
+
+score_cat_2 <- cut(score, breaks = c(0, 250, 500, 750, 999))
+plot_ba(score_cat_2, target)
 ```
 
 ## Related work
