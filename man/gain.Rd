@@ -10,6 +10,8 @@ gain(score, target, percents = c(0.1, 0.2, 0.3, 0.4, 0.5))
 \item{score}{A numeric vector containing scores or probabilities}
 
 \item{target}{A numeric binary vector (0, 1)}
+
+\item{percents}{Values to calculate the gain}
 }
 \value{
 The Gini Coefficient

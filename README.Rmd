@@ -11,10 +11,17 @@ output:
 
 ```{r, echo = FALSE}
 library("printr")
+library("ggplot2")
 options(digits = 3, knitr.table.format = "markdown")
 knitr::opts_chunk$set(collapse = TRUE, comment = ">", warning = FALSE,
-                      fig.path = "vignettes/figures/", fig.width = 7,
+                      fig.path = "vignettes/figures/",
+                      fig.width = 6, fig.height= 6,
                       fig.align = "center", dpi = 72)
+
+update_geom_defaults("line", list(colour = "navy", size = 1.1))
+update_geom_defaults("point", list(colour = "navy", size = 2.5))
+update_geom_defaults("bar", list(fill = "gray50"))
+update_geom_defaults("text", list(color = "gray30", size = 4))
 ```
 
 ## Introduction
@@ -83,7 +90,7 @@ plot_ks(1000 * score, target) +
   ggtitle(sprintf("The KS statistics is %.0f%%", 100 * ks(score, target)))
 ```
 
-```{r fig.width = 13, fig.height= 8, warning=FALSE, message=FALSE}
+```{r fig.width = 8, fig.height= 8, warning=FALSE, message=FALSE}
 plot_perf(score, target)
 ```
 
@@ -142,16 +149,15 @@ bt(credit$age_bin, credit$bad)
 plot_bt(credit$age_bin, credit$bad) + ggtitle("Age")
 
 
-plot_bt(credit$flag_res_phone, credit$bad,
-        count.labels = TRUE, target.labels = TRUE) +
+plot_bt(credit$flag_res_phone, credit$bad, labels = TRUE) +
   ggtitle("Flag Response Phone")
 
 ```
 
-```{r fig.width = 13, fig.height= 8}
-plot_ba(credit$age_bin, credit$bad)
+```{r fig.width = 12, fig.height= 12}
+plot_ba(credit$residence_type, credit$bad)
 
-score_cat_2 <- cut(score, breaks = c(0, 250, 500, 750, 999))
+score_cat_2 <- cut(score, breaks = c(0, 333, 666, 999))
 plot_ba(score_cat_2, target)
 ```
 

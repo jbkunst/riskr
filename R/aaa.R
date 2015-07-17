@@ -1,6 +1,12 @@
 # I fell so dirty with this :/
 # I want to be on CRAN :D
 
+# tidyr ----
+# dput(ls("package:tidyr"))
+utils::globalVariables(c("expand", "expand_", "extract", "extract_", "extract_numeric", 
+                         "gather", "gather_", "separate", "separate_", "seq_range", "spread", 
+                         "spread_", "unite", "unite_", "unnest", "unnest_"))
+  
 # ggplot2 ----
 # dput(ls("package:ggplot2"))
 utils::globalVariables(c("%+%", "%+replace%", "aes", "aes_all", "aes_auto", "aes_q", 
@@ -87,6 +93,17 @@ utils::globalVariables(c("abs_area", "alpha", "area_pal", "as.trans", "asn_trans
                          "sqrt_trans", "squish", "squish_infinite", "time_trans", "trans_breaks", 
                          "trans_format", "trans_new", "trans_range", "unit_format", "wrap_format", 
                          "zero_range"))
+
+# stringr ----
+# dput(ls("package:stringr"))
+utils::globalVariables(c("%>%", "boundary", "coll", "fixed", "ignore.case", "invert_match", 
+                         "perl", "regex", "str_c", "str_conv", "str_count", "str_detect", 
+                         "str_dup", "str_extract", "str_extract_all", "str_join", "str_length", 
+                         "str_locate", "str_locate_all", "str_match", "str_match_all", 
+                         "str_order", "str_pad", "str_replace", "str_replace_all", "str_replace_na", 
+                         "str_sort", "str_split", "str_split_fixed", "str_sub", "str_sub<-", 
+                         "str_subset", "str_to_lower", "str_to_title", "str_to_upper", 
+                         "str_trim", "str_wrap", "word"))
 
 # dplyr ----
 # dput(ls("package:dplyr"))

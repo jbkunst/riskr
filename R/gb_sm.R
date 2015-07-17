@@ -1,3 +1,4 @@
+. <- NULL
 #' Group by and summarize
 #' @description This is only a shortcut for \code{df} then \code{group_by(...)} and then \code{summarize(...)}
 #' @param data A data frame

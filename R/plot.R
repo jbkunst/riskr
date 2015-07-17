@@ -1,3 +1,4 @@
+x <- NULL
 #' Plot AUC Curve
 #'
 #' @param score A numeric vector containing scores or probabilities
@@ -27,9 +28,9 @@ plot_roc <- function(score, target){
   
   df <- data.frame(x = unlist(perf@"x.values") , y = unlist(perf@"y.values"))
   
-  p <- ggplot(df, aes(x, y)) +
-    geom_line(size = 1.2, colour = "darkred") +
-    geom_path(data = data.frame(x = c(0, 1), y = c(0, 1)), colour = "gray", size = 0.7) +
+  p <- ggplot(df, aes_string("x", "y")) +
+    geom_line() +
+    geom_path(data = data.frame(x = c(0, 1), y = c(0, 1)), colour = "gray") +
     scale_x_continuous("False Positive Rate (1 - Specificity)",
                        label = percent_format(),
                        limits = c(0, 1)) +
@@ -65,9 +66,9 @@ plot_gain <- function(score, target){
   df <- data.frame(percentiles = seq(0, 1, length = 100),
                    gain = gain(score, target , seq(0, 1, length = 100)))
   
-  p <- ggplot(df, aes(percentiles, gain)) +
-    geom_line(size = 1.2, colour = "darkred") +
-    geom_line(aes(x = c(0, 1), y = c(0, 1)), colour = "gray", size = 0.7) +
+  p <- ggplot(df, aes_string("percentiles", "gain")) +
+    geom_line() +
+    geom_line(aes(x = c(0, 1), y = c(0, 1)), colour = "gray") +
     scale_x_continuous("Sample Percentiles",
                        label = percent_format(),
                        limits = c(0, 1)) +
@@ -110,13 +111,15 @@ plot_ks <- function(score, target){
   cuts <- seq(min(score), max(score), length = n.length)
   
   df <- data_frame(score = rep(cuts, 2),
-                   class = rep(c("Target 0", "Target 1"), each = 50)) %>% 
-    mutate(ecdf = ifelse(class == "Target 0", ecd_0(score), ecd_1(score)))
+                   target = rep(c(0, 1), each = 50),
+                   target_label = ifelse(target == 1, "target", "non taget"),
+                   ecdf = ifelse(target == 0, ecd_0(score), ecd_1(score)))
+  
 
   cut <- cuts[abs(ecd_1(cuts) - ecd_0(cuts)) == max(abs(ecd_1(cuts) - ecd_0(cuts)))]  
   
   p <- ggplot(df) +
-    geom_line(aes(score, ecdf, colour = class), size = 1.2) + 
+    geom_line(aes_string("score", "ecdf", colour = "target_label")) + 
     scale_colour_manual(values = c("darkred", "darkblue")) + 
     scale_y_continuous("ecdf", label = percent_format(), limits = c(0, 1)) + 
     xlab("score") +
@@ -155,7 +158,7 @@ plot_dists <- function(score, target){
                    target_label = ifelse(target == 1, "target", "non taget"))
   
   p <- ggplot(df) +
-    geom_density(aes(score, fill = target_label), alpha = 0.5) + 
+    geom_density(aes_string("score", fill = "target_label"), alpha = 0.5) + 
     scale_fill_manual(values = c("darkred", "darkblue")) + 
     theme(legend.position = "bottom")
   
@@ -226,23 +229,23 @@ plot_perf <- function(score, target){
   
   df <- rbind.fill(df1, df2, df3, df4) %>% tbl_df()
   
-  ggplot(df, aes(x, y, group = 1)) + 
+  ggplot(df, aes_string("x", "y", group = 1)) + 
     # roc
-    geom_line(data = subset(df, plot == "roc curve"), size = 1.2) +
+    geom_line(data = subset(df, plot == "roc curve")) +
     geom_segment(data = subset(df, plot == "roc curve")[1,],
                  aes(x = 0,y = 0,xend = 1,yend = 1), alpha = 0.5) +
     # gain
-    geom_line(data = subset(df, plot == "gain"), size = 1.2) +
+    geom_line(data = subset(df, plot == "gain")) +
     geom_segment(data = subset(df, plot == "gain")[1, ],
                  aes(x = 0,y = 0,xend = 1,yend = 1), alpha = 0.5) +
     # ecdf
     geom_line(data = subset(df, plot == "cumulative"),
-              aes(color = target_label, group = target_label), size = 1.2) +
+              aes_string(color = "target_label", group = "target_label")) +
     # densities
     geom_line(data = subset(df, plot == "distributions"),
-              aes(color = target_label, group = target_label)) +
+              aes_string(color = "target_label", group = "target_label")) +
     geom_area(data = subset(df, plot == "distributions"),
-              aes(color = target_label, group = target_label, fill = target_label), alpha = 0.25) +
+              aes_string(color = "target_label", group = "target_label", fill = "target_label"), alpha = 0.25) +
     # style
     scale_color_manual(values = c("darkred", "darkblue")) +
     scale_fill_manual(values = c("darkred", "darkblue")) +

@@ -1,4 +1,6 @@
-target_rate <- count_format <- target_rate_format <- target_count <- . <- NULL
+. <- variable <- count <- percent <- target_count <- target_rate <- target_percent <- non_target_count <- non_target_percent <- odds <- woe <- iv <- NULL
+. <- variable <- var <- value <- total <- value_fmt <- NULL
+count_format <- target_rate_format <- NULL
 #' Bivariate Table
 #' @description This function calculate a bivariate table.
 #' @param variable A variable 
@@ -56,6 +58,8 @@ bt <- function(variable, target){
 
 #' Plot Bivariate Analysis
 #' @description This function calculate a bivariate table.
+#' @param variable A character variable
+#' @param target A numeric binary vector (0, 1)
 #' @examples
 #' data("credit")
 #' 
@@ -103,16 +107,16 @@ plot_ba <- function(variable, target){
     mutate(var = factor(var, c("count", "target_count", "non_target_count",
                                "target_rate", "odds", "woe")))
   
-  ggplot(df2, aes(variable, value, group = 1)) +
+  ggplot(df2, aes_string("variable", "value", group = 1)) +
     geom_bar(data = subset(df2, var == "count"), stat = "identity") +
     geom_bar(data = subset(df2, var == "target_count"), stat = "identity") +
     geom_bar(data = subset(df2, var == "non_target_count"), stat = "identity") +
     geom_line(data = subset(df2, var == "target_rate")) +
-    geom_point(data = subset(df2, var == "target_rate"), color = "darkblue", size = 2) +
-    geom_line(data = subset(df2, var == "odds"), color = "darkblue") +
-    geom_point(data = subset(df2, var == "odds"), color = "darkblue", size = 2) +
-    geom_line(data = subset(df2, var == "woe"), color = "darkblue") +
-    geom_point(data = subset(df2, var == "woe"), color = "darkblue", size = 2) +
+    geom_point(data = subset(df2, var == "target_rate")) +
+    geom_line(data = subset(df2, var == "odds")) +
+    geom_point(data = subset(df2, var == "odds")) +
+    geom_line(data = subset(df2, var == "woe")) +
+    geom_point(data = subset(df2, var == "woe")) +
     geom_text(aes(label = value_fmt), size = 4, vjust = -0.5) +
     facet_wrap(~var, scales = "free_y") +
     xlab(NULL) + ylab(NULL) + 
@@ -124,13 +128,8 @@ plot_ba <- function(variable, target){
 #'
 #' @param variable A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
-#' @param count.labels A par
-#' @param target.labels A par
-#' @param coord.flip A par
-#' @param add.legend A par
-#' @param legend.color A par
-#' @param target.color A par
-#' @param remove.axis.y A par
+#' @param labels A par
+#' @param arrange.plot.by A par
 #' @return A ggplot2 object
 #' @examples
 #' data("credit")
@@ -140,21 +139,12 @@ plot_ba <- function(variable, target){
 #' 
 #' plot_bt(variable, target)
 #' plot_bt(variable, target) + theme_gray()
-#' plot_bt(variable, target, coord.flip = TRUE)
-#' plot_bt(variable, target, add.legend = FALSE)
-#' plot_bt(variable, target, count.labels = TRUE, coord.flip = TRUE)
-#' plot_bt(variable, target, count.labels = TRUE, target.labels = TRUE)
+#' plot_bt(variable, target, labels = TRUE)
 #' @export
 plot_bt <- function(variable,
                     target,
-                    count.labels = FALSE,
-                    target.labels = FALSE,
-                    arrange.plot.by = NULL, # options: variable, target
-                    coord.flip = FALSE,
-                    add.legend = TRUE,
-                    target.color = "navy",
-                    bar.color = "darkgray",
-                    remove.axis.y = FALSE
+                    labels = FALSE,
+                    arrange.plot.by = NULL
 ){
   
   stopifnot(
@@ -193,62 +183,22 @@ plot_bt <- function(variable,
   #### MAIN PLOT ###
   p <- ggplot(daux)
   
-  if (add.legend) {
-    
-    cols <- c("percent_category" = bar.color, "target_rate" = target.color)
-    
-    p <- p + 
-      geom_bar(aes(variable, percent, fill = "percent_category"),
-               stat = "identity", colour = bar.color) +
-      geom_line(aes(id, target_rate, colour = "target_rate")) +
-      geom_point(aes(id, target_rate), colour = target.color) +
-      scale_fill_manual("", values = cols) +
-      scale_colour_manual(name = "", values = cols)
-    
-  } else {
-    p <- p + 
-      geom_bar(aes(variable, percent), stat = "identity", fill = bar.color) +
-      geom_line(aes(id, target_rate), colour = target.color) +
-      geom_point(aes(id, target_rate), colour = target.color) 
-    
-  }
+  p <- p + 
+      geom_bar(aes(variable, percent), stat = "identity") +
+      geom_line(aes(id, target_rate)) +
+      geom_point(aes(id, target_rate)) 
   
   p <- p + scale_y_continuous(labels = percent)
   
-  #### COORDFLIP ####
-  if (coord.flip) p <- p + coord_flip()
-  
-  #### LABELS COUNT ###
-  if (count.labels) {
-    if (coord.flip) {
-      p <- p + geom_text(aes(variable, percent, label = count_format),
-                         hjust = 1.2, colour = "white")
-    } else {
-      p <- p + geom_text(aes(variable, percent, label = count_format),
-                         vjust = 1.5, colour = "white")
-    }
-  }
-  
-  #### LABELS TARGET ####
-  if (target.labels) {
-    if (coord.flip) {
-      p <- p + geom_text(aes(variable, target_rate, label = target_rate_format),
-                         hjust = -1, colour = target.color)
-    } else {
-      p <- p + geom_text(aes(variable, target_rate, label = target_rate_format),
-                         vjust = -.5, colour = target.color)
-    }
+  #### LABELS ###
+  if (labels) {
+      p <- p + geom_text(aes(variable, percent, label = count_format), vjust = -0.5)
+      p <- p + geom_text(aes(variable, target_rate, label = target_rate_format), vjust = -0.5)
   }
   
   #### THEME #### 
   p <- p + xlab(NULL) + ylab(NULL)
 
-  if (!coord.flip) {
-    p <- p + theme(legend.position = "bottom")
-  } else {
-    p <- p + theme(legend.position = "right")
-  }
-  
   p
 }
 

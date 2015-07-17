@@ -4,37 +4,16 @@
 \alias{plot_bt}
 \title{Bivariate Plot}
 \usage{
-plot_bt(variable, target, count.labels = FALSE, target.labels = FALSE,
-  arrange.plot.by = NULL, coord.flip = FALSE, add.legend = TRUE,
-  bar.width = 0.6, rate.size = 1, size.text = 4, size.text2 = 10,
-  remove.axis.y = FALSE)
+plot_bt(variable, target, labels = FALSE, arrange.plot.by = NULL)
 }
 \arguments{
 \item{variable}{A numeric vector containing scores or probabilities}
 
 \item{target}{A numeric binary vector (0, 1)}
 
-\item{count.labels}{A par}
+\item{labels}{A par}
 
-\item{target.labels}{A par}
-
-\item{coord.flip}{A par}
-
-\item{add.legend}{A par}
-
-\item{bar.width}{A par}
-
-\item{rate.size}{A par}
-
-\item{size.text}{A par}
-
-\item{size.text2}{A par}
-
-\item{remove.axis.y}{A par}
-
-\item{legend.color}{A par}
-
-\item{target.color}{A par}
+\item{arrange.plot.by}{A par}
 }
 \value{
 A ggplot2 object
@@ -50,9 +29,6 @@ target <- credit$bad
 
 plot_bt(variable, target)
 plot_bt(variable, target) + theme_gray()
-plot_bt(variable, target, coord.flip = TRUE)
-plot_bt(variable, target, add.legend = FALSE)
-plot_bt(variable, target, count.labels = TRUE, coord.flip = TRUE)
-plot_bt(variable, target, count.labels = TRUE, target.labels = TRUE)
+plot_bt(variable, target, labels = TRUE)
 }
 

@@ -9,6 +9,16 @@ pretty_df(df, to.lower.df.names = TRUE, factor.to.string = TRUE,
 }
 \arguments{
 \item{df}{A data frame}
+
+\item{to.lower.df.names}{df' names to lower?}
+
+\item{factor.to.string}{Factor to string?}
+
+\item{fill.num.na.with}{Value to replace NA when there are NAs in a numeric variables}
+
+\item{fill.chr.na.with}{Value to replace NA when there are NAs in a character variables}
+
+\item{trim.chr.vars}{Trim character vars=}
 }
 \value{
 The same df with \code{tbl_df} class, lower names.

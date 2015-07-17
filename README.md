@@ -286,8 +286,7 @@ plot_bt(credit$age_bin, credit$bad) + ggtitle("Age")
 ```r
 
 
-plot_bt(credit$flag_res_phone, credit$bad,
-        count.labels = TRUE, target.labels = TRUE) +
+plot_bt(credit$flag_res_phone, credit$bad, labels = TRUE) +
   ggtitle("Flag Response Phone")
 ```
 
@@ -295,14 +294,14 @@ plot_bt(credit$flag_res_phone, credit$bad,
 
 
 ```r
-plot_ba(credit$age_bin, credit$bad)
+plot_ba(credit$residence_type, credit$bad)
 ```
 
 <img src="vignettes/figures/unnamed-chunk-12-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 
-score_cat_2 <- cut(score, breaks = c(0, 250, 500, 750, 999))
+score_cat_2 <- cut(score, breaks = c(0, 333, 666, 999))
 plot_ba(score_cat_2, target)
 ```
 

@@ -1,6 +1,11 @@
 #' Make a data frame looks a bit pretty
 #' @description This function standarize a data frame converting factors to characters, setting to lowercase the column names.
 #' @param df A data frame
+#' @param to.lower.df.names df' names to lower?
+#' @param factor.to.string Factor to string?
+#' @param fill.num.na.with Value to replace NA when there are NAs in a numeric variables 
+#' @param fill.chr.na.with Value to replace NA when there are NAs in a character variables 
+#' @param trim.chr.vars Trim character vars=
 #' @return The same df with \code{tbl_df} class, lower names.
 #' @examples
 #'

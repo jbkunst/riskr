@@ -6,6 +6,11 @@
 \usage{
 plot_ba(variable, target)
 }
+\arguments{
+\item{variable}{A character variable}
+
+\item{target}{A numeric binary vector (0, 1)}
+}
 \description{
 This function calculate a bivariate table.
 }

@@ -110,6 +110,7 @@ gini <- function(score, target){
 #'
 #' @param score A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
+#' @param percents Values to calculate the gain
 #' @return The Gini Coefficient
 #' @examples
 #' data(predictions)
