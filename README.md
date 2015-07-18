@@ -14,7 +14,7 @@ There are function to:
  4. Compute usual values in the credit scoring PSI, WOE, IV, KS, AUCROC, among others.
  5. Make easier the scoring modelling process. 
 
-## Assumption
+## Assumptions
 
 `riskr` assume the target variable is *binary* with numeric values: 0 and 1. Usually 1 means the characteristic of interest.
 

@@ -19,7 +19,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = ">", warning = FALSE,
                       fig.align = "center", dpi = 72)
 
 update_geom_defaults("line", list(colour = "navy", size = 1.1))
-update_geom_defaults("point", list(colour = "navy", size = 2.5))
+update_geom_defaults("point", list(colour = "navy", size = 3))
 update_geom_defaults("bar", list(fill = "gray50"))
 update_geom_defaults("text", list(color = "gray30", size = 4))
 ```
@@ -35,7 +35,7 @@ There are function to:
  4. Compute usual values in the credit scoring PSI, WOE, IV, KS, AUCROC, among others.
  5. Make easier the scoring modelling process. 
 
-## Assumption
+## Assumptions
 
 `riskr` assume the target variable is *binary* with numeric values: 0 and 1. Usually 1 means the characteristic of interest.
 

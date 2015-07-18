@@ -68,7 +68,7 @@ plot_gain <- function(score, target){
   
   p <- ggplot(df, aes_string("percentiles", "gain")) +
     geom_line() +
-    geom_line(aes(x = c(0, 1), y = c(0, 1)), colour = "gray") +
+    geom_path(aes(x = c(0, 1), y = c(0, 1)), colour = "gray") +
     scale_x_continuous("Sample Percentiles",
                        label = percent_format(),
                        limits = c(0, 1)) +
@@ -120,7 +120,7 @@ plot_ks <- function(score, target){
   
   p <- ggplot(df) +
     geom_line(aes_string("score", "ecdf", colour = "target_label")) + 
-    scale_colour_manual(values = c("darkred", "darkblue")) + 
+    scale_colour_manual(values = c("red", "darkblue")) + 
     scale_y_continuous("ecdf", label = percent_format(), limits = c(0, 1)) + 
     xlab("score") +
     theme(legend.position = "bottom")
@@ -159,7 +159,7 @@ plot_dists <- function(score, target){
   
   p <- ggplot(df) +
     geom_density(aes_string("score", fill = "target_label"), alpha = 0.5) + 
-    scale_fill_manual(values = c("darkred", "darkblue")) + 
+    scale_fill_manual(values = c("red", "darkblue")) + 
     theme(legend.position = "bottom")
   
   p
@@ -247,8 +247,8 @@ plot_perf <- function(score, target){
     geom_area(data = subset(df, plot == "distributions"),
               aes_string(color = "target_label", group = "target_label", fill = "target_label"), alpha = 0.25) +
     # style
-    scale_color_manual(values = c("darkred", "darkblue")) +
-    scale_fill_manual(values = c("darkred", "darkblue")) +
+    scale_color_manual(values = c("red", "darkblue")) +
+    scale_fill_manual(values = c("red", "darkblue")) +
     facet_wrap(~plot, scales = "free") +
     theme(legend.position = "bottom")
   

@@ -6,15 +6,15 @@ Description: The riskr package facilitate credit scoring tasks such as measure t
   and the scoring modelling process
 Author: Joshua Kunst <jbkunst@gmail.com>
 Maintainer: Joshua Kunst <jbkunst@gmail.com>
-License: MIT
+License: MIT + file LICENSE
 URL: https://github.com/jbkunst/riskr
 BugReports: https://github.com/jbkunst/riskr/issues
 Imports:
     plyr,
     dplyr,
+    tidyr,
     magrittr,
     ggplot2,
-    plyr,
     ROCR,
     scales,
     partykit
