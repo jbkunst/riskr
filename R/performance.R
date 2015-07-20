@@ -98,10 +98,32 @@ aucroc <- function(score, target){
 #' target <- predictions$target
 #' 
 #' gini(score, target)
+#' @references https://www.kaggle.com/wiki/RCodeForGini
 #' @export
 gini <- function(score, target){
   
-  gini <- 2*as.numeric(aucroc(score, target)) - 1
+  # gini <- 2*as.numeric(aucroc(score, target)) - 1
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(score)
+  )
+  
+  ginidf <- function(score, target){
+    
+    library("dplyr")
+    
+    df <- data_frame(score, target) %>% 
+      arrange(desc(score)) %>% 
+      mutate(random = seq(nrow(.))/nrow(.),
+             cumPosFound = cumsum(target),
+             Lorentz = cumPosFound/sum(target),
+             gini = Lorentz - random)
+    
+    df %>% summarise(sum(gini)) 
+    
+  }
+  
+  gini <- ginidf(score, target)/ ginidf(target, target)
   
   return(gini)
 }
