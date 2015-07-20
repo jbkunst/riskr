@@ -117,7 +117,7 @@ plot_ba <- function(variable, target){
     geom_point(data = subset(df2, var == "odds")) +
     geom_line(data = subset(df2, var == "woe")) +
     geom_point(data = subset(df2, var == "woe")) +
-    geom_text(aes(label = value_fmt), size = 4, vjust = -0.5) +
+    geom_text(aes(label = value_fmt), vjust = -0.5) +
     facet_wrap(~var, scales = "free_y") +
     xlab(NULL) + ylab(NULL) + 
     theme(legend.position = "bottom")
@@ -143,7 +143,7 @@ plot_ba <- function(variable, target){
 #' @export
 plot_bt <- function(variable,
                     target,
-                    labels = FALSE,
+                    labels = TRUE,
                     arrange.plot.by = NULL
 ){
   
@@ -152,9 +152,9 @@ plot_bt <- function(variable,
     length(target) == length(variable)
   )
   
-  require("ggplot2")
-  require("dplyr")
-  require("scales")
+  library("ggplot2")
+  library("dplyr")
+  library("scales")
   
   #### DATA ####
   daux <- bt(addNA(variable), target) %>% 
@@ -181,25 +181,21 @@ plot_bt <- function(variable,
   }
   
   #### MAIN PLOT ###
-  p <- ggplot(daux)
-  
-  p <- p + 
-      geom_bar(aes(variable, percent), stat = "identity") +
-      geom_line(aes(id, target_rate)) +
-      geom_point(aes(id, target_rate)) 
-  
-  p <- p + scale_y_continuous(labels = percent)
+  p <- ggplot(daux) +
+    geom_bar(aes(variable, percent), stat = "identity") +
+    geom_line(aes(id, target_rate)) +
+    geom_point(aes(id, target_rate)) +
+    scale_y_continuous(labels = percent_format()) +
+    xlab(NULL) + ylab(NULL)
   
   #### LABELS ###
   if (labels) {
       p <- p + geom_text(aes(variable, percent, label = count_format), vjust = -0.5)
       p <- p + geom_text(aes(variable, target_rate, label = target_rate_format), vjust = -0.5)
   }
-  
-  #### THEME #### 
-  p <- p + xlab(NULL) + ylab(NULL)
 
   p
+  
 }
 
 #' @export
