@@ -17,6 +17,7 @@ Imports:
     ggplot2,
     ROCR,
     scales,
+    grid,
     partykit
 Suggests: knitr
 VignetteBuilder: knitr
