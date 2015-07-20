@@ -10,6 +10,7 @@ output:
 <!-- README.md is generated from README.Rmd -->
 
 ```{r, echo = FALSE}
+library("riskr")
 library("printr")
 library("ggplot2")
 options(digits = 3, knitr.table.format = "markdown")
@@ -18,10 +19,11 @@ knitr::opts_chunk$set(collapse = TRUE, comment = ">", warning = FALSE,
                       fig.width = 6, fig.height = 6,
                       fig.align = "center", dpi = 72)
 
-update_geom_defaults("line", list(colour = "navy", size = 1.0))
-update_geom_defaults("point", list(colour = "navy", size = 3))
-update_geom_defaults("bar", list(fill = "gray50"))
-update_geom_defaults("text", list(color = "gray30", size = 4))
+theme_set(theme_rskr())
+update_geom_defaults("line", list(colour = "#434348", size = 1.05))
+update_geom_defaults("point", list(colour = "#434348", size = 3))
+update_geom_defaults("bar", list(fill = "#7cb5ec"))
+update_geom_defaults("text", list(size = 4, colour = "gray30"))
 ```
 
 ## Introduction
@@ -145,23 +147,31 @@ library("ggplot2")
 credit$age_bin <- cut_interval(credit$age, 3)
 
 bt(credit$age_bin, credit$bad)
+```
 
-plot_bt(credit$age_bin, credit$bad) + ggtitle("Age")
+```{r fig.width = 12, fig.height= 10}
+plot_ba(credit$age_bin, credit$bad)
+
+# order by odds
+lvls_rt <- bt(credit$residence_type, credit$bad) %>% 
+  arrange(desc(odds)) %>%  .[["class"]]
+
+residence_type2 <- factor(credit$residence_type, levels = lvls_rt)
+
+plot_ba(residence_type2, credit$bad)
+```
+
+The minified version of `plot_ba`
+```{r}
+plot_ba2(credit$age_bin, credit$bad) + ggtitle("Age")
 
 
-plot_bt(credit$flag_res_phone, credit$bad, labels = TRUE) +
+plot_ba2(credit$flag_res_phone, credit$bad, labels = FALSE) +
   ggtitle("Flag Response Phone")
 
 ```
 
-```{r fig.width = 12, fig.height= 12}
-plot_ba(credit$residence_type, credit$bad)
-
-score_cat_2 <- cut(score, breaks = c(0, 333, 666, 999))
-plot_ba(score_cat_2, target)
-```
-
 ## Related work
 
-1. [woe](github.com/tomasgreif/woe) package by [tomasgreif](github.com/tomasgreif)
-2. [smbinning](http://cran.r-project.org/web/packages/smbinning) package by [Herman Jopia](github.com/hjopia). [Github repository](https://github.com/cran/smbinning).
+1. [woe](http://github.com/tomasgreif/woe) package by [tomasgreif](http://github.com/tomasgreif)
+2. [smbinning](http://cran.r-project.org/web/packages/smbinning) package by [Herman Jopia](http://github.com/hjopia). [Github repository](https://github.com/cran/smbinning).

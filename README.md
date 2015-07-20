@@ -76,34 +76,16 @@ aucroc(score, target)
 > [1] 0.676
 
 gini(score, target)
-> 
-> Attaching package: 'dplyr'
-> 
-> The following object is masked from 'package:stats':
-> 
->     filter
-> 
-> The following objects are masked from 'package:base':
-> 
->     intersect, setdiff, setequal, union
-```
-
-
-
-| sum(gini)|
-|---------:|
-|     0.353|
-
-```r
+> [1] 0.353
 
 perf(score, target)
 ```
 
 
 
-|count |target_count |target_rate |ks    |aucroc |gini.sum.gini. |
-|:-----|:------------|:-----------|:-----|:------|:--------------|
-|10000 |6990         |0.699       |0.254 |0.676  |0.353          |
+| count| target_count| target_rate|    ks| aucroc|  gini|
+|-----:|------------:|-----------:|-----:|------:|-----:|
+| 10000|         6990|       0.699| 0.254|  0.676| 0.353|
 
 There are some functions to plot the score/model performance (based on ggplot package).
 
@@ -149,7 +131,7 @@ odds_table(score, target, nclass = 5) # default is (nclass =) 10 groups of equal
 
 
 
-|variable  | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent| odds|    woe|    iv|
+|class     | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent| odds|    woe|    iv|
 |:---------|-----:|-------:|------------:|-----------:|--------------:|----------------:|------------------:|----:|------:|-----:|
 |[1,164]   |  2009|   0.201|         1010|       0.503|          0.144|              999|              0.332| 1.01| -0.832| 0.156|
 |(164,331] |  1991|   0.199|         1255|       0.630|          0.180|              736|              0.245| 1.71| -0.309| 0.020|
@@ -164,7 +146,7 @@ odds_table(score, target, breaks = c(0, 300, 700, 999))
 
 
 
-|variable  | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent| odds|    woe|    iv|
+|class     | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent| odds|    woe|    iv|
 |:---------|-----:|-------:|------------:|-----------:|--------------:|----------------:|------------------:|----:|------:|-----:|
 |(0,300]   |  3675|   0.368|         2052|       0.558|          0.294|             1623|              0.539| 1.26| -0.608| 0.149|
 |(300,700] |  3978|   0.398|         2926|       0.736|          0.419|             1052|              0.350| 2.78|  0.180| 0.012|
@@ -269,13 +251,13 @@ bt(credit$marital_status, credit$bad)
 
 
 
-|variable | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent|  odds|    woe|    iv|
-|:--------|-----:|-------:|------------:|-----------:|--------------:|----------------:|------------------:|-----:|------:|-----:|
-|C        | 17097|   0.344|         2483|       0.145|          0.253|            14614|              0.366| 0.170| -0.370| 0.042|
-|D        |  2142|   0.043|          322|       0.150|          0.033|             1820|              0.046| 0.177| -0.330| 0.004|
-|O        |  2776|   0.056|          660|       0.238|          0.067|             2116|              0.053| 0.312|  0.237| 0.003|
-|S        | 25249|   0.508|         6059|       0.240|          0.617|            19190|              0.481| 0.316|  0.249| 0.034|
-|V        |  2430|   0.049|          289|       0.119|          0.029|             2141|              0.054| 0.135| -0.600| 0.015|
+|class | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent|  odds|    woe|    iv|
+|:-----|-----:|-------:|------------:|-----------:|--------------:|----------------:|------------------:|-----:|------:|-----:|
+|C     | 17097|   0.344|         2483|       0.145|          0.253|            14614|              0.366| 0.170| -0.370| 0.042|
+|D     |  2142|   0.043|          322|       0.150|          0.033|             1820|              0.046| 0.177| -0.330| 0.004|
+|O     |  2776|   0.056|          660|       0.238|          0.067|             2116|              0.053| 0.312|  0.237| 0.003|
+|S     | 25249|   0.508|         6059|       0.240|          0.617|            19190|              0.481| 0.316|  0.249| 0.034|
+|V     |  2430|   0.049|          289|       0.119|          0.029|             2141|              0.054| 0.135| -0.600| 0.015|
 
 ```r
 
@@ -288,44 +270,50 @@ bt(credit$age_bin, credit$bad)
 
 
 
-|variable    | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent|  odds|    woe|    iv|
+|class       | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent|  odds|    woe|    iv|
 |:-----------|-----:|-------:|------------:|-----------:|--------------:|----------------:|------------------:|-----:|------:|-----:|
 |[15,41.7]   | 35654|   0.717|         8174|       0.229|          0.833|            27480|              0.689| 0.297|  0.190| 0.027|
 |(41.7,68.3] | 13313|   0.268|         1585|       0.119|          0.162|            11728|              0.294| 0.135| -0.599| 0.079|
 |(68.3,95]   |   727|   0.015|           54|       0.074|          0.006|              673|              0.017| 0.080| -1.121| 0.013|
 
-```r
-
-plot_bt(credit$age_bin, credit$bad) + ggtitle("Age")
-```
-
-<img src="vignettes/figures/unnamed-chunk-11-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
-
-
-plot_bt(credit$flag_res_phone, credit$bad, labels = TRUE) +
-  ggtitle("Flag Response Phone")
-```
-
-<img src="vignettes/figures/unnamed-chunk-11-2.png" title="" alt="" style="display: block; margin: auto;" />
-
-
-```r
-plot_ba(credit$residence_type, credit$bad)
+plot_ba(credit$age_bin, credit$bad)
 ```
 
 <img src="vignettes/figures/unnamed-chunk-12-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 
-score_cat_2 <- cut(score, breaks = c(0, 333, 666, 999))
-plot_ba(score_cat_2, target)
+# order by odds
+lvls_rt <- bt(credit$residence_type, credit$bad) %>% 
+  arrange(desc(odds)) %>%  .[["class"]]
+
+residence_type2 <- factor(credit$residence_type, levels = lvls_rt)
+
+plot_ba(residence_type2, credit$bad)
 ```
 
 <img src="vignettes/figures/unnamed-chunk-12-2.png" title="" alt="" style="display: block; margin: auto;" />
 
+The minified version of `plot_ba`
+
+```r
+plot_ba2(credit$age_bin, credit$bad) + ggtitle("Age")
+```
+
+<img src="vignettes/figures/unnamed-chunk-13-1.png" title="" alt="" style="display: block; margin: auto;" />
+
+```r
+
+
+plot_ba2(credit$flag_res_phone, credit$bad, labels = FALSE) +
+  ggtitle("Flag Response Phone")
+```
+
+<img src="vignettes/figures/unnamed-chunk-13-2.png" title="" alt="" style="display: block; margin: auto;" />
+
 ## Related work
 
-1. [woe](github.com/tomasgreif/woe) package by [tomasgreif](github.com/tomasgreif)
-2. [smbinning](http://cran.r-project.org/web/packages/smbinning) package by [Herman Jopia](github.com/hjopia). [Github repository](https://github.com/cran/smbinning).
+1. [woe](http://github.com/tomasgreif/woe) package by [tomasgreif](http://github.com/tomasgreif)
+2. [smbinning](http://cran.r-project.org/web/packages/smbinning) package by [Herman Jopia](http://github.com/hjopia). [Github repository](https://github.com/cran/smbinning).
