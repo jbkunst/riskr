@@ -159,7 +159,7 @@ plot_dists <- function(score, target){
   
   p <- ggplot(df) +
     geom_density(aes_string("score", fill = "target_label"), alpha = 0.5) + 
-    scale_fill_manual(values = c("red", "darkblue")) + 
+    scale_fill_manual(values = c("red", "blue")) + 
     theme(legend.position = "bottom")
   
   p
@@ -218,38 +218,35 @@ plot_perf <- function(score, target){
 
   
   # dist data
-  # http://stats.stackexchange.com/questions/78711/how-to-find-estimate-probability-density-function-from-density-function-in-r
-  ds_0 <- approxfun(density(score[target == 0]))
-  ds_1 <- approxfun(density(score[target == 1]))
   df4 <- data_frame(x = score,
                     target,
                     target_label = ifelse(target == 1, "target", "non taget"),
-                    y = ifelse(target == 0, ds_0(x), ds_1(x)),
+                    # y = ifelse(target == 0, ds_0(x), ds_1(x)),
                     plot = "distributions")
   
   df <- rbind.fill(df1, df2, df3, df4) %>% tbl_df()
   
-  ggplot(df, aes_string("x", "y", group = 1)) + 
+  ggplot(df, aes_string("x", group = 1)) + 
     # roc
-    geom_line(data = subset(df, plot == "roc curve")) +
+    geom_line(data = subset(df, plot == "roc curve"), aes_string(y = "y")) +
     geom_segment(data = subset(df, plot == "roc curve")[1,],
-                 aes(x = 0,y = 0,xend = 1,yend = 1), alpha = 0.5) +
+                 aes(x = 0, y = 0,xend = 1,yend = 1), alpha = 0.5) +
     # gain
-    geom_line(data = subset(df, plot == "gain")) +
+    geom_line(data = subset(df, plot == "gain"), aes_string(y = "y")) +
     geom_segment(data = subset(df, plot == "gain")[1, ],
                  aes(x = 0,y = 0,xend = 1,yend = 1), alpha = 0.5) +
     # ecdf
     geom_line(data = subset(df, plot == "cumulative"),
-              aes_string(color = "target_label", group = "target_label")) +
+              aes_string(y = "y", color = "target_label", group = "target_label")) +
     # densities
-    geom_line(data = subset(df, plot == "distributions"),
-              aes_string(color = "target_label", group = "target_label")) +
-    geom_area(data = subset(df, plot == "distributions"),
-              aes_string(color = "target_label", group = "target_label", fill = "target_label"), alpha = 0.25) +
+    geom_density(data = subset(df, plot == "distributions"),
+                 aes_string(fill = "target_label", color = "target_label", group = "target_label"),
+                 alpha = 0.5) +
     # style
-    scale_color_manual(values = c("red", "darkblue")) +
-    scale_fill_manual(values = c("red", "darkblue")) +
+    scale_color_manual(values = c("red", "blue")) +
+    scale_fill_manual(values = c("red", "blue")) +
     facet_wrap(~plot, scales = "free") +
-    theme(legend.position = "bottom")
+    theme(legend.position = "bottom") + 
+    xlab(NULL) + ylab(NULL)
   
 }
