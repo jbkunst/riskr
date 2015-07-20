@@ -25,4 +25,7 @@ target <- predictions$target
 
 gini(score, target)
 }
+\references{
+https://www.kaggle.com/wiki/RCodeForGini
+}
 

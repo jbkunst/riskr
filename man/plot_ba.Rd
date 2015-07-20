@@ -4,12 +4,16 @@
 \alias{plot_ba}
 \title{Plot Bivariate Analysis}
 \usage{
-plot_ba(variable, target)
+plot_ba(variable, target, labels = TRUE, order.by = NULL)
 }
 \arguments{
-\item{variable}{A character variable}
+\item{variable}{A numeric vector containing scores or probabilities}
 
 \item{target}{A numeric binary vector (0, 1)}
+
+\item{labels}{A par}
+
+\item{order.by}{A par}
 }
 \description{
 This function calculate a bivariate table.
@@ -21,5 +25,6 @@ variable <- credit$sex
 target <- credit$bad
 
 plot_ba(variable, target)
+plot_ba(variable, target, order.by = "target")
 }
 
