@@ -33,8 +33,8 @@ bt <- function(variable, target){
   tot_target <- sum(target)
   tot_non_target <- length(target) - tot_target
   
-  df <- data_frame(variable = as.character(addNA(variable)), target) %>% 
-    group_by(variable) %>% 
+  df <- data_frame(class = as.character(addNA(variable)), target) %>% 
+    group_by(class) %>% 
     dplyr::summarise(count = length(target),
                      percent = count/nrow(.),
                      target_count = sum(target),
@@ -49,8 +49,8 @@ bt <- function(variable, target){
 
   if (is.factor(variable)) {
     lvls <- levels(variable)
-    df <- df %>% mutate(variable = factor(variable, levels = lvls))
-    df <- df[order(df$variable),]
+    df <- df %>% mutate(class = factor(class, levels = lvls))
+    df <- df[order(df$class),]
   }
   
   df
@@ -58,8 +58,10 @@ bt <- function(variable, target){
 
 #' Plot Bivariate Analysis
 #' @description This function calculate a bivariate table.
-#' @param variable A character variable
+#' @param variable A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
+#' @param labels A par
+#' @param order.by A par
 #' @examples
 #' data("credit")
 #' 
@@ -67,8 +69,9 @@ bt <- function(variable, target){
 #' target <- credit$bad
 #' 
 #' plot_ba(variable, target)
+#' plot_ba(variable, target, order.by = "target")
 #' @export
-plot_ba <- function(variable, target){
+plot_ba <- function(variable, target, labels = TRUE, order.by = NULL){
   
   library("tidyr")
   library("ggplot2")
@@ -78,8 +81,8 @@ plot_ba <- function(variable, target){
   df <- bt(variable, target)
   
   df2 <- df %>%
-    select(variable, count, target_count, non_target_count, target_rate, odds, woe) %>% 
-    gather(var, value, -variable)
+    select(class, count, target_count, non_target_count, target_rate, odds, woe) %>% 
+    gather(var, value, -class)
   
   df3 <- df %>%
     summarise(count = sum(count),
@@ -94,58 +97,61 @@ plot_ba <- function(variable, target){
   df2 <- df2 %>% 
     dplyr::mutate(value_fmt = "",
                   value_fmt = ifelse(var %in% c("count", "target_count", "non_target_count"),
-                                     sprintf("%s (%s)",
-                                             prettyNum(value, big.mark = ","),
-                                             paste0(round(100*value/total, 2), "%")),
+                                     prettyNum(value, big.mark = ","),
                                      value_fmt),
-                  value_fmt = ifelse(var %in% c("target_rate"),
-                                     paste0(round(100*value, 2), "%") , value_fmt),
-                  value_fmt = ifelse(var %in% c("odds", "woe"),
-                                     round(value, 2) , value_fmt))
-  
+                  value_fmt = ifelse(var %in% c("odds", "woe", "target_rate"),
+                                     round(value, 2), value_fmt),
+                  value_fmt2 = "",
+                  value_fmt2 = ifelse(var %in% c("count", "target_count", "non_target_count"),
+                                      percent(value/total),
+                                      value_fmt2))
+                  
   df2 <- df2 %>% 
     mutate(var = factor(var, c("count", "target_count", "non_target_count",
                                "target_rate", "odds", "woe")))
   
-  ggplot(df2, aes_string("variable", "value", group = 1)) +
-    geom_bar(data = subset(df2, var == "count"), stat = "identity") +
-    geom_bar(data = subset(df2, var == "target_count"), stat = "identity") +
-    geom_bar(data = subset(df2, var == "non_target_count"), stat = "identity") +
+  p <- ggplot(df2, aes_string("class", "value", group = 1)) +
+    geom_bar(data = subset(df2, var == "count"), stat = "identity", width = 0.5) +
+    geom_bar(data = subset(df2, var == "target_count"), stat = "identity", width = 0.5) +
+    geom_bar(data = subset(df2, var == "non_target_count"), stat = "identity", width = 0.5) +
     geom_line(data = subset(df2, var == "target_rate")) +
     geom_point(data = subset(df2, var == "target_rate")) +
     geom_line(data = subset(df2, var == "odds")) +
     geom_point(data = subset(df2, var == "odds")) +
     geom_line(data = subset(df2, var == "woe")) +
     geom_point(data = subset(df2, var == "woe")) +
-    geom_text(aes(label = value_fmt), vjust = -0.5) +
     facet_wrap(~var, scales = "free_y") +
     xlab(NULL) + ylab(NULL) + 
     theme(legend.position = "bottom")
   
+  if (labels) {
+    p <- p +
+      geom_text(aes(label = value_fmt), vjust = -0.5) +
+      geom_text(aes(label = value_fmt2), vjust = 1.5)
+  }
+  
+  p
+  
 }
 
-#' Bivariate Plot 
-#'
+#' Plot Bivariate Analysis (2) 
+#' @description A minimal version for \emph{plot_ba}
 #' @param variable A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
 #' @param labels A par
-#' @param arrange.plot.by A par
+#' @param order.by A par
 #' @return A ggplot2 object
 #' @examples
 #' data("credit")
 #' 
-#' variable <- credit$sex
+#' variable <- as.character(credit$marital_status)
 #' target <- credit$bad
 #' 
-#' plot_bt(variable, target)
-#' plot_bt(variable, target) + theme_gray()
-#' plot_bt(variable, target, labels = TRUE)
+#' plot_ba2(variable, target)
+#' plot_ba2(variable, target, labels = FALSE)
+#' plot_ba2(variable, target, order.by = "odds")
 #' @export
-plot_bt <- function(variable,
-                    target,
-                    labels = TRUE,
-                    arrange.plot.by = NULL
-){
+plot_ba2 <- function(variable, target, labels = TRUE, order.by = NULL){
   
   stopifnot(
     setequal(target, c(0, 1)),
@@ -156,56 +162,24 @@ plot_bt <- function(variable,
   library("dplyr")
   library("scales")
   
-  #### DATA ####
-  daux <- bt(addNA(variable), target) %>% 
-    mutate(id = seq(length(variable)),
-           count_format = prettyNum(count, big.mark = ".", decimal.mark = ", "),
+  daux <- bt(variable, target) %>% 
+    mutate(id = seq(nrow(.)), 
+          count_format = prettyNum(count, big.mark = ","),
            target_rate_format = percent(target_rate))
-  
-  if (!is.null(arrange.plot.by)) {
-    if (arrange.plot.by == "variable") {
-      daux <- daux %>% arrange(desc(count))
-    } else if (arrange.plot.by == "target") {
-      daux <- daux %>% arrange(desc(target_rate))
-    }
-    
-    daux <- daux %>% mutate(variable = factor(variable))
-    
-  } else {
-    if (is.factor(variable)) {
-      lvls <- levels(variable)
-      daux <- daux %>% mutate(variable = factor(variable, levels = lvls))  
-    } else {
-      daux <- daux %>% mutate(variable = factor(variable))  
-    }
-  }
-  
-  #### MAIN PLOT ###
+
   p <- ggplot(daux) +
-    geom_bar(aes(variable, percent), stat = "identity") +
+    geom_bar(aes(class, percent), stat = "identity", width = 0.5) +
     geom_line(aes(id, target_rate)) +
     geom_point(aes(id, target_rate)) +
     scale_y_continuous(labels = percent_format()) +
     xlab(NULL) + ylab(NULL)
   
-  #### LABELS ###
   if (labels) {
-      p <- p + geom_text(aes(variable, percent, label = count_format), vjust = -0.5)
-      p <- p + geom_text(aes(variable, target_rate, label = target_rate_format), vjust = -0.5)
+    p <- p +
+      geom_text(aes(class, percent, label = count_format), vjust = -0.5) +
+      geom_text(aes(class, target_rate, label = target_rate_format), vjust = -0.5)
   }
 
   p
   
-}
-
-#' @export
-plot_biv_table <- function(...){
-  message("This function 'plot_biv_table' will be deprecated, use 'plot_bt' instead.")
-  plot_bt(...)
-}
-
-#' @export
-biv_table <- function(...){
-  message("This function 'biv_table' will be deprecated, use 'bt' instead.")
-  bt(...)
 }

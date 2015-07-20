@@ -110,7 +110,7 @@ gini <- function(score, target){
   
   ginidf <- function(score, target){
     
-    library("dplyr")
+    suppressMessages(library("dplyr"))
     
     df <- data_frame(score, target) %>% 
       arrange(desc(score)) %>% 
@@ -119,7 +119,7 @@ gini <- function(score, target){
              Lorentz = cumPosFound/sum(target),
              gini = Lorentz - random)
     
-    df %>% summarise(sum(gini)) 
+    df %>% summarise(sum(gini)) %>% as.numeric()
     
   }
   
