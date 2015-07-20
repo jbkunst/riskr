@@ -76,16 +76,34 @@ aucroc(score, target)
 > [1] 0.676
 
 gini(score, target)
-> [1] 0.353
+> 
+> Attaching package: 'dplyr'
+> 
+> The following object is masked from 'package:stats':
+> 
+>     filter
+> 
+> The following objects are masked from 'package:base':
+> 
+>     intersect, setdiff, setequal, union
+```
+
+
+
+| sum(gini)|
+|---------:|
+|     0.353|
+
+```r
 
 perf(score, target)
 ```
 
 
 
-| count| target_count| target_rate|    ks| aucroc|  gini|
-|-----:|------------:|-----------:|-----:|------:|-----:|
-| 10000|         6990|       0.699| 0.254|  0.676| 0.353|
+|count |target_count |target_rate |ks    |aucroc |gini.sum.gini. |
+|:-----|:------------|:-----------|:-----|:------|:--------------|
+|10000 |6990         |0.699       |0.254 |0.676  |0.353          |
 
 There are some functions to plot the score/model performance (based on ggplot package).
 

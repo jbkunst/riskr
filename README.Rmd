@@ -15,10 +15,10 @@ library("ggplot2")
 options(digits = 3, knitr.table.format = "markdown")
 knitr::opts_chunk$set(collapse = TRUE, comment = ">", warning = FALSE,
                       fig.path = "vignettes/figures/",
-                      fig.width = 6, fig.height= 6,
+                      fig.width = 6, fig.height = 6,
                       fig.align = "center", dpi = 72)
 
-update_geom_defaults("line", list(colour = "navy", size = 1.1))
+update_geom_defaults("line", list(colour = "navy", size = 1.0))
 update_geom_defaults("point", list(colour = "navy", size = 3))
 update_geom_defaults("bar", list(fill = "gray50"))
 update_geom_defaults("text", list(color = "gray30", size = 4))
