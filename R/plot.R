@@ -165,6 +165,48 @@ plot_dists <- function(score, target){
   p
 }
 
+
+#' Plot Lift Chart
+#'
+#' @description Return a ggplot object. 
+#' @param score A numeric vector containing scores or probabilities
+#' @param target A numeric binary vector (0, 1)
+#' @return The plot
+#' @examples
+#' data(predictions)
+#' 
+#' score <- predictions$score
+#' target <- predictions$target
+#' 
+#' plot_lift(score, target)
+#' @references http://www2.cs.uregina.ca/~dbd/cs831/notes/lift_chart/lift_chart.html http://www.saedsayad.com/model_evaluation_c.htm
+#' @export
+plot_lift <- function(score, target){
+  
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(score)
+  )
+  
+  library("ROCR")
+  library("ggplot2")
+  library("scales")
+  
+  pred <- prediction(score, target)
+  perf <- performance(pred,"lift","rpp")
+  
+  df <- data.frame(x = unlist(perf@"x.values") , y = unlist(perf@"y.values"))
+  
+  p <- ggplot(df, aes_string("x", "y")) +
+    geom_line() +
+    geom_path(data = data.frame(x = c(0, 1), y = c(1, 1)), colour = "gray") +
+    scale_x_continuous("Rate of positive predictions",
+                       label = percent_format()) +
+    scale_y_continuous("Lift Value", limits = c(.9, NA))
+    
+  p
+}
+
 #' Plot Performance
 #'
 #' @description Return a ggplot object. 

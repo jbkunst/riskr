@@ -9,10 +9,10 @@ The `riskr` package facilitate *credit scoring* tasks such as measure the scores
 
 There are function to:
 
- 1. Measure in a simple way the performance of models via wrapper or shortcuts from ROCR functions.
+ 1. Measure in a simple way the performance of models via wrappers/shortcuts from ROCR functions.
  2. Visualize relationships between variables.
  4. Compute usual values in the credit scoring PSI, WOE, IV, KS, AUCROC, among others.
- 5. Make easier the scoring modelling process. 
+ 5. Make easier the modelling and validation process. 
 
 ## Assumptions
 
@@ -105,11 +105,25 @@ plot_gain(score, target)
 
 ```r
 
-plot_ks(1000 * score, target) +
-  ggtitle(sprintf("The KS statistics is %.0f%%", 100 * ks(score, target)))
+plot_lift(score, target)
 ```
 
 <img src="vignettes/figures/unnamed-chunk-5-3.png" title="" alt="" style="display: block; margin: auto;" />
+
+```r
+
+plot_dists(score, target) +
+  ggtitle(sprintf("The KS statistics is %.0f%%", 100 * ks(score, target)))
+```
+
+<img src="vignettes/figures/unnamed-chunk-5-4.png" title="" alt="" style="display: block; margin: auto;" />
+
+```r
+
+plot_ks(score, target) + ggtitle("Comparing ECDF")
+```
+
+<img src="vignettes/figures/unnamed-chunk-5-5.png" title="" alt="" style="display: block; margin: auto;" />
 
 
 ```r
@@ -316,4 +330,6 @@ plot_ba2(credit$flag_res_phone, credit$bad, labels = FALSE) +
 ## Related work
 
 1. [woe](http://github.com/tomasgreif/woe) package by [tomasgreif](http://github.com/tomasgreif)
-2. [smbinning](http://cran.r-project.org/web/packages/smbinning) package by [Herman Jopia](http://github.com/hjopia). [Github repository](https://github.com/cran/smbinning).
+1. [smbinning](http://cran.r-project.org/web/packages/smbinning) package by [Herman Jopia](http://github.com/hjopia). [Github repository](https://github.com/cran/smbinning).
+1. [Guide to Credit Scoring in R](https://cran.r-project.org/doc/contrib/Sharma-CreditScoring.pdf)
+1. [Gains package](https://cran.r-project.org/web/packages/gains/gains.pdf)
