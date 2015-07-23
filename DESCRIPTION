@@ -18,6 +18,7 @@ Imports:
     ROCR,
     scales,
     grid,
-    partykit
+    partykit,
+    broom
 Suggests: knitr
 VignetteBuilder: knitr

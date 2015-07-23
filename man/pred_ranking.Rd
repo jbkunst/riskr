@@ -4,7 +4,7 @@
 \alias{pred_ranking}
 \title{Ranking for predictives variables}
 \usage{
-pred_ranking(df, response = .(desercion_1))
+pred_ranking(df, target_name = "target", verbose = FALSE)
 }
 \arguments{
 \item{df}{A data frame}
@@ -16,5 +16,10 @@ A data frame with statistics like aucroc and ks from de univariate models `respo
 }
 \description{
 Calculate the predictive ranking from a data frame.
+}
+\examples{
+data("credit")
+df <- credit
+target_name <- "bad"
 }
 
