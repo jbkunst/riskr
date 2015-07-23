@@ -3,40 +3,41 @@
 #' @param df A data frame
 #' @param response The name of response variable
 #' @return A data frame with statistics like aucroc and ks from de univariate models `response ~ target`
+#' @examples
+#' data("credit")
+#' df <- credit
+#' target_name <- "bad"
 #' @export
-pred_ranking <- function(df, response = .(desercion_1)){
+pred_ranking <- function(df, target_name = "target", verbose = FALSE){
   
   require("ROCR")
+  require("plyr")
   require("dplyr")
   
-  response_var <- df[[names(response)]]
+  target <- df[[target_name]]
   
-  df2 <- df[,-which(names(df) == names(response))]
+  df2 <- df %>% subset(select = setdiff(names(df), target_name))
   
   df2 <- df2[,laply(df2, function(v){ if (length(unique(na.omit(v))) == 1) { FALSE } else {TRUE} })]
   
   res <- ldply(names(df2), function(namevar){
-    
-    message(namevar)
+    # namevar <- sample(names(df2), size = 1)
+    if(verbose) message(namevar)
     
     pred_var <- df[[namevar]]
-    daux <- data.frame(response_var = response_var, pred_var = pred_var)
+    daux <- data.frame(target = target, pred_var = pred_var)
     daux_naomit <- na.omit(daux)
     
-    model <- glm(response_var ~ pred_var, data = daux_naomit, family = binomial(link = logit))
+    model <- glm(target ~ pred_var, data = daux_naomit, family = binomial(link = logit))
     
-    pred <- prediction(model$fitted.values, daux_naomit$response)
-    perf <- performance(pred, "tpr","fpr")
+    score <- model$fitted.values
     
-    auc <- attr(performance(pred,"auc"),"y.values")[[1]]
-    ks <- max(abs(attr(perf,'y.values')[[1]] - attr(perf,'x.values')[[1]]))
+    resp <- data_frame(variable = namevar,
+                       ks = ks(score, target),
+                       aucroc = aucroc(score, target))
+    resp <- cbind(resp, perf(score, target))
     
-    daux_resp <- data.frame(variable = namevar,
-                            aucroc = auc,
-                            ks = ks,
-                            na.prop = 1 - nrow(daux_naomit)/nrow(daux))
-    
-    return(daux_resp) 
+    resp
     
   }, .progress = "text")
   
