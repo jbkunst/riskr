@@ -16,8 +16,11 @@ A string
 Write the linear combination
 }
 \examples{
+data("credit")
+
 model <- glm(bad ~ sex + marital_status + age + personal_net_income,
              data = credit, family = binomial(link = logit))
+
 linear_formula(model)
 }
 
