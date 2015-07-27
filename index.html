@@ -43,16 +43,26 @@
 
 
 
+<p><a href="https://travis-ci.org/jbkunst/riskr"><img src="https://api.travis-ci.org/jbkunst/riskr.svg" alt="travis-status"></a></p>
+
 <h2>
 <a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
 
-<p>The <code>riskr</code> package facilitate repetitive <em>bussines risk</em> (or other areas) tasks. In general this package helps to:</p>
+<p>The <code>riskr</code> package facilitate <em>credit scoring</em> tasks such as measure the scores/models performance and make easy the scoring modelling process.</p>
+
+<p>There are function to:</p>
 
 <ol>
-<li>Measure in a easy way the performance of models via wrapper or shortcuts from ROCR functions.</li>
+<li>Measure in a simple way the performance of models via wrappers/shortcuts from ROCR functions.</li>
 <li>Visualize relationships between variables.</li>
-<li>Facilitate the usual and repetitives tasks.</li>
+<li>Compute usual values in the credit scoring PSI, WOE, IV, KS, AUCROC, among others.</li>
+<li>Make easier the modelling and validation process. </li>
 </ol>
+
+<h2>
+<a id="assumptions" class="anchor" href="#assumptions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Assumptions</h2>
+
+<p><code>riskr</code> assume the target variable is <em>binary</em> with numeric values: 0 and 1. Usually 1 means the characteristic of interest.</p>
 
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
@@ -60,11 +70,6 @@
 <p>You can install the latest development version from github with:</p>
 
 <div class="highlight highlight-r"><pre><span class="pl-e">devtools</span><span class="pl-k">::</span>install_github(<span class="pl-s"><span class="pl-pds">"</span>jbkunst/riskr<span class="pl-pds">"</span></span>)</pre></div>
-
-<h2>
-<a id="facts" class="anchor" href="#facts" aria-hidden="true"><span class="octicon octicon-link"></span></a>Facts</h2>
-
-<p><code>riskr</code> assume the target variable is binary with numeric values: 0 and 1. Usually 1 means the characteristic of interest.</p>
 
 <h2>
 <a id="functions" class="anchor" href="#functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Functions</h2>
@@ -114,9 +119,9 @@ head(<span class="pl-smi">predictions</span>)</pre></div>
 
 <div class="highlight highlight-r"><pre>
 str(<span class="pl-smi">predictions</span>)
-<span class="pl-c">#&gt; 'data.frame':    10000 obs. of  2 variables:</span>
-<span class="pl-c">#&gt;  $ score : num  0.2023 0.8058 0.5134 0.0525 0.3288 ...</span>
-<span class="pl-c">#&gt;  $ target: num  1 1 1 0 1 0 1 0 1 1 ...</span>
+<span class="pl-k">&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>data.frame<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-c1">10000</span> <span class="pl-smi">obs</span>. <span class="pl-smi">of</span>  <span class="pl-c1">2</span> <span class="pl-smi">variables</span><span class="pl-k">:</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">score</span> <span class="pl-k">:</span> <span class="pl-smi">num</span>  <span class="pl-c1">0.2023</span> <span class="pl-c1">0.8058</span> <span class="pl-c1">0.5134</span> <span class="pl-c1">0.0525</span> <span class="pl-c1">0.3288</span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">target</span><span class="pl-k">:</span> <span class="pl-smi">num</span>  <span class="pl-c1">1</span> <span class="pl-c1">1</span> <span class="pl-c1">1</span> <span class="pl-c1">0</span> <span class="pl-c1">1</span> <span class="pl-c1">0</span> <span class="pl-c1">1</span> <span class="pl-c1">0</span> <span class="pl-c1">1</span> <span class="pl-c1">1</span> <span class="pl-k">...</span>
 
 <span class="pl-smi">score</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">predictions</span><span class="pl-k">$</span><span class="pl-smi">score</span>
 
@@ -128,15 +133,15 @@ str(<span class="pl-smi">predictions</span>)
 <p>The main statistics or indicators are KS, AUCROC so:</p>
 
 <div class="highlight highlight-r"><pre>ks(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)
-<span class="pl-c">#&gt; [1] 0.254</span>
+<span class="pl-k">&gt;</span> [<span class="pl-c1">1</span>] <span class="pl-c1">0.254</span>
 
 aucroc(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)
-<span class="pl-c">#&gt; [1] 0.676</span>
+<span class="pl-k">&gt;</span> [<span class="pl-c1">1</span>] <span class="pl-c1">0.676</span>
 
 gini(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)
-<span class="pl-c">#&gt; [1] 0.353</span>
+<span class="pl-k">&gt;</span> [<span class="pl-c1">1</span>] <span class="pl-c1">0.353</span>
 
-score_indicators(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)</pre></div>
+perf(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)</pre></div>
 
 <table>
 <thead>
@@ -161,9 +166,9 @@ score_indicators(<span class="pl-smi">score</span>, <span class="pl-smi">target<
 </tbody>
 </table>
 
-<div class="highlight highlight-r"><pre>
-plot_roc(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)
-<span class="pl-c">#&gt; Warning: package 'scales' was built under R version 3.2.1</span></pre></div>
+<p>There are some functions to plot the score/model performance (based on ggplot package).</p>
+
+<div class="highlight highlight-r"><pre>plot_roc(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)</pre></div>
 
 <p><img src="vignettes/figures/unnamed-chunk-4-1.png" title="" alt=""></p>
 
@@ -172,63 +177,116 @@ plot_gain(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)
 
 <p><img src="vignettes/figures/unnamed-chunk-4-2.png" title="" alt=""></p>
 
-<h3>
-<a id="odds-table" class="anchor" href="#odds-table" aria-hidden="true"><span class="octicon octicon-link"></span></a>Odds Table</h3>
+<div class="highlight highlight-r"><pre>
+plot_lift(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)</pre></div>
 
-<p>The odds table are other way to show how a score/model performs.</p>
+<p><img src="vignettes/figures/unnamed-chunk-4-3.png" title="" alt=""></p>
+
+<div class="highlight highlight-r"><pre>
+plot_dists(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>) <span class="pl-k">+</span>
+  ggtitle(sprintf(<span class="pl-s"><span class="pl-pds">"</span>The KS statistics is %.0f%%<span class="pl-pds">"</span></span>, <span class="pl-c1">100</span> <span class="pl-k">*</span> ks(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)))</pre></div>
+
+<p><img src="vignettes/figures/unnamed-chunk-4-4.png" title="" alt=""></p>
+
+<div class="highlight highlight-r"><pre>
+plot_ks(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>) <span class="pl-k">+</span> ggtitle(<span class="pl-s"><span class="pl-pds">"</span>Comparing ECDF<span class="pl-pds">"</span></span>)</pre></div>
+
+<p><img src="vignettes/figures/unnamed-chunk-4-5.png" title="" alt=""></p>
+
+<div class="highlight highlight-r"><pre>plot_perf(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)</pre></div>
+
+<p><img src="vignettes/figures/unnamed-chunk-5-1.png" title="" alt=""></p>
+
+<h3>
+<a id="odds-tables" class="anchor" href="#odds-tables" aria-hidden="true"><span class="octicon octicon-link"></span></a>Odds Tables</h3>
+
+<p>The odds tables are other way to show how a score/model performs.</p>
 
 <div class="highlight highlight-r"><pre><span class="pl-smi">score</span> <span class="pl-k">&lt;-</span> round(<span class="pl-smi">predictions</span><span class="pl-k">$</span><span class="pl-smi">score</span> <span class="pl-k">*</span> <span class="pl-c1">1000</span>)
 
-odds_table(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>, <span class="pl-v">nclass</span> <span class="pl-k">=</span> <span class="pl-c1">4</span>)</pre></div>
+odds_table(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>, <span class="pl-v">nclass</span> <span class="pl-k">=</span> <span class="pl-c1">5</span>) <span class="pl-c"># default is (nclass =) 10 groups of equal size</span></pre></div>
 
 <table>
 <thead>
 <tr>
-<th align="left">variable</th>
+<th align="left">class</th>
 <th align="right">count</th>
 <th align="right">percent</th>
 <th align="right">target_count</th>
 <th align="right">target_rate</th>
 <th align="right">target_percent</th>
+<th align="right">non_target_count</th>
+<th align="right">non_target_percent</th>
 <th align="right">odds</th>
+<th align="right">woe</th>
+<th align="right">iv</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">[1,199]</td>
-<td align="right">2502</td>
-<td align="right">0.250</td>
-<td align="right">1304</td>
-<td align="right">0.521</td>
-<td align="right">0.187</td>
-<td align="right">1.09</td>
+<td align="left">[1,164]</td>
+<td align="right">2009</td>
+<td align="right">0.201</td>
+<td align="right">1010</td>
+<td align="right">0.503</td>
+<td align="right">0.144</td>
+<td align="right">999</td>
+<td align="right">0.332</td>
+<td align="right">1.01</td>
+<td align="right">-0.832</td>
+<td align="right">0.156</td>
 </tr>
 <tr>
-<td align="left">(199,430]</td>
-<td align="right">2504</td>
-<td align="right">0.250</td>
-<td align="right">1661</td>
-<td align="right">0.663</td>
-<td align="right">0.238</td>
-<td align="right">1.97</td>
+<td align="left">(164,331]</td>
+<td align="right">1991</td>
+<td align="right">0.199</td>
+<td align="right">1255</td>
+<td align="right">0.630</td>
+<td align="right">0.180</td>
+<td align="right">736</td>
+<td align="right">0.245</td>
+<td align="right">1.71</td>
+<td align="right">-0.309</td>
+<td align="right">0.020</td>
 </tr>
 <tr>
-<td align="left">(430,683]</td>
-<td align="right">2502</td>
-<td align="right">0.250</td>
-<td align="right">1894</td>
-<td align="right">0.757</td>
-<td align="right">0.271</td>
-<td align="right">3.12</td>
+<td align="left">(331,526]</td>
+<td align="right">2008</td>
+<td align="right">0.201</td>
+<td align="right">1429</td>
+<td align="right">0.712</td>
+<td align="right">0.204</td>
+<td align="right">579</td>
+<td align="right">0.192</td>
+<td align="right">2.47</td>
+<td align="right">0.061</td>
+<td align="right">0.001</td>
 </tr>
 <tr>
-<td align="left">(683,996]</td>
-<td align="right">2492</td>
-<td align="right">0.249</td>
-<td align="right">2131</td>
-<td align="right">0.855</td>
-<td align="right">0.305</td>
-<td align="right">5.90</td>
+<td align="left">(526,738]</td>
+<td align="right">2000</td>
+<td align="right">0.200</td>
+<td align="right">1573</td>
+<td align="right">0.786</td>
+<td align="right">0.225</td>
+<td align="right">427</td>
+<td align="right">0.142</td>
+<td align="right">3.68</td>
+<td align="right">0.461</td>
+<td align="right">0.038</td>
+</tr>
+<tr>
+<td align="left">(738,996]</td>
+<td align="right">1992</td>
+<td align="right">0.199</td>
+<td align="right">1723</td>
+<td align="right">0.865</td>
+<td align="right">0.246</td>
+<td align="right">269</td>
+<td align="right">0.089</td>
+<td align="right">6.41</td>
+<td align="right">1.015</td>
+<td align="right">0.159</td>
 </tr>
 </tbody>
 </table>
@@ -239,13 +297,17 @@ odds_table(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>
 <table>
 <thead>
 <tr>
-<th align="left">variable</th>
+<th align="left">class</th>
 <th align="right">count</th>
 <th align="right">percent</th>
 <th align="right">target_count</th>
 <th align="right">target_rate</th>
 <th align="right">target_percent</th>
+<th align="right">non_target_count</th>
+<th align="right">non_target_percent</th>
 <th align="right">odds</th>
+<th align="right">woe</th>
+<th align="right">iv</th>
 </tr>
 </thead>
 <tbody>
@@ -256,7 +318,11 @@ odds_table(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>
 <td align="right">2052</td>
 <td align="right">0.558</td>
 <td align="right">0.294</td>
+<td align="right">1623</td>
+<td align="right">0.539</td>
 <td align="right">1.26</td>
+<td align="right">-0.608</td>
+<td align="right">0.149</td>
 </tr>
 <tr>
 <td align="left">(300,700]</td>
@@ -265,7 +331,11 @@ odds_table(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>
 <td align="right">2926</td>
 <td align="right">0.736</td>
 <td align="right">0.419</td>
+<td align="right">1052</td>
+<td align="right">0.350</td>
 <td align="right">2.78</td>
+<td align="right">0.180</td>
+<td align="right">0.012</td>
 </tr>
 <tr>
 <td align="left">(700,999]</td>
@@ -274,7 +344,11 @@ odds_table(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>
 <td align="right">2012</td>
 <td align="right">0.857</td>
 <td align="right">0.288</td>
+<td align="right">335</td>
+<td align="right">0.111</td>
 <td align="right">6.01</td>
+<td align="right">0.950</td>
+<td align="right">0.168</td>
 </tr>
 </tbody>
 </table>
@@ -282,26 +356,116 @@ odds_table(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>
 <h3>
 <a id="confusion-matrix" class="anchor" href="#confusion-matrix" aria-hidden="true"><span class="octicon octicon-link"></span></a>Confusion Matrix</h3>
 
+<p>The <code>conf_matrix</code> function return a list with the next elements:</p>
+
 <div class="highlight highlight-r"><pre><span class="pl-smi">score_cat</span> <span class="pl-k">&lt;-</span> ifelse(<span class="pl-smi">score</span> <span class="pl-k">&lt;</span> <span class="pl-c1">500</span>, <span class="pl-c1">0</span>, <span class="pl-c1">1</span>)
 
-conf_matrix(<span class="pl-smi">score_cat</span>, <span class="pl-smi">target</span>)
-<span class="pl-c">#&gt; $confusion.matrix</span>
-<span class="pl-c">#&gt;    class pred 0 pred 1</span>
-<span class="pl-c">#&gt; 0 true 0   2230    780</span>
-<span class="pl-c">#&gt; 1 true 1   3476   3514</span>
-<span class="pl-c">#&gt; </span>
-<span class="pl-c">#&gt; $indicators</span>
-<span class="pl-c">#&gt;                               term term.short value</span>
-<span class="pl-c">#&gt; 1                         Accuracy         AC 0.574</span>
-<span class="pl-c">#&gt; 2 Recall | True Positive rate (GG)     Recall 0.503</span>
-<span class="pl-c">#&gt; 3              False Positive rate         FP 0.259</span>
-<span class="pl-c">#&gt; 4          True Negative rate (BB)         TN 0.741</span>
-<span class="pl-c">#&gt; 5              False Negative rate         FN 0.497</span>
-<span class="pl-c">#&gt; 6                        Precision          P 0.818</span>
-<span class="pl-c">#&gt; </span>
-<span class="pl-c">#&gt; $indicators.t</span>
-<span class="pl-c">#&gt;      AC Recall    FP    TN    FN     P</span>
-<span class="pl-c">#&gt; 1 0.574  0.503 0.259 0.741 0.497 0.818</span></pre></div>
+<span class="pl-smi">cm</span> <span class="pl-k">&lt;-</span> conf_matrix(<span class="pl-smi">score_cat</span>, <span class="pl-smi">target</span>)</pre></div>
+
+<ul>
+<li>The confusion matrix:</li>
+</ul>
+
+<div class="highlight highlight-r"><pre><span class="pl-smi">cm</span><span class="pl-k">$</span><span class="pl-smi">confusion.matrix</span></pre></div>
+
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">class</th>
+<th align="right">pred 0</th>
+<th align="right">pred 1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">0</td>
+<td align="left">true 0</td>
+<td align="right">2230</td>
+<td align="right">780</td>
+</tr>
+<tr>
+<td align="left">1</td>
+<td align="left">true 1</td>
+<td align="right">3476</td>
+<td align="right">3514</td>
+</tr>
+</tbody>
+</table>
+
+<ul>
+<li>The confusion matrix statistics</li>
+</ul>
+
+<div class="highlight highlight-r"><pre><span class="pl-smi">cm</span><span class="pl-k">$</span><span class="pl-smi">indicators</span></pre></div>
+
+<table>
+<thead>
+<tr>
+<th align="left">term</th>
+<th align="left">term.short</th>
+<th align="right">value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Accuracy</td>
+<td align="left">AC</td>
+<td align="right">0.574</td>
+</tr>
+<tr>
+<td align="left">Recall | True Positive rate (GG)</td>
+<td align="left">Recall</td>
+<td align="right">0.503</td>
+</tr>
+<tr>
+<td align="left">False Positive rate</td>
+<td align="left">FP</td>
+<td align="right">0.259</td>
+</tr>
+<tr>
+<td align="left">True Negative rate (BB)</td>
+<td align="left">TN</td>
+<td align="right">0.741</td>
+</tr>
+<tr>
+<td align="left">False Negative rate</td>
+<td align="left">FN</td>
+<td align="right">0.497</td>
+</tr>
+<tr>
+<td align="left">Precision</td>
+<td align="left">P</td>
+<td align="right">0.818</td>
+</tr>
+</tbody>
+</table>
+
+<div class="highlight highlight-r"><pre>
+<span class="pl-smi">cm</span><span class="pl-k">$</span><span class="pl-smi">indicators.t</span></pre></div>
+
+<table>
+<thead>
+<tr>
+<th align="right">AC</th>
+<th align="right">Recall</th>
+<th align="right">FP</th>
+<th align="right">TN</th>
+<th align="right">FN</th>
+<th align="right">P</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">0.574</td>
+<td align="right">0.503</td>
+<td align="right">0.259</td>
+<td align="right">0.741</td>
+<td align="right">0.497</td>
+<td align="right">0.818</td>
+</tr>
+</tbody>
+</table>
 
 <h3>
 <a id="bivariate-tables" class="anchor" href="#bivariate-tables" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bivariate Tables</h3>
@@ -309,24 +473,24 @@ conf_matrix(<span class="pl-smi">score_cat</span>, <span class="pl-smi">target</
 <div class="highlight highlight-r"><pre>data(<span class="pl-s"><span class="pl-pds">"</span>credit<span class="pl-pds">"</span></span>)
 
 str(<span class="pl-smi">credit</span>)
-<span class="pl-c">#&gt; 'data.frame':    49694 obs. of  17 variables:</span>
-<span class="pl-c">#&gt;  $ id_client          : int  1 7 9 12 14 19 22 26 28 30 ...</span>
-<span class="pl-c">#&gt;  $ sex                : chr  "F" "F" "F" "F" ...</span>
-<span class="pl-c">#&gt;  $ marital_status     : chr  "O" "S" "S" "C" ...</span>
-<span class="pl-c">#&gt;  $ age                : int  44 22 27 32 36 46 17 20 71 46 ...</span>
-<span class="pl-c">#&gt;  $ flag_res_phone     : chr  "N" "Y" "Y" "Y" ...</span>
-<span class="pl-c">#&gt;  $ area_code_res_phone: int  31 31 31 31 31 50 50 50 31 31 ...</span>
-<span class="pl-c">#&gt;  $ payment_day        : int  12 12 20 12 12 12 12 12 18 8 ...</span>
-<span class="pl-c">#&gt;  $ residence_type     : chr  "P" "A" "A" "P" ...</span>
-<span class="pl-c">#&gt;  $ months_in_residence: int  12 0 0 24 120 360 12 12 96 72 ...</span>
-<span class="pl-c">#&gt;  $ months_in_the_job  : int  48 48 0 0 36 120 12 24 12 12 ...</span>
-<span class="pl-c">#&gt;  $ profession_code    : int  731 999 950 165 15 704 38 39 13 801 ...</span>
-<span class="pl-c">#&gt;  $ flag_other_card    : chr  "N" "N" "N" "N" ...</span>
-<span class="pl-c">#&gt;  $ flag_mobile_phone  : chr  "N" "N" "N" "N" ...</span>
-<span class="pl-c">#&gt;  $ flag_contact_phone : chr  "N" "N" "N" "N" ...</span>
-<span class="pl-c">#&gt;  $ personal_net_income: num  300 410 1000 700 1987 ...</span>
-<span class="pl-c">#&gt;  $ quant_add_cards    : int  0 0 0 0 1 0 0 0 0 0 ...</span>
-<span class="pl-c">#&gt;  $ bad                : int  0 0 1 0 0 0 1 1 0 0 ...</span>
+<span class="pl-k">&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>data.frame<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-c1">49694</span> <span class="pl-smi">obs</span>. <span class="pl-smi">of</span>  <span class="pl-c1">17</span> <span class="pl-smi">variables</span><span class="pl-k">:</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">id_client</span>          <span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">1</span> <span class="pl-c1">7</span> <span class="pl-c1">9</span> <span class="pl-c1">12</span> <span class="pl-c1">14</span> <span class="pl-c1">19</span> <span class="pl-c1">22</span> <span class="pl-c1">26</span> <span class="pl-c1">28</span> <span class="pl-c1">30</span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">sex</span>                <span class="pl-k">:</span> <span class="pl-smi">chr</span>  <span class="pl-s"><span class="pl-pds">"</span>F<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>F<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>F<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>F<span class="pl-pds">"</span></span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">marital_status</span>     <span class="pl-k">:</span> <span class="pl-smi">chr</span>  <span class="pl-s"><span class="pl-pds">"</span>O<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>S<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>S<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>C<span class="pl-pds">"</span></span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">age</span>                <span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">44</span> <span class="pl-c1">22</span> <span class="pl-c1">27</span> <span class="pl-c1">32</span> <span class="pl-c1">36</span> <span class="pl-c1">46</span> <span class="pl-c1">17</span> <span class="pl-c1">20</span> <span class="pl-c1">71</span> <span class="pl-c1">46</span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">flag_res_phone</span>     <span class="pl-k">:</span> <span class="pl-smi">chr</span>  <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>Y<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>Y<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>Y<span class="pl-pds">"</span></span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">area_code_res_phone</span><span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">31</span> <span class="pl-c1">31</span> <span class="pl-c1">31</span> <span class="pl-c1">31</span> <span class="pl-c1">31</span> <span class="pl-c1">50</span> <span class="pl-c1">50</span> <span class="pl-c1">50</span> <span class="pl-c1">31</span> <span class="pl-c1">31</span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">payment_day</span>        <span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">12</span> <span class="pl-c1">12</span> <span class="pl-c1">20</span> <span class="pl-c1">12</span> <span class="pl-c1">12</span> <span class="pl-c1">12</span> <span class="pl-c1">12</span> <span class="pl-c1">12</span> <span class="pl-c1">18</span> <span class="pl-c1">8</span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">residence_type</span>     <span class="pl-k">:</span> <span class="pl-smi">chr</span>  <span class="pl-s"><span class="pl-pds">"</span>P<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>A<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>A<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>P<span class="pl-pds">"</span></span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">months_in_residence</span><span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">12</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">24</span> <span class="pl-c1">120</span> <span class="pl-c1">360</span> <span class="pl-c1">12</span> <span class="pl-c1">12</span> <span class="pl-c1">96</span> <span class="pl-c1">72</span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">months_in_the_job</span>  <span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">48</span> <span class="pl-c1">48</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">36</span> <span class="pl-c1">120</span> <span class="pl-c1">12</span> <span class="pl-c1">24</span> <span class="pl-c1">12</span> <span class="pl-c1">12</span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">profession_code</span>    <span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">731</span> <span class="pl-c1">999</span> <span class="pl-c1">950</span> <span class="pl-c1">165</span> <span class="pl-c1">15</span> <span class="pl-c1">704</span> <span class="pl-c1">38</span> <span class="pl-c1">39</span> <span class="pl-c1">13</span> <span class="pl-c1">801</span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">flag_other_card</span>    <span class="pl-k">:</span> <span class="pl-smi">chr</span>  <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">flag_mobile_phone</span>  <span class="pl-k">:</span> <span class="pl-smi">chr</span>  <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">flag_contact_phone</span> <span class="pl-k">:</span> <span class="pl-smi">chr</span>  <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">personal_net_income</span><span class="pl-k">:</span> <span class="pl-smi">num</span>  <span class="pl-c1">300</span> <span class="pl-c1">410</span> <span class="pl-c1">1000</span> <span class="pl-c1">700</span> <span class="pl-c1">1987</span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">quant_add_cards</span>    <span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">1</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-k">...</span>
+<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">bad</span>                <span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">1</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">1</span> <span class="pl-c1">1</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-k">...</span>
 
 ft(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">marital_status</span>)</pre></div>
 
@@ -340,14 +504,14 @@ ft(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-
 </thead>
 <tbody>
 <tr>
+<td align="left">S</td>
+<td align="right">25249</td>
+<td align="right">0.508</td>
+</tr>
+<tr>
 <td align="left">C</td>
 <td align="right">17097</td>
 <td align="right">0.344</td>
-</tr>
-<tr>
-<td align="left">D</td>
-<td align="right">2142</td>
-<td align="right">0.043</td>
 </tr>
 <tr>
 <td align="left">O</td>
@@ -355,14 +519,14 @@ ft(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-
 <td align="right">0.056</td>
 </tr>
 <tr>
-<td align="left">S</td>
-<td align="right">25249</td>
-<td align="right">0.508</td>
-</tr>
-<tr>
 <td align="left">V</td>
 <td align="right">2430</td>
 <td align="right">0.049</td>
+</tr>
+<tr>
+<td align="left">D</td>
+<td align="right">2142</td>
+<td align="right">0.043</td>
 </tr>
 </tbody>
 </table>
@@ -373,13 +537,17 @@ bt(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-
 <table>
 <thead>
 <tr>
-<th align="left">variable</th>
+<th align="left">class</th>
 <th align="right">count</th>
 <th align="right">percent</th>
 <th align="right">target_count</th>
 <th align="right">target_rate</th>
 <th align="right">target_percent</th>
+<th align="right">non_target_count</th>
+<th align="right">non_target_percent</th>
 <th align="right">odds</th>
+<th align="right">woe</th>
+<th align="right">iv</th>
 </tr>
 </thead>
 <tbody>
@@ -390,7 +558,11 @@ bt(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-
 <td align="right">2483</td>
 <td align="right">0.145</td>
 <td align="right">0.253</td>
+<td align="right">14614</td>
+<td align="right">0.366</td>
 <td align="right">0.170</td>
+<td align="right">-0.370</td>
+<td align="right">0.042</td>
 </tr>
 <tr>
 <td align="left">D</td>
@@ -399,7 +571,11 @@ bt(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-
 <td align="right">322</td>
 <td align="right">0.150</td>
 <td align="right">0.033</td>
+<td align="right">1820</td>
+<td align="right">0.046</td>
 <td align="right">0.177</td>
+<td align="right">-0.330</td>
+<td align="right">0.004</td>
 </tr>
 <tr>
 <td align="left">O</td>
@@ -408,7 +584,11 @@ bt(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-
 <td align="right">660</td>
 <td align="right">0.238</td>
 <td align="right">0.067</td>
+<td align="right">2116</td>
+<td align="right">0.053</td>
 <td align="right">0.312</td>
+<td align="right">0.237</td>
+<td align="right">0.003</td>
 </tr>
 <tr>
 <td align="left">S</td>
@@ -417,7 +597,11 @@ bt(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-
 <td align="right">6059</td>
 <td align="right">0.240</td>
 <td align="right">0.617</td>
+<td align="right">19190</td>
+<td align="right">0.481</td>
 <td align="right">0.316</td>
+<td align="right">0.249</td>
+<td align="right">0.034</td>
 </tr>
 <tr>
 <td align="left">V</td>
@@ -426,7 +610,11 @@ bt(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-
 <td align="right">289</td>
 <td align="right">0.119</td>
 <td align="right">0.029</td>
+<td align="right">2141</td>
+<td align="right">0.054</td>
 <td align="right">0.135</td>
+<td align="right">-0.600</td>
+<td align="right">0.015</td>
 </tr>
 </tbody>
 </table>
@@ -434,73 +622,163 @@ bt(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-
 <div class="highlight highlight-r"><pre>
 library(<span class="pl-s"><span class="pl-pds">"</span>ggplot2<span class="pl-pds">"</span></span>)
 
-<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">age_bin</span> <span class="pl-k">&lt;-</span> cut_interval(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">age</span>, <span class="pl-c1">4</span>)
+<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">age_bin</span> <span class="pl-k">&lt;-</span> cut_interval(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">age</span>, <span class="pl-c1">3</span>)
 
 bt(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">age_bin</span>, <span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">bad</span>)</pre></div>
 
 <table>
 <thead>
 <tr>
-<th align="left">variable</th>
+<th align="left">class</th>
 <th align="right">count</th>
 <th align="right">percent</th>
 <th align="right">target_count</th>
 <th align="right">target_rate</th>
 <th align="right">target_percent</th>
+<th align="right">non_target_count</th>
+<th align="right">non_target_percent</th>
 <th align="right">odds</th>
+<th align="right">woe</th>
+<th align="right">iv</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">[15,35]</td>
-<td align="right">28377</td>
-<td align="right">0.571</td>
-<td align="right">7015</td>
-<td align="right">0.247</td>
-<td align="right">0.715</td>
-<td align="right">0.328</td>
+<td align="left">[15,41.7]</td>
+<td align="right">35654</td>
+<td align="right">0.717</td>
+<td align="right">8174</td>
+<td align="right">0.229</td>
+<td align="right">0.833</td>
+<td align="right">27480</td>
+<td align="right">0.689</td>
+<td align="right">0.297</td>
+<td align="right">0.190</td>
+<td align="right">0.027</td>
 </tr>
 <tr>
-<td align="left">(35,55]</td>
-<td align="right">17425</td>
-<td align="right">0.351</td>
-<td align="right">2473</td>
-<td align="right">0.142</td>
-<td align="right">0.252</td>
-<td align="right">0.165</td>
+<td align="left">(41.7,68.3]</td>
+<td align="right">13313</td>
+<td align="right">0.268</td>
+<td align="right">1585</td>
+<td align="right">0.119</td>
+<td align="right">0.162</td>
+<td align="right">11728</td>
+<td align="right">0.294</td>
+<td align="right">0.135</td>
+<td align="right">-0.599</td>
+<td align="right">0.079</td>
 </tr>
 <tr>
-<td align="left">(55,75]</td>
-<td align="right">3767</td>
-<td align="right">0.076</td>
-<td align="right">313</td>
-<td align="right">0.083</td>
-<td align="right">0.032</td>
-<td align="right">0.091</td>
-</tr>
-<tr>
-<td align="left">(75,95]</td>
-<td align="right">125</td>
-<td align="right">0.003</td>
-<td align="right">12</td>
-<td align="right">0.096</td>
-<td align="right">0.001</td>
-<td align="right">0.106</td>
+<td align="left">(68.3,95]</td>
+<td align="right">727</td>
+<td align="right">0.015</td>
+<td align="right">54</td>
+<td align="right">0.074</td>
+<td align="right">0.006</td>
+<td align="right">673</td>
+<td align="right">0.017</td>
+<td align="right">0.080</td>
+<td align="right">-1.121</td>
+<td align="right">0.013</td>
 </tr>
 </tbody>
 </table>
 
-<div class="highlight highlight-r"><pre>
-plot_bt(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">age_bin</span>, <span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">bad</span>) <span class="pl-k">+</span> ggtitle(<span class="pl-s"><span class="pl-pds">"</span>Age<span class="pl-pds">"</span></span>)</pre></div>
+<div class="highlight highlight-r"><pre>plot_ba(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">age_bin</span>, <span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">bad</span>)</pre></div>
 
-<p><img src="vignettes/figures/unnamed-chunk-7-1.png" title="" alt=""></p>
+<p><img src="vignettes/figures/unnamed-chunk-11-1.png" title="" alt=""></p>
 
 <div class="highlight highlight-r"><pre>
-plot_bt(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">flag_res_phone</span>, <span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">bad</span>,
-        <span class="pl-v">count.labels</span> <span class="pl-k">=</span> <span class="pl-c1">TRUE</span>, <span class="pl-v">target.labels</span> <span class="pl-k">=</span> <span class="pl-c1">TRUE</span>) <span class="pl-k">+</span>
+<span class="pl-c"># order by odds</span>
+<span class="pl-smi">lvls_rt</span> <span class="pl-k">&lt;-</span> bt(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">residence_type</span>, <span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">bad</span>) %<span class="pl-k">&gt;</span>% 
+  arrange(desc(<span class="pl-smi">odds</span>)) %<span class="pl-k">&gt;</span>%  .[[<span class="pl-s"><span class="pl-pds">"</span>class<span class="pl-pds">"</span></span>]]
+
+<span class="pl-smi">residence_type2</span> <span class="pl-k">&lt;-</span> <span class="pl-k">factor</span>(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">residence_type</span>, <span class="pl-v">levels</span> <span class="pl-k">=</span> <span class="pl-smi">lvls_rt</span>)
+
+plot_ba(<span class="pl-smi">residence_type2</span>, <span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">bad</span>)</pre></div>
+
+<p><img src="vignettes/figures/unnamed-chunk-11-2.png" title="" alt=""></p>
+
+<p>The minified version of <code>plot_ba</code></p>
+
+<div class="highlight highlight-r"><pre>plot_ba2(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">age_bin</span>, <span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">bad</span>) <span class="pl-k">+</span> ggtitle(<span class="pl-s"><span class="pl-pds">"</span>Age<span class="pl-pds">"</span></span>)</pre></div>
+
+<p><img src="vignettes/figures/unnamed-chunk-12-1.png" title="" alt=""></p>
+
+<div class="highlight highlight-r"><pre>
+
+plot_ba2(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">flag_res_phone</span>, <span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">bad</span>, <span class="pl-v">labels</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>) <span class="pl-k">+</span>
   ggtitle(<span class="pl-s"><span class="pl-pds">"</span>Flag Response Phone<span class="pl-pds">"</span></span>)</pre></div>
 
-<p><img src="vignettes/figures/unnamed-chunk-7-2.png" title="" alt=""></p>
+<p><img src="vignettes/figures/unnamed-chunk-12-2.png" title="" alt=""></p>
+
+<h2>
+<a id="related-work" class="anchor" href="#related-work" aria-hidden="true"><span class="octicon octicon-link"></span></a>Related work</h2>
+
+<ol>
+<li>
+<a href="http://github.com/tomasgreif/woe">woe</a> package by <a href="http://github.com/tomasgreif">tomasgreif</a>
+</li>
+<li>
+<a href="http://cran.r-project.org/web/packages/smbinning">smbinning</a> package by <a href="http://github.com/hjopia">Herman Jopia</a>. <a href="https://github.com/cran/smbinning">Github repository</a>.</li>
+<li><a href="https://cran.r-project.org/doc/contrib/Sharma-CreditScoring.pdf">Guide to Credit Scoring in R</a></li>
+<li><a href="https://cran.r-project.org/web/packages/gains/gains.pdf">Gains package</a></li>
+</ol>
+
+<h2>
+<a id="session-info" class="anchor" href="#session-info" aria-hidden="true"><span class="octicon octicon-link"></span></a>Session Info</h2>
+
+<div class="highlight highlight-r"><pre>library(<span class="pl-s"><span class="pl-pds">"</span>riskr<span class="pl-pds">"</span></span>)
+library(<span class="pl-s"><span class="pl-pds">"</span>printr<span class="pl-pds">"</span></span>)
+library(<span class="pl-s"><span class="pl-pds">"</span>ggplot2<span class="pl-pds">"</span></span>)
+library(<span class="pl-s"><span class="pl-pds">"</span>ggthemes<span class="pl-pds">"</span></span>)
+options(<span class="pl-v">digits</span> <span class="pl-k">=</span> <span class="pl-c1">3</span>, <span class="pl-v">knitr.table.format</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>markdown<span class="pl-pds">"</span></span>)
+<span class="pl-e">knitr</span><span class="pl-k">::</span><span class="pl-smi">opts_chunk</span><span class="pl-k">$</span>set(<span class="pl-v">collapse</span> <span class="pl-k">=</span> <span class="pl-c1">TRUE</span>, <span class="pl-v">comment</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>&gt;<span class="pl-pds">"</span></span>, <span class="pl-v">warning</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>,
+                      <span class="pl-v">fig.path</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>vignettes/figures/<span class="pl-pds">"</span></span>,
+                      <span class="pl-v">fig.width</span> <span class="pl-k">=</span> <span class="pl-c1">6</span>, <span class="pl-v">fig.height</span> <span class="pl-k">=</span> <span class="pl-c1">6</span>,
+                      <span class="pl-v">fig.align</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>center<span class="pl-pds">"</span></span>, <span class="pl-v">dpi</span> <span class="pl-k">=</span> <span class="pl-c1">72</span>)
+
+theme_set(theme_fivethirtyeight(<span class="pl-v">base_size</span> <span class="pl-k">=</span> <span class="pl-c1">11</span>) <span class="pl-k">+</span>
+            theme(<span class="pl-v">axis.title</span> <span class="pl-k">=</span> element_text(<span class="pl-v">colour</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>grey30<span class="pl-pds">"</span></span>),
+                  <span class="pl-v">axis.title.y</span> <span class="pl-k">=</span> element_text(<span class="pl-v">angle</span> <span class="pl-k">=</span> <span class="pl-c1">90</span>),
+                  <span class="pl-v">strip.background</span> <span class="pl-k">=</span> element_rect(<span class="pl-v">fill</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>#434348<span class="pl-pds">"</span></span>),
+                  <span class="pl-v">strip.text</span> <span class="pl-k">=</span> element_text(<span class="pl-v">color</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>#F0F0F0<span class="pl-pds">"</span></span>),
+                  <span class="pl-v">plot.title</span> <span class="pl-k">=</span> element_text(<span class="pl-v">face</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>plain<span class="pl-pds">"</span></span>, <span class="pl-v">size</span> <span class="pl-k">=</span> structure(<span class="pl-c1">1.2</span>, <span class="pl-v">class</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>rel<span class="pl-pds">"</span></span>))))
+update_geom_defaults(<span class="pl-s"><span class="pl-pds">"</span>line<span class="pl-pds">"</span></span>, <span class="pl-k">list</span>(<span class="pl-v">colour</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>#434348<span class="pl-pds">"</span></span>, <span class="pl-v">size</span> <span class="pl-k">=</span> <span class="pl-c1">1.05</span>))
+update_geom_defaults(<span class="pl-s"><span class="pl-pds">"</span>point<span class="pl-pds">"</span></span>, <span class="pl-k">list</span>(<span class="pl-v">colour</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>#434348<span class="pl-pds">"</span></span>, <span class="pl-v">size</span> <span class="pl-k">=</span> <span class="pl-c1">3</span>))
+update_geom_defaults(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-k">list</span>(<span class="pl-v">fill</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>#7cb5ec<span class="pl-pds">"</span></span>))
+update_geom_defaults(<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span>, <span class="pl-k">list</span>(<span class="pl-v">size</span> <span class="pl-k">=</span> <span class="pl-c1">4</span>, <span class="pl-v">colour</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>gray30<span class="pl-pds">"</span></span>))</pre></div>
+
+<div class="highlight highlight-r"><pre>print(sessionInfo())
+<span class="pl-k">&gt;</span> <span class="pl-smi">R</span> <span class="pl-smi">version</span> <span class="pl-c1">3.2.0</span> (<span class="pl-c1">2015</span><span class="pl-k">-</span><span class="pl-c1">04</span><span class="pl-k">-</span><span class="pl-c1">16</span>)
+<span class="pl-k">&gt;</span> <span class="pl-smi">Platform</span><span class="pl-k">:</span> <span class="pl-smi">i386</span><span class="pl-k">-</span><span class="pl-smi">w64</span><span class="pl-k">-</span><span class="pl-smi">mingw32</span><span class="pl-k">/</span>i386 (<span class="pl-c1">32</span><span class="pl-k">-</span><span class="pl-smi">bit</span>)
+<span class="pl-k">&gt;</span> <span class="pl-smi">Running</span> <span class="pl-smi">under</span><span class="pl-k">:</span> <span class="pl-smi">Windows</span> <span class="pl-c1">7</span> (<span class="pl-smi">build</span> <span class="pl-c1">7601</span>) <span class="pl-smi">Service</span> <span class="pl-smi">Pack</span> <span class="pl-c1">1</span>
+<span class="pl-k">&gt;</span> 
+<span class="pl-k">&gt;</span> <span class="pl-smi">locale</span><span class="pl-k">:</span>
+<span class="pl-k">&gt;</span> [<span class="pl-c1">1</span>] <span class="pl-v">LC_COLLATE</span><span class="pl-k">=</span><span class="pl-smi">Spanish_Chile.1252</span>  <span class="pl-v">LC_CTYPE</span><span class="pl-k">=</span><span class="pl-smi">Spanish_Chile.1252</span>   
+<span class="pl-k">&gt;</span> [<span class="pl-c1">3</span>] <span class="pl-v">LC_MONETARY</span><span class="pl-k">=</span><span class="pl-smi">Spanish_Chile.1252</span> <span class="pl-v">LC_NUMERIC</span><span class="pl-k">=</span><span class="pl-smi">C</span>                  
+<span class="pl-k">&gt;</span> [<span class="pl-c1">5</span>] <span class="pl-v">LC_TIME</span><span class="pl-k">=</span><span class="pl-smi">Spanish_Chile.1252</span>    
+<span class="pl-k">&gt;</span> 
+<span class="pl-k">&gt;</span> <span class="pl-smi">attached</span> <span class="pl-smi">base</span> <span class="pl-smi">packages</span><span class="pl-k">:</span>
+<span class="pl-k">&gt;</span> [<span class="pl-c1">1</span>] <span class="pl-smi">stats</span>     <span class="pl-smi">graphics</span>  <span class="pl-smi">grDevices</span> <span class="pl-smi">utils</span>     <span class="pl-smi">datasets</span>  <span class="pl-smi">methods</span>   <span class="pl-smi">base</span>     
+<span class="pl-k">&gt;</span> 
+<span class="pl-k">&gt;</span> <span class="pl-smi">other</span> <span class="pl-smi">attached</span> <span class="pl-smi">packages</span><span class="pl-k">:</span>
+<span class="pl-k">&gt;</span>  [<span class="pl-c1">1</span>] <span class="pl-smi">tidyr_0.2.0</span>    <span class="pl-smi">plyr_1.8.3</span>     <span class="pl-smi">scales_0.2.5</span>   <span class="pl-smi">dplyr_0.4.1</span>   
+<span class="pl-k">&gt;</span>  [<span class="pl-c1">5</span>] <span class="pl-smi">ROCR_1.0</span><span class="pl-k">-</span><span class="pl-c1">7</span>     <span class="pl-smi">gplots_2.17.0</span>  <span class="pl-smi">ggthemes_2.2.1</span> <span class="pl-smi">ggplot2_1.0.1</span> 
+<span class="pl-k">&gt;</span>  [<span class="pl-c1">9</span>] <span class="pl-smi">printr_0.0.4</span>   <span class="pl-smi">riskr_1.0</span>     
+<span class="pl-k">&gt;</span> 
+<span class="pl-k">&gt;</span> <span class="pl-smi">loaded</span> <span class="pl-smi">via</span> <span class="pl-smi">a</span> namespace (<span class="pl-smi">and</span> <span class="pl-smi">not</span> <span class="pl-smi">attached</span>)<span class="pl-k">:</span>
+<span class="pl-k">&gt;</span>  [<span class="pl-c1">1</span>] <span class="pl-smi">Rcpp_0.11.6</span>        <span class="pl-smi">knitr_1.10.5</span>       <span class="pl-smi">magrittr_1.5</span>      
+<span class="pl-k">&gt;</span>  [<span class="pl-c1">4</span>] <span class="pl-smi">MASS_7.3</span><span class="pl-k">-</span><span class="pl-c1">40</span>        <span class="pl-smi">munsell_0.4.2</span>      <span class="pl-smi">colorspace_1.2</span><span class="pl-k">-</span><span class="pl-c1">6</span>  
+<span class="pl-k">&gt;</span>  [<span class="pl-c1">7</span>] <span class="pl-smi">stringr_1.0.0</span>      <span class="pl-smi">highr_0.5</span>          <span class="pl-smi">caTools_1.17.1</span>    
+<span class="pl-k">&gt;</span> [<span class="pl-c1">10</span>] <span class="pl-smi">tools_3.2.0</span>        <span class="pl-smi">parallel_3.2.0</span>     <span class="pl-smi">grid_3.2.0</span>        
+<span class="pl-k">&gt;</span> [<span class="pl-c1">13</span>] <span class="pl-smi">gtable_0.1.2</span>       <span class="pl-smi">KernSmooth_2.23</span><span class="pl-k">-</span><span class="pl-c1">14</span> <span class="pl-smi">DBI_0.3.1</span>         
+<span class="pl-k">&gt;</span> [<span class="pl-c1">16</span>] <span class="pl-smi">gtools_3.5.0</span>       <span class="pl-smi">htmltools_0.2.6</span>    <span class="pl-smi">lazyeval_0.1.10</span>   
+<span class="pl-k">&gt;</span> [<span class="pl-c1">19</span>] <span class="pl-smi">assertthat_0.1</span>     <span class="pl-smi">yaml_2.1.13</span>        <span class="pl-smi">digest_0.6.8</span>      
+<span class="pl-k">&gt;</span> [<span class="pl-c1">22</span>] <span class="pl-smi">reshape2_1.4.1</span>     <span class="pl-smi">formatR_1.2</span>        <span class="pl-smi">bitops_1.0</span><span class="pl-k">-</span><span class="pl-c1">6</span>      
+<span class="pl-k">&gt;</span> [<span class="pl-c1">25</span>] <span class="pl-smi">evaluate_0.7</span>       <span class="pl-smi">rmarkdown_0.7</span>      <span class="pl-smi">labeling_0.3</span>      
+<span class="pl-k">&gt;</span> [<span class="pl-c1">28</span>] <span class="pl-smi">gdata_2.16.1</span>       <span class="pl-smi">stringi_0.5</span><span class="pl-k">-</span><span class="pl-c1">5</span>      <span class="pl-smi">proto_0.3</span><span class="pl-k">-</span><span class="pl-c1">10</span></pre></div>
       </section>
 
     </div>
