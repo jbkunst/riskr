@@ -133,6 +133,7 @@ plot_ks <- function(score, target){
     geom_line(aes_string("score", "ecdf", colour = "target_label")) + 
     scale_colour_manual(values = c("red", "darkblue")) + 
     scale_y_continuous("ecdf", label = percent_format(), limits = c(0, 1)) + 
+    labs(colour = "Legend: ") +
     xlab("Score") + ylab("ECDF") +
     theme(legend.position = "bottom")
   
@@ -172,6 +173,7 @@ plot_dists <- function(score, target){
     geom_density(aes_string("score", fill = "target_label"), alpha = 0.5) + 
     scale_fill_manual(values = c("red", "blue")) +
     xlab("Score") + ylab("Densities") +
+    labs(fill = "Legend: ") +
     theme(legend.position = "bottom")
   
   p
@@ -309,6 +311,7 @@ plot_perf <- function(score, target){
     scale_color_manual(values = c("red", "blue")) +
     scale_fill_manual(values = c("red", "blue")) +
     facet_wrap(~plot, scales = "free") +
+    labs(color = "Legend: ", fill = "Legend: ") +
     theme(legend.position = "bottom") + 
     xlab(NULL) + ylab(NULL)
   

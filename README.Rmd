@@ -9,7 +9,7 @@ output:
 ---
 <!-- README.md is generated from README.Rmd -->
 
-```{r, echo = FALSE}
+```{r setup, echo = FALSE, warning=FALSE, }
 library("riskr")
 library("printr")
 library("ggplot2")
@@ -20,12 +20,20 @@ knitr::opts_chunk$set(collapse = TRUE, comment = ">", warning = FALSE,
                       fig.width = 6, fig.height = 6,
                       fig.align = "center", dpi = 72)
 
-theme_set(theme_fivethirtyeight())
+theme_set(theme_fivethirtyeight(base_size = 11) +
+            theme(axis.title = element_text(colour = "grey30"),
+                  axis.title.y = element_text(angle = 90),
+                  strip.background = element_rect(fill = "#434348"),
+                  strip.text = element_text(color = "#F0F0F0"),
+                  plot.title = element_text(face = "plain", size = structure(1.2, class = "rel"))))
 update_geom_defaults("line", list(colour = "#434348", size = 1.05))
 update_geom_defaults("point", list(colour = "#434348", size = 3))
 update_geom_defaults("bar", list(fill = "#7cb5ec"))
 update_geom_defaults("text", list(size = 4, colour = "gray30"))
 ```
+
+[![travis-status](https://api.travis-ci.org/jbkunst/riskr.svg)](https://travis-ci.org/jbkunst/riskr)
+
 
 ## Introduction
 
@@ -182,3 +190,11 @@ plot_ba2(credit$flag_res_phone, credit$bad, labels = FALSE) +
 1. [smbinning](http://cran.r-project.org/web/packages/smbinning) package by [Herman Jopia](http://github.com/hjopia). [Github repository](https://github.com/cran/smbinning).
 1. [Guide to Credit Scoring in R](https://cran.r-project.org/doc/contrib/Sharma-CreditScoring.pdf)
 1. [Gains package](https://cran.r-project.org/web/packages/gains/gains.pdf)
+
+## Session Info
+```{r setup, eval=FALSE, echo=TRUE}
+```
+
+```{r}
+print(sessionInfo())
+```

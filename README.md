@@ -3,6 +3,9 @@
 
 
 
+[![travis-status](https://api.travis-ci.org/jbkunst/riskr.svg)](https://travis-ci.org/jbkunst/riskr)
+
+
 ## Introduction
 
 The `riskr` package facilitate *credit scoring* tasks such as measure the scores/models performance and make easy the scoring modelling process.
@@ -94,21 +97,21 @@ There are some functions to plot the score/model performance (based on ggplot pa
 plot_roc(score, target)
 ```
 
-<img src="vignettes/figures/unnamed-chunk-5-1.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="vignettes/figures/unnamed-chunk-4-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 
 plot_gain(score, target)
 ```
 
-<img src="vignettes/figures/unnamed-chunk-5-2.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="vignettes/figures/unnamed-chunk-4-2.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 
 plot_lift(score, target)
 ```
 
-<img src="vignettes/figures/unnamed-chunk-5-3.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="vignettes/figures/unnamed-chunk-4-3.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 
@@ -116,21 +119,21 @@ plot_dists(score, target) +
   ggtitle(sprintf("The KS statistics is %.0f%%", 100 * ks(score, target)))
 ```
 
-<img src="vignettes/figures/unnamed-chunk-5-4.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="vignettes/figures/unnamed-chunk-4-4.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 
 plot_ks(score, target) + ggtitle("Comparing ECDF")
 ```
 
-<img src="vignettes/figures/unnamed-chunk-5-5.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="vignettes/figures/unnamed-chunk-4-5.png" title="" alt="" style="display: block; margin: auto;" />
 
 
 ```r
 plot_perf(score, target)
 ```
 
-<img src="vignettes/figures/unnamed-chunk-6-1.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="vignettes/figures/unnamed-chunk-5-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 ### Odds Tables
 
@@ -295,7 +298,7 @@ bt(credit$age_bin, credit$bad)
 plot_ba(credit$age_bin, credit$bad)
 ```
 
-<img src="vignettes/figures/unnamed-chunk-12-1.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="vignettes/figures/unnamed-chunk-11-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 
@@ -308,7 +311,7 @@ residence_type2 <- factor(credit$residence_type, levels = lvls_rt)
 plot_ba(residence_type2, credit$bad)
 ```
 
-<img src="vignettes/figures/unnamed-chunk-12-2.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="vignettes/figures/unnamed-chunk-11-2.png" title="" alt="" style="display: block; margin: auto;" />
 
 The minified version of `plot_ba`
 
@@ -316,7 +319,7 @@ The minified version of `plot_ba`
 plot_ba2(credit$age_bin, credit$bad) + ggtitle("Age")
 ```
 
-<img src="vignettes/figures/unnamed-chunk-13-1.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="vignettes/figures/unnamed-chunk-12-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 
@@ -325,7 +328,7 @@ plot_ba2(credit$flag_res_phone, credit$bad, labels = FALSE) +
   ggtitle("Flag Response Phone")
 ```
 
-<img src="vignettes/figures/unnamed-chunk-13-2.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="vignettes/figures/unnamed-chunk-12-2.png" title="" alt="" style="display: block; margin: auto;" />
 
 ## Related work
 
@@ -333,3 +336,61 @@ plot_ba2(credit$flag_res_phone, credit$bad, labels = FALSE) +
 1. [smbinning](http://cran.r-project.org/web/packages/smbinning) package by [Herman Jopia](http://github.com/hjopia). [Github repository](https://github.com/cran/smbinning).
 1. [Guide to Credit Scoring in R](https://cran.r-project.org/doc/contrib/Sharma-CreditScoring.pdf)
 1. [Gains package](https://cran.r-project.org/web/packages/gains/gains.pdf)
+
+## Session Info
+
+```r
+library("riskr")
+library("printr")
+library("ggplot2")
+library("ggthemes")
+options(digits = 3, knitr.table.format = "markdown")
+knitr::opts_chunk$set(collapse = TRUE, comment = ">", warning = FALSE,
+                      fig.path = "vignettes/figures/",
+                      fig.width = 6, fig.height = 6,
+                      fig.align = "center", dpi = 72)
+
+theme_set(theme_fivethirtyeight(base_size = 11) +
+            theme(axis.title = element_text(colour = "grey30"),
+                  axis.title.y = element_text(angle = 90),
+                  strip.background = element_rect(fill = "#434348"),
+                  strip.text = element_text(color = "#F0F0F0"),
+                  plot.title = element_text(face = "plain", size = structure(1.2, class = "rel"))))
+update_geom_defaults("line", list(colour = "#434348", size = 1.05))
+update_geom_defaults("point", list(colour = "#434348", size = 3))
+update_geom_defaults("bar", list(fill = "#7cb5ec"))
+update_geom_defaults("text", list(size = 4, colour = "gray30"))
+```
+
+
+```r
+print(sessionInfo())
+> R version 3.2.0 (2015-04-16)
+> Platform: i386-w64-mingw32/i386 (32-bit)
+> Running under: Windows 7 (build 7601) Service Pack 1
+> 
+> locale:
+> [1] LC_COLLATE=Spanish_Chile.1252  LC_CTYPE=Spanish_Chile.1252   
+> [3] LC_MONETARY=Spanish_Chile.1252 LC_NUMERIC=C                  
+> [5] LC_TIME=Spanish_Chile.1252    
+> 
+> attached base packages:
+> [1] stats     graphics  grDevices utils     datasets  methods   base     
+> 
+> other attached packages:
+>  [1] tidyr_0.2.0    plyr_1.8.3     scales_0.2.5   dplyr_0.4.1   
+>  [5] ROCR_1.0-7     gplots_2.17.0  ggthemes_2.2.1 ggplot2_1.0.1 
+>  [9] printr_0.0.4   riskr_1.0     
+> 
+> loaded via a namespace (and not attached):
+>  [1] Rcpp_0.11.6        knitr_1.10.5       magrittr_1.5      
+>  [4] MASS_7.3-40        munsell_0.4.2      colorspace_1.2-6  
+>  [7] stringr_1.0.0      highr_0.5          caTools_1.17.1    
+> [10] tools_3.2.0        parallel_3.2.0     grid_3.2.0        
+> [13] gtable_0.1.2       KernSmooth_2.23-14 DBI_0.3.1         
+> [16] gtools_3.5.0       htmltools_0.2.6    lazyeval_0.1.10   
+> [19] assertthat_0.1     yaml_2.1.13        digest_0.6.8      
+> [22] reshape2_1.4.1     formatR_1.2        bitops_1.0-6      
+> [25] evaluate_0.7       rmarkdown_0.7      labeling_0.3      
+> [28] gdata_2.16.1       stringi_0.5-5      proto_0.3-10
+```
