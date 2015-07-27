@@ -17,8 +17,13 @@ Write the linear combination
 }
 \examples{
 data("credit")
+<<<<<<< HEAD
+=======
+
+>>>>>>> b5d289db66232c62c3532caabc37996723c7866d
 model <- glm(bad ~ sex + marital_status + age + personal_net_income,
              data = credit, family = binomial(link = logit))
+
 linear_formula(model)
 }
 

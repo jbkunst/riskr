@@ -1,15 +1,19 @@
 #' Write the Linear Combination 
+#'
 #' @description Write the linear combination 
 #' @param model A model
 #' @return A string
 #' @examples
 #' data("credit")
+#' 
 #' model <- glm(bad ~ sex + marital_status + age + personal_net_income,
 #'              data = credit, family = binomial(link = logit))
+#' 
 #' linear_formula(model)
 #' @export
 linear_formula <- function(model){
   
+  library("dplyr")
   library("broom")
   library("dplyr")
   

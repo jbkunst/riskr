@@ -35,10 +35,7 @@ pred_ranking <- function(df, target_name = "target", verbose = FALSE){
     resp <- data_frame(variable = namevar,
                        ks = ks(score, target),
                        aucroc = aucroc(score, target))
-    resp <- cbind(resp, perf(score, target))
-    
-    resp
-    
+  
   }, .progress = "text")
   
   res <- res %>%
