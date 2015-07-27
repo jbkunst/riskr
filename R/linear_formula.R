@@ -3,6 +3,7 @@
 #' @param model A model
 #' @return A string
 #' @examples
+#' data("credit")
 #' model <- glm(bad ~ sex + marital_status + age + personal_net_income,
 #'              data = credit, family = binomial(link = logit))
 #' linear_formula(model)
@@ -10,6 +11,7 @@
 linear_formula <- function(model){
   
   library("broom")
+  library("dplyr")
   
   t <- tidy(model) %>% 
     mutate(estimate_fmt = format(estimate, width = 10, scientific = FALSE),

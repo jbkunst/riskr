@@ -13,13 +13,14 @@ output:
 library("riskr")
 library("printr")
 library("ggplot2")
+library("ggthemes")
 options(digits = 3, knitr.table.format = "markdown")
 knitr::opts_chunk$set(collapse = TRUE, comment = ">", warning = FALSE,
                       fig.path = "vignettes/figures/",
                       fig.width = 6, fig.height = 6,
                       fig.align = "center", dpi = 72)
 
-theme_set(theme_rskr())
+theme_set(theme_fivethirtyeight())
 update_geom_defaults("line", list(colour = "#434348", size = 1.05))
 update_geom_defaults("point", list(colour = "#434348", size = 3))
 update_geom_defaults("bar", list(fill = "#7cb5ec"))
