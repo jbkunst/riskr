@@ -1,0 +1,7 @@
+language: r
+sudo: required
+language: r
+sudo: required
+notifications:
+  email:
+    on_failure: change
