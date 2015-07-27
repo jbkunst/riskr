@@ -15,8 +15,7 @@ linear_formula <- function(model){
   
   library("dplyr")
   library("broom")
-  library("dplyr")
-  
+
   t <- tidy(model) %>% 
     mutate(estimate_fmt = format(estimate, width = 10, scientific = FALSE),
            prod = ifelse(term == "(Intercept)", "", estimate_fmt),
