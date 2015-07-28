@@ -9,13 +9,13 @@ output:
 ---
 <!-- README.md is generated from README.Rmd -->
 
-```{r setup, echo = FALSE, warning=FALSE, }
+```{r setup, echo = FALSE, warning=FALSE}
 library("riskr")
 library("printr")
 library("ggplot2")
 library("ggthemes")
 options(digits = 3, knitr.table.format = "markdown")
-knitr::opts_chunk$set(collapse = TRUE, comment = ">", warning = FALSE,
+knitr::opts_chunk$set(collapse = TRUE, warning = FALSE,
                       fig.path = "vignettes/figures/",
                       fig.width = 6, fig.height = 6,
                       fig.align = "center", dpi = 72)

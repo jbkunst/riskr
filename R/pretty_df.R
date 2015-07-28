@@ -24,10 +24,8 @@ pretty_df <- function(df,
                       fill.chr.na.with = "",
                       trim.chr.vars = TRUE){
   
-  require("plyr")
-  require("dplyr")
-  
-  df <- dplyr::tbl_df(df)
+  library("plyr")
+  library("dplyr")
   
   if (to.lower.df.names) {
     names(df) <- tolower(names(df))  

@@ -1,5 +1,5 @@
 . <- variable <- count <- percent <- target_count <- target_rate <- target_percent <- non_target_count <- non_target_percent <- odds <- woe <- iv <- NULL
-. <- variable <- var <- value <- total <- value_fmt <- NULL
+. <- variable <- var <- value <- total <- value_fmt <- value_fmt2 <- NULL
 count_format <- target_rate_format <- NULL
 #' Bivariate Table
 #' @description This function calculate a bivariate table.

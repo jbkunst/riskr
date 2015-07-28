@@ -108,24 +108,7 @@ gini <- function(score, target){
     length(target) == length(score)
   )
   
-  ginidf <- function(score, target){
-    
-    suppressMessages(library("dplyr"))
-    
-    df <- data_frame(score, target) %>% 
-      arrange(desc(score)) %>% 
-      mutate(random = seq(nrow(.))/nrow(.),
-             cumPosFound = cumsum(target),
-             Lorentz = cumPosFound/sum(target),
-             gini = Lorentz - random)
-    
-    df %>% summarise(sum(gini)) %>% as.numeric()
-    
-  }
-  
-  gini <- ginidf(score, target)/ ginidf(target, target)
-  
-  return(gini)
+  as.numeric(2 * aucroc(score, target) - 1)
 }
 
 #' Calculate Gains
@@ -158,6 +141,35 @@ gain <- function(score, target, percents = c(0.10, 0.20, 0.30, 0.40, 0.50)){
   g
 }
 
+#' Calculate Divergence
+#' @description Calculate the divergence between empirical distributions
+#' @param score A numeric vector containing scores or probabilities
+#' @param target A numeric binary vector (0, 1)
+#' @param percents Values to calculate the gain
+#' @return The Gini Coefficient
+#' @examples
+#' data(predictions)
+#' 
+#' score <- predictions$score
+#' target <- predictions$target
+#' 
+#' divergence(score, target)
+#' @export
+divergence <- function(score, target) {
+  
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(score)
+  )
+  
+  score_t <- score[target == 1]
+  score_nt <- score[target == 0]
+  
+  (mean(score_t) - mean(score_nt)) ^ 2 / (var(score_t) + var(score_nt))*2
+  
+}
+
+
 #' Summary of Performance
 #'
 #' @param score A numeric vector containing scores or probabilities
@@ -173,12 +185,18 @@ gain <- function(score, target, percents = c(0.10, 0.20, 0.30, 0.40, 0.50)){
 #' @export
 perf <- function(score, target){
   
+  stopifnot(
+    setequal(target, c(0, 1)),
+    length(target) == length(score)
+  )
+  
   res <- c(count = length(score),
            target_count = length(score[target == 1]),
            target_rate = mean(target),
            ks = ks(score, target),
            aucroc = aucroc(score, target),
-           gini = gini(score, target))
+           gini = gini(score, target),
+           divergence = divergence(score, target))
   
   res <- data.frame(t(res))
   

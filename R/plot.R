@@ -61,7 +61,7 @@ plot_gain <- function(score, target){
     length(target) == length(score)
   )
   
-  library("dplyr")
+  suppressPackageStartupMessages(library("dplyr"))
   library("ggplot2")
   library("scales")
   
@@ -77,11 +77,11 @@ plot_gain <- function(score, target){
   )
   
   ggplot(df) + 
-    geom_line(aes(x, y, color = target_label)) + 
+    geom_line(aes_string("x", "y", color = "target_label")) + 
     geom_path(aes(x = c(0, 1), y = c(0, 1)), colour = "gray") +
     scale_color_manual(labels = c("Samples percentiles (- to +) / non target cumulative percents",
                                   "Samples percentiles (+ to -) / target cumulative percents"),
-                       values = c("red", "blue")) +
+                       values = c("darkred", "darkblue")) +
     labs(colour = NULL) +
     scale_x_continuous("Sample Percentiles", label = percent_format(), limits = c(0, 1)) +
     scale_y_continuous("Cumulative Percent", label = percent_format(), limits = c(0, 1)) +
@@ -131,7 +131,7 @@ plot_ks <- function(score, target){
   
   p <- ggplot(df) +
     geom_line(aes_string("score", "ecdf", colour = "target_label")) + 
-    scale_colour_manual(values = c("red", "darkblue")) + 
+    scale_colour_manual(values = c("darkred", "darkblue")) + 
     scale_y_continuous("ecdf", label = percent_format(), limits = c(0, 1)) + 
     labs(colour = "Legend: ") +
     xlab("Score") + ylab("ECDF") +
@@ -171,7 +171,7 @@ plot_dists <- function(score, target){
   
   p <- ggplot(df) +
     geom_density(aes_string("score", fill = "target_label"), alpha = 0.5) + 
-    scale_fill_manual(values = c("red", "blue")) +
+    scale_fill_manual(values = c("darkred", "darkblue")) +
     xlab("Score") + ylab("Densities") +
     labs(fill = "Legend: ") +
     theme(legend.position = "bottom")
@@ -308,8 +308,8 @@ plot_perf <- function(score, target){
                  aes_string(x = "x", fill = "target_label", color = "target_label", group = "target_label"),
                  alpha = 0.5) +
     # style
-    scale_color_manual(values = c("red", "blue")) +
-    scale_fill_manual(values = c("red", "blue")) +
+    scale_color_manual(values = c("darkred", "darkblue")) +
+    scale_fill_manual(values = c("darkred", "darkblue")) +
     facet_wrap(~plot, scales = "free") +
     labs(color = "Legend: ", fill = "Legend: ") +
     theme(legend.position = "bottom") + 

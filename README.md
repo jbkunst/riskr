@@ -58,9 +58,9 @@ head(predictions)
 ```r
 
 str(predictions)
-> 'data.frame':	10000 obs. of  2 variables:
->  $ score : num  0.2023 0.8058 0.5134 0.0525 0.3288 ...
->  $ target: num  1 1 1 0 1 0 1 0 1 1 ...
+## 'data.frame':	10000 obs. of  2 variables:
+##  $ score : num  0.2023 0.8058 0.5134 0.0525 0.3288 ...
+##  $ target: num  1 1 1 0 1 0 1 0 1 1 ...
 
 score <- predictions$score
 
@@ -74,22 +74,22 @@ The main statistics or indicators are KS, AUCROC so:
 
 ```r
 ks(score, target)
-> [1] 0.254
+## [1] 0.254
 
 aucroc(score, target)
-> [1] 0.676
+## [1] 0.676
 
 gini(score, target)
-> [1] 0.353
+## [1] 0.353
 
 perf(score, target)
 ```
 
 
 
-| count| target_count| target_rate|    ks| aucroc|  gini|
-|-----:|------------:|-----------:|-----:|------:|-----:|
-| 10000|         6990|       0.699| 0.254|  0.676| 0.353|
+| count| target_count| target_rate|    ks| aucroc|  gini| divergence|
+|-----:|------------:|-----------:|-----:|------:|-----:|----------:|
+| 10000|         6990|       0.699| 0.254|  0.676| 0.353|      0.408|
 
 There are some functions to plot the score/model performance (based on ggplot package).
 
@@ -230,24 +230,24 @@ cm$indicators.t
 data("credit")
 
 str(credit)
-> 'data.frame':	49694 obs. of  17 variables:
->  $ id_client          : int  1 7 9 12 14 19 22 26 28 30 ...
->  $ sex                : chr  "F" "F" "F" "F" ...
->  $ marital_status     : chr  "O" "S" "S" "C" ...
->  $ age                : int  44 22 27 32 36 46 17 20 71 46 ...
->  $ flag_res_phone     : chr  "N" "Y" "Y" "Y" ...
->  $ area_code_res_phone: int  31 31 31 31 31 50 50 50 31 31 ...
->  $ payment_day        : int  12 12 20 12 12 12 12 12 18 8 ...
->  $ residence_type     : chr  "P" "A" "A" "P" ...
->  $ months_in_residence: int  12 0 0 24 120 360 12 12 96 72 ...
->  $ months_in_the_job  : int  48 48 0 0 36 120 12 24 12 12 ...
->  $ profession_code    : int  731 999 950 165 15 704 38 39 13 801 ...
->  $ flag_other_card    : chr  "N" "N" "N" "N" ...
->  $ flag_mobile_phone  : chr  "N" "N" "N" "N" ...
->  $ flag_contact_phone : chr  "N" "N" "N" "N" ...
->  $ personal_net_income: num  300 410 1000 700 1987 ...
->  $ quant_add_cards    : int  0 0 0 0 1 0 0 0 0 0 ...
->  $ bad                : int  0 0 1 0 0 0 1 1 0 0 ...
+## 'data.frame':	49694 obs. of  17 variables:
+##  $ id_client          : int  1 7 9 12 14 19 22 26 28 30 ...
+##  $ sex                : chr  "F" "F" "F" "F" ...
+##  $ marital_status     : chr  "O" "S" "S" "C" ...
+##  $ age                : int  44 22 27 32 36 46 17 20 71 46 ...
+##  $ flag_res_phone     : chr  "N" "Y" "Y" "Y" ...
+##  $ area_code_res_phone: int  31 31 31 31 31 50 50 50 31 31 ...
+##  $ payment_day        : int  12 12 20 12 12 12 12 12 18 8 ...
+##  $ residence_type     : chr  "P" "A" "A" "P" ...
+##  $ months_in_residence: int  12 0 0 24 120 360 12 12 96 72 ...
+##  $ months_in_the_job  : int  48 48 0 0 36 120 12 24 12 12 ...
+##  $ profession_code    : int  731 999 950 165 15 704 38 39 13 801 ...
+##  $ flag_other_card    : chr  "N" "N" "N" "N" ...
+##  $ flag_mobile_phone  : chr  "N" "N" "N" "N" ...
+##  $ flag_contact_phone : chr  "N" "N" "N" "N" ...
+##  $ personal_net_income: num  300 410 1000 700 1987 ...
+##  $ quant_add_cards    : int  0 0 0 0 1 0 0 0 0 0 ...
+##  $ bad                : int  0 0 1 0 0 0 1 1 0 0 ...
 
 ft(credit$marital_status)
 ```
@@ -346,7 +346,7 @@ library("printr")
 library("ggplot2")
 library("ggthemes")
 options(digits = 3, knitr.table.format = "markdown")
-knitr::opts_chunk$set(collapse = TRUE, comment = ">", warning = FALSE,
+knitr::opts_chunk$set(collapse = TRUE, warning = FALSE,
                       fig.path = "vignettes/figures/",
                       fig.width = 6, fig.height = 6,
                       fig.align = "center", dpi = 72)
@@ -366,32 +366,32 @@ update_geom_defaults("text", list(size = 4, colour = "gray30"))
 
 ```r
 print(sessionInfo())
-> R version 3.2.0 (2015-04-16)
-> Platform: i386-w64-mingw32/i386 (32-bit)
-> Running under: Windows 7 (build 7601) Service Pack 1
-> 
-> locale:
-> [1] LC_COLLATE=Spanish_Chile.1252  LC_CTYPE=Spanish_Chile.1252   
-> [3] LC_MONETARY=Spanish_Chile.1252 LC_NUMERIC=C                  
-> [5] LC_TIME=Spanish_Chile.1252    
-> 
-> attached base packages:
-> [1] stats     graphics  grDevices utils     datasets  methods   base     
-> 
-> other attached packages:
->  [1] tidyr_0.2.0    plyr_1.8.3     scales_0.2.5   dplyr_0.4.1   
->  [5] ROCR_1.0-7     gplots_2.17.0  ggthemes_2.2.1 ggplot2_1.0.1 
->  [9] printr_0.0.4   riskr_1.0     
-> 
-> loaded via a namespace (and not attached):
->  [1] Rcpp_0.11.6        knitr_1.10.5       magrittr_1.5      
->  [4] MASS_7.3-40        munsell_0.4.2      colorspace_1.2-6  
->  [7] stringr_1.0.0      highr_0.5          caTools_1.17.1    
-> [10] tools_3.2.0        parallel_3.2.0     grid_3.2.0        
-> [13] gtable_0.1.2       KernSmooth_2.23-14 DBI_0.3.1         
-> [16] gtools_3.5.0       htmltools_0.2.6    lazyeval_0.1.10   
-> [19] assertthat_0.1     yaml_2.1.13        digest_0.6.8      
-> [22] reshape2_1.4.1     formatR_1.2        bitops_1.0-6      
-> [25] evaluate_0.7       rmarkdown_0.7      labeling_0.3      
-> [28] gdata_2.16.1       stringi_0.5-5      proto_0.3-10
+## R version 3.2.0 (2015-04-16)
+## Platform: i386-w64-mingw32/i386 (32-bit)
+## Running under: Windows 7 (build 7601) Service Pack 1
+## 
+## locale:
+## [1] LC_COLLATE=Spanish_Chile.1252  LC_CTYPE=Spanish_Chile.1252   
+## [3] LC_MONETARY=Spanish_Chile.1252 LC_NUMERIC=C                  
+## [5] LC_TIME=Spanish_Chile.1252    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] tidyr_0.2.0    plyr_1.8.3     dplyr_0.4.1    scales_0.2.5  
+##  [5] ROCR_1.0-7     gplots_2.17.0  ggthemes_2.2.1 ggplot2_1.0.1 
+##  [9] printr_0.0.4   riskr_1.0     
+## 
+## loaded via a namespace (and not attached):
+##  [1] Rcpp_0.11.6        knitr_1.10.5       magrittr_1.5      
+##  [4] MASS_7.3-40        munsell_0.4.2      colorspace_1.2-6  
+##  [7] stringr_1.0.0      highr_0.5          caTools_1.17.1    
+## [10] tools_3.2.0        parallel_3.2.0     grid_3.2.0        
+## [13] gtable_0.1.2       KernSmooth_2.23-14 DBI_0.3.1         
+## [16] gtools_3.5.0       htmltools_0.2.6    lazyeval_0.1.10   
+## [19] assertthat_0.1     yaml_2.1.13        digest_0.6.8      
+## [22] reshape2_1.4.1     formatR_1.2        bitops_1.0-6      
+## [25] evaluate_0.7       rmarkdown_0.7      labeling_0.3      
+## [28] gdata_2.16.1       stringi_0.5-5      proto_0.3-10
 ```
