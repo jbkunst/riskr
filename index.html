@@ -1,39 +1,31 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en-us">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta charset="UTF-8">
     <title>Riskr by jbkunst</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/github-light.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Riskr</h1>
-        <p></p>
+    <section class="page-header">
+      <h1 class="project-name">Riskr</h1>
+      <h2 class="project-tagline"></h2>
+      <a href="https://github.com/jbkunst/riskr" class="btn">View on GitHub</a>
+      <a href="https://github.com/jbkunst/riskr/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/jbkunst/riskr/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-        <p class="view"><a href="https://github.com/jbkunst/riskr">View the Project on GitHub <small>jbkunst/riskr</small></a></p>
-
-
-        <ul>
-          <li><a href="https://github.com/jbkunst/riskr/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/jbkunst/riskr/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/jbkunst/riskr">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>
+    <section class="main-content">
+      <h1>
 <a id="riskr" class="anchor" href="#riskr" aria-hidden="true"><span class="octicon octicon-link"></span></a>riskr</h1>
 
 
 
-<p><a href="https://travis-ci.org/jbkunst/riskr"><img src="https://api.travis-ci.org/jbkunst/riskr.svg" alt="travis-status"></a></p>
+<p><a href="https://travis-ci.org/jbkunst/riskr"><img src="https://api.travis-ci.org/jbkunst/riskr.svg" alt="travis-status"></a>
+<a href="https://coveralls.io/github/jbkunst/riskr?branch=master"><img src="https://coveralls.io/repos/jbkunst/riskr/badge.svg?branch=master&amp;service=github" alt="Coverage Status"></a></p>
 
 <h2>
 <a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
@@ -109,9 +101,9 @@ head(<span class="pl-smi">predictions</span>)</pre></div>
 
 <div class="highlight highlight-r"><pre>
 str(<span class="pl-smi">predictions</span>)
-<span class="pl-k">&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>data.frame<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-c1">10000</span> <span class="pl-smi">obs</span>. <span class="pl-smi">of</span>  <span class="pl-c1">2</span> <span class="pl-smi">variables</span><span class="pl-k">:</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">score</span> <span class="pl-k">:</span> <span class="pl-smi">num</span>  <span class="pl-c1">0.2023</span> <span class="pl-c1">0.8058</span> <span class="pl-c1">0.5134</span> <span class="pl-c1">0.0525</span> <span class="pl-c1">0.3288</span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">target</span><span class="pl-k">:</span> <span class="pl-smi">num</span>  <span class="pl-c1">1</span> <span class="pl-c1">1</span> <span class="pl-c1">1</span> <span class="pl-c1">0</span> <span class="pl-c1">1</span> <span class="pl-c1">0</span> <span class="pl-c1">1</span> <span class="pl-c1">0</span> <span class="pl-c1">1</span> <span class="pl-c1">1</span> <span class="pl-k">...</span>
+<span class="pl-c">## 'data.frame':    10000 obs. of  2 variables:</span>
+<span class="pl-c">##  $ score : num  0.2023 0.8058 0.5134 0.0525 0.3288 ...</span>
+<span class="pl-c">##  $ target: num  1 1 1 0 1 0 1 0 1 1 ...</span>
 
 <span class="pl-smi">score</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">predictions</span><span class="pl-k">$</span><span class="pl-smi">score</span>
 
@@ -123,13 +115,13 @@ str(<span class="pl-smi">predictions</span>)
 <p>The main statistics or indicators are KS, AUCROC so:</p>
 
 <div class="highlight highlight-r"><pre>ks(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)
-<span class="pl-k">&gt;</span> [<span class="pl-c1">1</span>] <span class="pl-c1">0.254</span>
+<span class="pl-c">## [1] 0.254</span>
 
 aucroc(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)
-<span class="pl-k">&gt;</span> [<span class="pl-c1">1</span>] <span class="pl-c1">0.676</span>
+<span class="pl-c">## [1] 0.676</span>
 
 gini(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)
-<span class="pl-k">&gt;</span> [<span class="pl-c1">1</span>] <span class="pl-c1">0.353</span>
+<span class="pl-c">## [1] 0.353</span>
 
 perf(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)</pre></div>
 
@@ -142,6 +134,7 @@ perf(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)</pre
 <th align="right">ks</th>
 <th align="right">aucroc</th>
 <th align="right">gini</th>
+<th align="right">divergence</th>
 </tr>
 </thead>
 <tbody>
@@ -152,6 +145,7 @@ perf(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>)</pre
 <td align="right">0.254</td>
 <td align="right">0.676</td>
 <td align="right">0.353</td>
+<td align="right">0.408</td>
 </tr>
 </tbody>
 </table>
@@ -463,24 +457,24 @@ odds_table(<span class="pl-smi">score</span>, <span class="pl-smi">target</span>
 <div class="highlight highlight-r"><pre>data(<span class="pl-s"><span class="pl-pds">"</span>credit<span class="pl-pds">"</span></span>)
 
 str(<span class="pl-smi">credit</span>)
-<span class="pl-k">&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>data.frame<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-c1">49694</span> <span class="pl-smi">obs</span>. <span class="pl-smi">of</span>  <span class="pl-c1">17</span> <span class="pl-smi">variables</span><span class="pl-k">:</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">id_client</span>          <span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">1</span> <span class="pl-c1">7</span> <span class="pl-c1">9</span> <span class="pl-c1">12</span> <span class="pl-c1">14</span> <span class="pl-c1">19</span> <span class="pl-c1">22</span> <span class="pl-c1">26</span> <span class="pl-c1">28</span> <span class="pl-c1">30</span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">sex</span>                <span class="pl-k">:</span> <span class="pl-smi">chr</span>  <span class="pl-s"><span class="pl-pds">"</span>F<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>F<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>F<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>F<span class="pl-pds">"</span></span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">marital_status</span>     <span class="pl-k">:</span> <span class="pl-smi">chr</span>  <span class="pl-s"><span class="pl-pds">"</span>O<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>S<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>S<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>C<span class="pl-pds">"</span></span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">age</span>                <span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">44</span> <span class="pl-c1">22</span> <span class="pl-c1">27</span> <span class="pl-c1">32</span> <span class="pl-c1">36</span> <span class="pl-c1">46</span> <span class="pl-c1">17</span> <span class="pl-c1">20</span> <span class="pl-c1">71</span> <span class="pl-c1">46</span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">flag_res_phone</span>     <span class="pl-k">:</span> <span class="pl-smi">chr</span>  <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>Y<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>Y<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>Y<span class="pl-pds">"</span></span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">area_code_res_phone</span><span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">31</span> <span class="pl-c1">31</span> <span class="pl-c1">31</span> <span class="pl-c1">31</span> <span class="pl-c1">31</span> <span class="pl-c1">50</span> <span class="pl-c1">50</span> <span class="pl-c1">50</span> <span class="pl-c1">31</span> <span class="pl-c1">31</span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">payment_day</span>        <span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">12</span> <span class="pl-c1">12</span> <span class="pl-c1">20</span> <span class="pl-c1">12</span> <span class="pl-c1">12</span> <span class="pl-c1">12</span> <span class="pl-c1">12</span> <span class="pl-c1">12</span> <span class="pl-c1">18</span> <span class="pl-c1">8</span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">residence_type</span>     <span class="pl-k">:</span> <span class="pl-smi">chr</span>  <span class="pl-s"><span class="pl-pds">"</span>P<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>A<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>A<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>P<span class="pl-pds">"</span></span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">months_in_residence</span><span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">12</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">24</span> <span class="pl-c1">120</span> <span class="pl-c1">360</span> <span class="pl-c1">12</span> <span class="pl-c1">12</span> <span class="pl-c1">96</span> <span class="pl-c1">72</span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">months_in_the_job</span>  <span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">48</span> <span class="pl-c1">48</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">36</span> <span class="pl-c1">120</span> <span class="pl-c1">12</span> <span class="pl-c1">24</span> <span class="pl-c1">12</span> <span class="pl-c1">12</span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">profession_code</span>    <span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">731</span> <span class="pl-c1">999</span> <span class="pl-c1">950</span> <span class="pl-c1">165</span> <span class="pl-c1">15</span> <span class="pl-c1">704</span> <span class="pl-c1">38</span> <span class="pl-c1">39</span> <span class="pl-c1">13</span> <span class="pl-c1">801</span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">flag_other_card</span>    <span class="pl-k">:</span> <span class="pl-smi">chr</span>  <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">flag_mobile_phone</span>  <span class="pl-k">:</span> <span class="pl-smi">chr</span>  <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">flag_contact_phone</span> <span class="pl-k">:</span> <span class="pl-smi">chr</span>  <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>N<span class="pl-pds">"</span></span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">personal_net_income</span><span class="pl-k">:</span> <span class="pl-smi">num</span>  <span class="pl-c1">300</span> <span class="pl-c1">410</span> <span class="pl-c1">1000</span> <span class="pl-c1">700</span> <span class="pl-c1">1987</span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">quant_add_cards</span>    <span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">1</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-k">...</span>
-<span class="pl-k">&gt;</span>  <span class="pl-k">$</span> <span class="pl-smi">bad</span>                <span class="pl-k">:</span> <span class="pl-smi">int</span>  <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">1</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-c1">1</span> <span class="pl-c1">1</span> <span class="pl-c1">0</span> <span class="pl-c1">0</span> <span class="pl-k">...</span>
+<span class="pl-c">## 'data.frame':    49694 obs. of  17 variables:</span>
+<span class="pl-c">##  $ id_client          : int  1 7 9 12 14 19 22 26 28 30 ...</span>
+<span class="pl-c">##  $ sex                : chr  "F" "F" "F" "F" ...</span>
+<span class="pl-c">##  $ marital_status     : chr  "O" "S" "S" "C" ...</span>
+<span class="pl-c">##  $ age                : int  44 22 27 32 36 46 17 20 71 46 ...</span>
+<span class="pl-c">##  $ flag_res_phone     : chr  "N" "Y" "Y" "Y" ...</span>
+<span class="pl-c">##  $ area_code_res_phone: int  31 31 31 31 31 50 50 50 31 31 ...</span>
+<span class="pl-c">##  $ payment_day        : int  12 12 20 12 12 12 12 12 18 8 ...</span>
+<span class="pl-c">##  $ residence_type     : chr  "P" "A" "A" "P" ...</span>
+<span class="pl-c">##  $ months_in_residence: int  12 0 0 24 120 360 12 12 96 72 ...</span>
+<span class="pl-c">##  $ months_in_the_job  : int  48 48 0 0 36 120 12 24 12 12 ...</span>
+<span class="pl-c">##  $ profession_code    : int  731 999 950 165 15 704 38 39 13 801 ...</span>
+<span class="pl-c">##  $ flag_other_card    : chr  "N" "N" "N" "N" ...</span>
+<span class="pl-c">##  $ flag_mobile_phone  : chr  "N" "N" "N" "N" ...</span>
+<span class="pl-c">##  $ flag_contact_phone : chr  "N" "N" "N" "N" ...</span>
+<span class="pl-c">##  $ personal_net_income: num  300 410 1000 700 1987 ...</span>
+<span class="pl-c">##  $ quant_add_cards    : int  0 0 0 0 1 0 0 0 0 0 ...</span>
+<span class="pl-c">##  $ bad                : int  0 0 1 0 0 0 1 1 0 0 ...</span>
 
 ft(<span class="pl-smi">credit</span><span class="pl-k">$</span><span class="pl-smi">marital_status</span>)</pre></div>
 
@@ -724,7 +718,7 @@ library(<span class="pl-s"><span class="pl-pds">"</span>printr<span class="pl-pd
 library(<span class="pl-s"><span class="pl-pds">"</span>ggplot2<span class="pl-pds">"</span></span>)
 library(<span class="pl-s"><span class="pl-pds">"</span>ggthemes<span class="pl-pds">"</span></span>)
 options(<span class="pl-v">digits</span> <span class="pl-k">=</span> <span class="pl-c1">3</span>, <span class="pl-v">knitr.table.format</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>markdown<span class="pl-pds">"</span></span>)
-<span class="pl-e">knitr</span><span class="pl-k">::</span><span class="pl-smi">opts_chunk</span><span class="pl-k">$</span>set(<span class="pl-v">collapse</span> <span class="pl-k">=</span> <span class="pl-c1">TRUE</span>, <span class="pl-v">comment</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>&gt;<span class="pl-pds">"</span></span>, <span class="pl-v">warning</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>,
+<span class="pl-e">knitr</span><span class="pl-k">::</span><span class="pl-smi">opts_chunk</span><span class="pl-k">$</span>set(<span class="pl-v">collapse</span> <span class="pl-k">=</span> <span class="pl-c1">TRUE</span>, <span class="pl-v">warning</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>,
                       <span class="pl-v">fig.path</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>vignettes/figures/<span class="pl-pds">"</span></span>,
                       <span class="pl-v">fig.width</span> <span class="pl-k">=</span> <span class="pl-c1">6</span>, <span class="pl-v">fig.height</span> <span class="pl-k">=</span> <span class="pl-c1">6</span>,
                       <span class="pl-v">fig.align</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>center<span class="pl-pds">"</span></span>, <span class="pl-v">dpi</span> <span class="pl-k">=</span> <span class="pl-c1">72</span>)
@@ -741,41 +735,44 @@ update_geom_defaults(<span class="pl-s"><span class="pl-pds">"</span>bar<span cl
 update_geom_defaults(<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span>, <span class="pl-k">list</span>(<span class="pl-v">size</span> <span class="pl-k">=</span> <span class="pl-c1">4</span>, <span class="pl-v">colour</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>gray30<span class="pl-pds">"</span></span>))</pre></div>
 
 <div class="highlight highlight-r"><pre>print(sessionInfo())
-<span class="pl-k">&gt;</span> <span class="pl-smi">R</span> <span class="pl-smi">version</span> <span class="pl-c1">3.2.0</span> (<span class="pl-c1">2015</span><span class="pl-k">-</span><span class="pl-c1">04</span><span class="pl-k">-</span><span class="pl-c1">16</span>)
-<span class="pl-k">&gt;</span> <span class="pl-smi">Platform</span><span class="pl-k">:</span> <span class="pl-smi">i386</span><span class="pl-k">-</span><span class="pl-smi">w64</span><span class="pl-k">-</span><span class="pl-smi">mingw32</span><span class="pl-k">/</span>i386 (<span class="pl-c1">32</span><span class="pl-k">-</span><span class="pl-smi">bit</span>)
-<span class="pl-k">&gt;</span> <span class="pl-smi">Running</span> <span class="pl-smi">under</span><span class="pl-k">:</span> <span class="pl-smi">Windows</span> <span class="pl-c1">7</span> (<span class="pl-smi">build</span> <span class="pl-c1">7601</span>) <span class="pl-smi">Service</span> <span class="pl-smi">Pack</span> <span class="pl-c1">1</span>
-<span class="pl-k">&gt;</span> 
-<span class="pl-k">&gt;</span> <span class="pl-smi">locale</span><span class="pl-k">:</span>
-<span class="pl-k">&gt;</span> [<span class="pl-c1">1</span>] <span class="pl-v">LC_COLLATE</span><span class="pl-k">=</span><span class="pl-smi">Spanish_Chile.1252</span>  <span class="pl-v">LC_CTYPE</span><span class="pl-k">=</span><span class="pl-smi">Spanish_Chile.1252</span>   
-<span class="pl-k">&gt;</span> [<span class="pl-c1">3</span>] <span class="pl-v">LC_MONETARY</span><span class="pl-k">=</span><span class="pl-smi">Spanish_Chile.1252</span> <span class="pl-v">LC_NUMERIC</span><span class="pl-k">=</span><span class="pl-smi">C</span>                  
-<span class="pl-k">&gt;</span> [<span class="pl-c1">5</span>] <span class="pl-v">LC_TIME</span><span class="pl-k">=</span><span class="pl-smi">Spanish_Chile.1252</span>    
-<span class="pl-k">&gt;</span> 
-<span class="pl-k">&gt;</span> <span class="pl-smi">attached</span> <span class="pl-smi">base</span> <span class="pl-smi">packages</span><span class="pl-k">:</span>
-<span class="pl-k">&gt;</span> [<span class="pl-c1">1</span>] <span class="pl-smi">stats</span>     <span class="pl-smi">graphics</span>  <span class="pl-smi">grDevices</span> <span class="pl-smi">utils</span>     <span class="pl-smi">datasets</span>  <span class="pl-smi">methods</span>   <span class="pl-smi">base</span>     
-<span class="pl-k">&gt;</span> 
-<span class="pl-k">&gt;</span> <span class="pl-smi">other</span> <span class="pl-smi">attached</span> <span class="pl-smi">packages</span><span class="pl-k">:</span>
-<span class="pl-k">&gt;</span>  [<span class="pl-c1">1</span>] <span class="pl-smi">tidyr_0.2.0</span>    <span class="pl-smi">plyr_1.8.3</span>     <span class="pl-smi">scales_0.2.5</span>   <span class="pl-smi">dplyr_0.4.1</span>   
-<span class="pl-k">&gt;</span>  [<span class="pl-c1">5</span>] <span class="pl-smi">ROCR_1.0</span><span class="pl-k">-</span><span class="pl-c1">7</span>     <span class="pl-smi">gplots_2.17.0</span>  <span class="pl-smi">ggthemes_2.2.1</span> <span class="pl-smi">ggplot2_1.0.1</span> 
-<span class="pl-k">&gt;</span>  [<span class="pl-c1">9</span>] <span class="pl-smi">printr_0.0.4</span>   <span class="pl-smi">riskr_1.0</span>     
-<span class="pl-k">&gt;</span> 
-<span class="pl-k">&gt;</span> <span class="pl-smi">loaded</span> <span class="pl-smi">via</span> <span class="pl-smi">a</span> namespace (<span class="pl-smi">and</span> <span class="pl-smi">not</span> <span class="pl-smi">attached</span>)<span class="pl-k">:</span>
-<span class="pl-k">&gt;</span>  [<span class="pl-c1">1</span>] <span class="pl-smi">Rcpp_0.11.6</span>        <span class="pl-smi">knitr_1.10.5</span>       <span class="pl-smi">magrittr_1.5</span>      
-<span class="pl-k">&gt;</span>  [<span class="pl-c1">4</span>] <span class="pl-smi">MASS_7.3</span><span class="pl-k">-</span><span class="pl-c1">40</span>        <span class="pl-smi">munsell_0.4.2</span>      <span class="pl-smi">colorspace_1.2</span><span class="pl-k">-</span><span class="pl-c1">6</span>  
-<span class="pl-k">&gt;</span>  [<span class="pl-c1">7</span>] <span class="pl-smi">stringr_1.0.0</span>      <span class="pl-smi">highr_0.5</span>          <span class="pl-smi">caTools_1.17.1</span>    
-<span class="pl-k">&gt;</span> [<span class="pl-c1">10</span>] <span class="pl-smi">tools_3.2.0</span>        <span class="pl-smi">parallel_3.2.0</span>     <span class="pl-smi">grid_3.2.0</span>        
-<span class="pl-k">&gt;</span> [<span class="pl-c1">13</span>] <span class="pl-smi">gtable_0.1.2</span>       <span class="pl-smi">KernSmooth_2.23</span><span class="pl-k">-</span><span class="pl-c1">14</span> <span class="pl-smi">DBI_0.3.1</span>         
-<span class="pl-k">&gt;</span> [<span class="pl-c1">16</span>] <span class="pl-smi">gtools_3.5.0</span>       <span class="pl-smi">htmltools_0.2.6</span>    <span class="pl-smi">lazyeval_0.1.10</span>   
-<span class="pl-k">&gt;</span> [<span class="pl-c1">19</span>] <span class="pl-smi">assertthat_0.1</span>     <span class="pl-smi">yaml_2.1.13</span>        <span class="pl-smi">digest_0.6.8</span>      
-<span class="pl-k">&gt;</span> [<span class="pl-c1">22</span>] <span class="pl-smi">reshape2_1.4.1</span>     <span class="pl-smi">formatR_1.2</span>        <span class="pl-smi">bitops_1.0</span><span class="pl-k">-</span><span class="pl-c1">6</span>      
-<span class="pl-k">&gt;</span> [<span class="pl-c1">25</span>] <span class="pl-smi">evaluate_0.7</span>       <span class="pl-smi">rmarkdown_0.7</span>      <span class="pl-smi">labeling_0.3</span>      
-<span class="pl-k">&gt;</span> [<span class="pl-c1">28</span>] <span class="pl-smi">gdata_2.16.1</span>       <span class="pl-smi">stringi_0.5</span><span class="pl-k">-</span><span class="pl-c1">5</span>      <span class="pl-smi">proto_0.3</span><span class="pl-k">-</span><span class="pl-c1">10</span></pre></div>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/jbkunst">jbkunst</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+<span class="pl-c">## R version 3.2.0 (2015-04-16)</span>
+<span class="pl-c">## Platform: i386-w64-mingw32/i386 (32-bit)</span>
+<span class="pl-c">## Running under: Windows 7 (build 7601) Service Pack 1</span>
+<span class="pl-c">## </span>
+<span class="pl-c">## locale:</span>
+<span class="pl-c">## [1] LC_COLLATE=Spanish_Chile.1252  LC_CTYPE=Spanish_Chile.1252   </span>
+<span class="pl-c">## [3] LC_MONETARY=Spanish_Chile.1252 LC_NUMERIC=C                  </span>
+<span class="pl-c">## [5] LC_TIME=Spanish_Chile.1252    </span>
+<span class="pl-c">## </span>
+<span class="pl-c">## attached base packages:</span>
+<span class="pl-c">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span class="pl-c">## </span>
+<span class="pl-c">## other attached packages:</span>
+<span class="pl-c">##  [1] tidyr_0.2.0    plyr_1.8.3     dplyr_0.4.1    scales_0.2.5  </span>
+<span class="pl-c">##  [5] ROCR_1.0-7     gplots_2.17.0  ggthemes_2.2.1 ggplot2_1.0.1 </span>
+<span class="pl-c">##  [9] printr_0.0.4   riskr_1.0     </span>
+<span class="pl-c">## </span>
+<span class="pl-c">## loaded via a namespace (and not attached):</span>
+<span class="pl-c">##  [1] Rcpp_0.11.6        knitr_1.10.5       magrittr_1.5      </span>
+<span class="pl-c">##  [4] MASS_7.3-40        munsell_0.4.2      colorspace_1.2-6  </span>
+<span class="pl-c">##  [7] stringr_1.0.0      highr_0.5          caTools_1.17.1    </span>
+<span class="pl-c">## [10] tools_3.2.0        parallel_3.2.0     grid_3.2.0        </span>
+<span class="pl-c">## [13] gtable_0.1.2       KernSmooth_2.23-14 DBI_0.3.1         </span>
+<span class="pl-c">## [16] gtools_3.5.0       htmltools_0.2.6    lazyeval_0.1.10   </span>
+<span class="pl-c">## [19] assertthat_0.1     yaml_2.1.13        digest_0.6.8      </span>
+<span class="pl-c">## [22] reshape2_1.4.1     formatR_1.2        bitops_1.0-6      </span>
+<span class="pl-c">## [25] evaluate_0.7       rmarkdown_0.7      labeling_0.3      </span>
+<span class="pl-c">## [28] gdata_2.16.1       stringi_0.5-5      proto_0.3-10</span></pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/jbkunst/riskr">Riskr</a> is maintained by <a href="https://github.com/jbkunst">jbkunst</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
+
+    </section>
+
+  
   </body>
 </html>
+
