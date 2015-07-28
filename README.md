@@ -4,6 +4,7 @@
 
 
 [![travis-status](https://api.travis-ci.org/jbkunst/riskr.svg)](https://travis-ci.org/jbkunst/riskr)
+[![Coverage Status](https://coveralls.io/repos/jbkunst/riskr/badge.svg?branch=master&service=github)](https://coveralls.io/github/jbkunst/riskr?branch=master)
 
 
 ## Introduction
