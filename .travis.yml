@@ -4,8 +4,10 @@ sudo: required
 # for build vignettes
 r_packages:
  - rmarkdown 
- - printr
  - knitr
+ 
+ r_github_packages:
+ - yihui/printr
 
 notifications:
   email:
