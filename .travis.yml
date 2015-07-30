@@ -5,7 +5,7 @@ sudo: required
 r_packages:
  - rmarkdown 
  - knitr
- -printr
+ - printr
  
 notifications:
   email:
