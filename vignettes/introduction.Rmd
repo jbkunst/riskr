@@ -1,0 +1,217 @@
+---
+title: "riskr"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data frames}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+<!-- README.md is generated from README.Rmd -->
+
+<!--
+<a href="https://github.com/jbkunst/riskr"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+
+<style>
+  table, .table {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.8em;
+  }
+</style>
+--> 
+
+```{r setup, echo = FALSE, warning=FALSE}
+library("riskr")
+library("printr")
+library("ggplot2")
+library("ggthemes")
+options(digits = 3, knitr.table.format = "markdown")
+knitr::opts_chunk$set(collapse = TRUE, warning = FALSE,
+                      fig.width = 6, fig.height = 6,
+                      fig.align = "center", dpi = 72)
+
+theme_set(theme_fivethirtyeight(base_size = 11) +
+            theme(axis.title = element_text(colour = "grey30"),
+                  axis.title.y = element_text(angle = 90),
+                  strip.background = element_rect(fill = "#434348"),
+                  strip.text = element_text(color = "#F0F0F0"),
+                  plot.title = element_text(face = "plain", size = structure(1.2, class = "rel"))))
+update_geom_defaults("line", list(colour = "#434348", size = 1.05))
+update_geom_defaults("point", list(colour = "#434348", size = 3))
+update_geom_defaults("bar", list(fill = "#7cb5ec"))
+update_geom_defaults("text", list(size = 4, colour = "gray30"))
+```
+
+
+
+
+[![travis-status](https://api.travis-ci.org/jbkunst/riskr.svg)](https://travis-ci.org/jbkunst/riskr)
+[![Coverage Status](https://coveralls.io/repos/jbkunst/riskr/badge.svg?branch=master&service=github)](https://coveralls.io/github/jbkunst/riskr?branch=master)
+
+
+## Introduction
+
+The `riskr` package facilitate *credit scoring* tasks such as measure the scores/models performance and make easy the scoring modelling process.
+
+There are function to:
+
+ 1. Measure in a simple way the performance of models via wrappers/shortcuts from ROCR functions.
+ 2. Visualize relationships between variables.
+ 4. Compute usual values in the credit scoring PSI, WOE, IV, KS, AUCROC, among others.
+ 5. Make easier the modelling and validation process. 
+
+## Assumptions
+
+`riskr` assume the target variable is *binary* with numeric values: 0 and 1. Usually 1 means the characteristic of interest.
+
+## Installation
+
+You can install the latest development version from github with:
+
+```{r, eval=FALSE}
+devtools::install_github("jbkunst/riskr")
+```
+
+## Functions
+
+Usually we have a data frame with a *target* variable and a *score* (or probability) like this:
+
+```{r}
+library("riskr")
+
+data("predictions")
+
+head(predictions)
+
+str(predictions)
+
+score <- predictions$score
+
+target <- predictions$target
+```
+
+### Performance Indicators
+
+The main statistics or indicators are KS, AUCROC so:
+
+```{r}
+ks(score, target)
+
+aucroc(score, target)
+
+gini(score, target)
+
+perf(score, target)
+```
+
+There are some functions to plot the score/model performance (based on ggplot package).
+
+```{r}
+plot_roc(score, target)
+
+plot_gain(score, target)
+
+plot_lift(score, target)
+
+plot_dists(score, target) +
+  ggtitle(sprintf("The KS statistics is %.0f%%", 100 * ks(score, target)))
+
+plot_ks(score, target) + ggtitle("Comparing ECDF")
+```
+
+```{r fig.width = 8, fig.height= 8, warning=FALSE, message=FALSE}
+plot_perf(score, target)
+```
+
+### Odds Tables
+
+The odds tables are other way to show how a score/model performs.
+
+```{r}
+score <- round(predictions$score * 1000)
+
+odds_table(score, target, nclass = 5) # default is (nclass =) 10 groups of equal size
+
+odds_table(score, target, breaks = c(0, 300, 700, 999))
+```
+
+### Confusion Matrix
+
+The `conf_matrix` function return a list with the next elements:
+
+```{r}
+score_cat <- ifelse(score < 500, 0, 1)
+
+cm <- conf_matrix(score_cat, target)
+```
+
+- The confusion matrix:
+```{r}
+cm$confusion.matrix
+```
+
+- The confusion matrix statistics
+```{r}
+cm$indicators
+
+cm$indicators.t
+```
+
+
+### Bivariate Tables
+
+```{r}
+data("credit")
+
+str(credit)
+
+ft(credit$marital_status)
+
+bt(credit$marital_status, credit$bad)
+
+library("ggplot2")
+
+credit$age_bin <- cut_interval(credit$age, 3)
+
+bt(credit$age_bin, credit$bad)
+```
+
+```{r fig.width = 12, fig.height= 10}
+plot_ba(credit$age_bin, credit$bad)
+
+# order by odds
+lvls_rt <- bt(credit$residence_type, credit$bad) %>% 
+  arrange(desc(odds)) %>%  .[["class"]]
+
+residence_type2 <- factor(credit$residence_type, levels = lvls_rt)
+
+plot_ba(residence_type2, credit$bad)
+```
+
+The minified version of `plot_ba`
+```{r}
+plot_ba2(credit$age_bin, credit$bad) + ggtitle("Age")
+
+
+plot_ba2(credit$flag_res_phone, credit$bad, labels = FALSE) +
+  ggtitle("Flag Response Phone")
+
+```
+
+## Related work
+
+1. [woe](http://github.com/tomasgreif/woe) package by [tomasgreif](http://github.com/tomasgreif)
+1. [smbinning](http://cran.r-project.org/web/packages/smbinning) package by [Herman Jopia](http://github.com/hjopia). [Github repository](https://github.com/cran/smbinning).
+1. [Guide to Credit Scoring in R](https://cran.r-project.org/doc/contrib/Sharma-CreditScoring.pdf)
+1. [Gains package](https://cran.r-project.org/web/packages/gains/gains.pdf)
+
+## Session Info
+```{r setup, eval=FALSE, echo=TRUE}
+```
+
+```{r}
+print(sessionInfo())
+```
