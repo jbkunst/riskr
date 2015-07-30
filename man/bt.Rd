@@ -12,7 +12,7 @@ bt(variable, target)
 \item{target}{A numeric binary vector {0,1}}
 }
 \value{
-A data_frame object with the counts, percents and odds
+A dplyr::data_frame object with the counts, percents and odds
 }
 \description{
 This function calculate a bivariate table.

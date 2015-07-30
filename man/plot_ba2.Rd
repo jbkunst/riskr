@@ -16,7 +16,7 @@ plot_ba2(variable, target, labels = TRUE, order.by = NULL)
 \item{order.by}{A par}
 }
 \value{
-A ggplot2 object
+A ggplot2::ggplot2 object
 }
 \description{
 A minimal version for \emph{plot_ba}

@@ -18,7 +18,7 @@ odds_table(score, target, nclass = 10, quantile = TRUE, breaks = NULL)
 \item{breaks}{An optional numeric vector to set the intervals to use}
 }
 \value{
-A data_frame object with the counts, percents and odds
+A dplyr::data_frame object with the counts, percents and odds
 }
 \description{
 This function calculate a odds table.

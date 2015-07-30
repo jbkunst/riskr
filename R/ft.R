@@ -9,14 +9,10 @@
 #' ft(x)
 #' @export
 ft <- function(x) {
+
+  if (any(is.na(x)))  x <- addNA(x)
   
-  library("dplyr")
-  
-  if (any(is.na(x))) {
-    x <- addNA(x)
-  }
-  
-  freqt <- data.frame(class = x) %>% gb_sm(class)
+  freqt <- gb_sm(dplyr::data_frame(class = x), class)
   
   return(freqt)
 }

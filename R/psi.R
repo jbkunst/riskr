@@ -30,7 +30,6 @@ psi <- function(actual, new){
   
 }
 
-
 #' PSI Table
 #' @description Table for calculate Population Stability Index (PSI)
 #' @param actual A vector of original distribution
@@ -49,9 +48,7 @@ psi_table <- function(actual, new){
   stopifnot(
     setequal(actual, new)
   )
-  
-  library("dplyr")
-  
+   
   act_df <- ft(actual)
   
   new_df <- ft(new)
@@ -63,7 +60,7 @@ psi_table <- function(actual, new){
   psi_tbl <- dplyr::full_join(act_df, new_df, by = "class")
   
   psi_tbl <- psi_tbl %>% 
-    mutate(diff_percent = new_percent - act_percent,
+    dplyr::mutate(diff_percent = new_percent - act_percent,
            coefficient = new_percent / act_percent,
            woe = log(coefficient),
            index = diff_percent * woe)

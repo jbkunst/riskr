@@ -12,18 +12,15 @@ gb_sm(data, ...)
 \item{...}{A list of variable (no characters) used in a \code{group_by}}
 }
 \value{
-A data_frame object with the counts and percets of each combination of \code{...}.
+A dplyr::data_frame object with the counts and percets of each combination of \code{...}.
 }
 \description{
 This is only a shortcut for \code{df} then \code{group_by(...)} and then \code{summarize(...)}
 }
 \examples{
 set.seed(1313)
-x <- sample(LETTERS[1:10], size = 100, prob = 1:10/10, replace = TRUE)
-df <- data.frame(class = x)
-gb_sm(df, class)
-
-library("dplyr")
-df \%>\% gb_sm(class)
+x <- sample(LETTERS[1:4], size = 100, prob = 1:4/4, replace = TRUE)
+data <- data.frame(class = x)
+gb_sm(data, class)
 }
 

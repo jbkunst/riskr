@@ -181,6 +181,7 @@ bt(credit$age_bin, credit$bad)
 plot_ba(credit$age_bin, credit$bad)
 
 # order by odds
+library("dplyr")
 lvls_rt <- bt(credit$residence_type, credit$bad) %>% 
   arrange(desc(odds)) %>%  .[["class"]]
 

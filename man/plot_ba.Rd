@@ -25,6 +25,7 @@ variable <- credit$sex
 target <- credit$bad
 
 plot_ba(variable, target)
+
 plot_ba(variable, target, order.by = "target")
 }
 

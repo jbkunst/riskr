@@ -10,8 +10,6 @@ divergence(score, target)
 \item{score}{A numeric vector containing scores or probabilities}
 
 \item{target}{A numeric binary vector (0, 1)}
-
-\item{percents}{Values to calculate the gain}
 }
 \value{
 The Gini Coefficient

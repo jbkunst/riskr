@@ -23,34 +23,31 @@ pretty_df <- function(df,
                       fill.num.na.with = 0,
                       fill.chr.na.with = "",
                       trim.chr.vars = TRUE){
-  
-  library("plyr")
-  library("dplyr")
-  
+
   if (to.lower.df.names) {
     names(df) <- tolower(names(df))  
   }
   
   if (factor.to.string) {
     
-    df[,laply(df, is.factor)] <- lapply(df[,plyr::laply(df, is.factor)] , as.character)
+    df[,plyr::laply(df, is.factor)] <- lapply(df[,plyr::laply(df, is.factor)] , as.character)
   
   } 
   
   if (!is.null(fill.num.na.with)) {
-    df[,laply(df, is.numeric)] <- lapply(df[,plyr::laply(df, is.numeric)] , function(x) {
+    df[,plyr::laply(df, is.numeric)] <- lapply(df[,plyr::laply(df, is.numeric)] , function(x) {
       ifelse(is.na(x), fill.num.na.with, x)
     })
   }
   
   if (!is.null(fill.chr.na.with)) {
-    df[,laply(df, is.character)] <- lapply(df[,plyr::laply(df, is.character)] , function(x) {
+    df[,plyr::laply(df, is.character)] <- lapply(df[,plyr::laply(df, is.character)] , function(x) {
       ifelse(is.na(x), fill.chr.na.with, x)
     })
   }
   
   if (trim.chr.vars) {
-    df[,laply(df, is.character)] <- lapply(df[,plyr::laply(df, is.character)] , function(x) {
+    df[,plyr::laply(df, is.character)] <- lapply(df[,plyr::laply(df, is.character)] , function(x) {
       gsub("^\\s+|\\s+$", "", x)
     })
   }

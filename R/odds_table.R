@@ -5,7 +5,7 @@
 #' @param nclass A numeric input for determinate the number of classes if \code{breaks} is not given.
 #' @param quantile A boolean to set if the cuts are made by quantile or counts. This parameter is udes if \code{breaks} is not given. 
 #' @param breaks An optional numeric vector to set the intervals to use
-#' @return A data_frame object with the counts, percents and odds
+#' @return A dplyr::data_frame object with the counts, percents and odds
 #' @examples
 #' data(predictions)
 #' 
@@ -23,21 +23,19 @@ odds_table <- function(score, target, nclass = 10, quantile = TRUE, breaks = NUL
     setequal(target, c(0, 1)),
     length(target) == length(score)
   )
-  library("plyr")
-  library("dplyr")
-  library("ggplot2")
-
+  
   if (missing(breaks) & quantile) {
     
-    score_cat <- cut_number(score, n = nclass)
+    score_cat <- ggplot2::cut_number(score, n = nclass)
     
   } else if (missing(breaks) & !quantile) {
     
-    score_cat <- cut_interval(score, n = nclass)
+    score_cat <- ggplot2::cut_interval(score, n = nclass)
     
   } else {
     
     score_cat <- cut(score, breaks = breaks)
+	
   }
   
   df <- bt(variable = score_cat, target = target)

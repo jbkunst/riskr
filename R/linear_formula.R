@@ -1,3 +1,4 @@
+estimate <- term <- estimate_fmt <- NULL
 #' Write the Linear Combination 
 #'
 #' @description Write the linear combination 
@@ -13,11 +14,8 @@
 #' @export
 linear_formula <- function(model){
   
-  library("dplyr")
-  library("broom")
-
-  t <- tidy(model) %>% 
-    mutate(estimate_fmt = format(estimate, width = 10, scientific = FALSE),
+  t <- broom::tidy(model) %>% 
+    dplyr::mutate(estimate_fmt = format(estimate, width = 10, scientific = FALSE),
            prod = ifelse(term == "(Intercept)", "", estimate_fmt),
            prod = ifelse(term == "(Intercept)",
                          estimate_fmt,

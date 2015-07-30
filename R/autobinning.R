@@ -1,3 +1,17 @@
+#' Autobinning
+#' @description Automatic supervised binning 
+#' @param target A numeric binary vector {0,1}
+#' @param variable A variable 
+#' @return A list of elements
+#' @examples
+#' 
+#' data("credit")
+#' 
+#' target <- credit$bad
+#' variable <- credit$age
+#' 
+#' autobinning(credit$bad, credit$age)
+#' 
 #' @export
 autobinning <- function(target, variable){
   
@@ -6,41 +20,13 @@ autobinning <- function(target, variable){
     length(target) == length(variable)
     )
   
-  library("partykit")
-  library("plyr")
-  library("dplyr")
-  
-  if(!is.numeric(variable)){
+  if (!is.numeric(variable)) {
     variable <- factor(variable)
   }
   
-  df <- data_frame(target = factor(target), variable)
-  
-  tree <- ctree(target ~ variable, data = df)
-  
-  plot(tree)
-  
-  df$variable_clus <- predict(tree, newdata = df, type = "node")
-  df$variable_clus <- factor(df$variable_clus)
-  
-  levels(df$variable_clus) <- paste("CAT", seq(length(levels(df$variable_clus))), sep = "_")
-  
-  df2 <- as.data.frame.matrix(table(df$variable, df$variable_clus))
-  
-  if(is.numeric(variable)){
-    res <- llply(df2, function(x) c(min = min(as.numeric(rownames(df2)[x!=0])),
-                                    max = max(as.numeric(rownames(df2)[x!=0]))))
-    
-    cod <- ldply(res, function(x) data.frame(x[[1]],x[[2]]))
-    names(cod) <- c("Cluster", "Min", "Max")
-    
-  } else{
-    res <- llply(df2, function(x) rownames(df2)[x!=0])
-    cod <- ldply(df2, function(x) data.frame(rownames(df2)[x!=0]))
-    names(cod) <- c("Cluster", "Element")
-    
-  }
+  df <- dplyr::data_frame(target = factor(target), variable)
+
+  df
  
-  list(variable_clus = df$variable_clus, cod = cod, cod2 = res)
 }
 

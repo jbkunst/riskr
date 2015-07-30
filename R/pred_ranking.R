@@ -1,7 +1,8 @@
 #' Ranking for predictives variables 
 #' @description Calculate the predictive ranking from a data frame.
 #' @param df A data frame
-#' @param response The name of response variable
+#' @param target_name The name of response variable
+#' @param verbose verbose
 #' @return A data frame with statistics like aucroc and ks from de univariate models `response ~ target`
 #' @examples
 #' data("credit")
@@ -9,18 +10,14 @@
 #' target_name <- "bad"
 #' @export
 pred_ranking <- function(df, target_name = "target", verbose = FALSE){
-  
-  require("ROCR")
-  require("plyr")
-  require("dplyr")
-  
+    
   target <- df[[target_name]]
   
   df2 <- df %>% subset(select = setdiff(names(df), target_name))
   
-  df2 <- df2[,laply(df2, function(v){ if (length(unique(na.omit(v))) == 1) { FALSE } else {TRUE} })]
+  df2 <- df2[,plyr::laply(df2, function(v){ if (length(unique(na.omit(v))) == 1) { FALSE } else {TRUE} })]
   
-  res <- ldply(names(df2), function(namevar){
+  res <- plyr::ldply(names(df2), function(namevar){
     # namevar <- sample(names(df2), size = 1)
     if(verbose) message(namevar)
     
@@ -32,15 +29,15 @@ pred_ranking <- function(df, target_name = "target", verbose = FALSE){
     
     score <- model$fitted.values
     
-    resp <- data_frame(variable = namevar,
+    resp <- dplyr::data_frame(variable = namevar,
                        ks = ks(score, target),
                        aucroc = aucroc(score, target))
   
   }, .progress = "text")
   
   res <- res %>%
-    tbl_df() %>% 
-    arrange(desc(aucroc))
+    dplyr::tbl_df() %>% 
+    dplyr::arrange(dplyr::desc(aucroc))
   
   res
 }

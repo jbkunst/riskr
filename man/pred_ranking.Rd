@@ -9,7 +9,9 @@ pred_ranking(df, target_name = "target", verbose = FALSE)
 \arguments{
 \item{df}{A data frame}
 
-\item{response}{The name of response variable}
+\item{target_name}{The name of response variable}
+
+\item{verbose}{verbose}
 }
 \value{
 A data frame with statistics like aucroc and ks from de univariate models `response ~ target`

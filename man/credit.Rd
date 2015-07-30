@@ -9,7 +9,7 @@
 data(credit)
 }
 \description{
-This dataset classifies people described by a set of attributes as good or bad credit risks
+This dataset classifies people dplyr::ungroupribed by a set of attributes as good or bad credit risks
 }
 \keyword{datasets}
 

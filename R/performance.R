@@ -18,12 +18,8 @@ ks <- function(score, target){
     length(target) == length(score)
   )
   
-  
-  suppressMessages(library("ROCR"))
-  
-  pred <- prediction(score, target)
-  
-  perf <- performance(pred, "tpr", "fpr")
+  pred <- ROCR::prediction(score, target)
+  perf <- ROCR::performance(pred, "tpr", "fpr")
   
   ks <- max(abs(attr(perf, "y.values")[[1]] - attr(perf, "x.values")[[1]]))
   
@@ -74,14 +70,10 @@ aucroc <- function(score, target){
     length(target) == length(score)
   )
   
+  pred <- ROCR::prediction(score, target)
+  perf <- ROCR::performance(pred, "auc")
   
-  suppressMessages(library("ROCR"))
-  
-  pred <- prediction(score, target)
-  
-  perf <- performance(pred, "tpr", "fpr")
-  
-  aucroc <- attr(performance(pred, "auc"), "y.values")[[1]]
+  aucroc <- attr(perf, "y.values")[[1]]
   
   return(aucroc)
 }
@@ -132,11 +124,7 @@ gain <- function(score, target, percents = c(0.10, 0.20, 0.30, 0.40, 0.50)){
     length(target) == length(score)
   )
   
-  library("scales")
-  
   g <- ecdf(score[target == 0])(quantile(score, percents))
-  
-  names(g) <- percent(percents)
   
   g
 }
@@ -145,7 +133,6 @@ gain <- function(score, target, percents = c(0.10, 0.20, 0.30, 0.40, 0.50)){
 #' @description Calculate the divergence between empirical distributions
 #' @param score A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
-#' @param percents Values to calculate the gain
 #' @return The Gini Coefficient
 #' @examples
 #' data(predictions)
@@ -203,5 +190,3 @@ perf <- function(score, target){
   return(res)
 
 }
-
-
