@@ -103,9 +103,9 @@ perf(score, target)
 
 
 
-| count| target_count| target_rate|    ks| aucroc|  gini| divergence|
-|-----:|------------:|-----------:|-----:|------:|-----:|----------:|
-| 10000|         6990|       0.699| 0.254|  0.676| 0.353|      0.408|
+| count| target_count| target_rate|    ks| aucroc|  gini|
+|-----:|------------:|-----------:|-----:|------:|-----:|
+| 10000|         6990|       0.699| 0.254|  0.676| 0.353|
 
 There are some functions to plot the score/model performance (based on ggplot package).
 
@@ -321,16 +321,6 @@ plot_ba(credit$age_bin, credit$bad)
 
 # order by odds
 library("dplyr")
-## 
-## Attaching package: 'dplyr'
-## 
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-## 
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
 lvls_rt <- bt(credit$residence_type, credit$bad) %>% 
   arrange(desc(odds)) %>%  .[["class"]]
 
@@ -393,9 +383,9 @@ update_geom_defaults("text", list(size = 4, colour = "gray30"))
 
 ```r
 print(sessionInfo())
-## R version 3.2.0 (2015-04-16)
-## Platform: i386-w64-mingw32/i386 (32-bit)
-## Running under: Windows 7 (build 7601) Service Pack 1
+## R version 3.1.3 (2015-03-09)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows 8 x64 (build 9200)
 ## 
 ## locale:
 ## [1] LC_COLLATE=Spanish_Chile.1252  LC_CTYPE=Spanish_Chile.1252   
@@ -406,20 +396,20 @@ print(sessionInfo())
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] dplyr_0.4.2    ggthemes_2.2.1 ggplot2_1.0.1  printr_0.0.4  
-## [5] riskr_1.0     
+##  [1] tidyr_0.2.0    plyr_1.8.3     scales_0.2.5   dplyr_0.4.2   
+##  [5] ROCR_1.0-7     gplots_2.17.0  ggthemes_2.2.1 ggplot2_1.0.1 
+##  [9] printr_0.0.4   riskr_1.0     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.0        knitr_1.10.5       magrittr_1.5      
-##  [4] MASS_7.3-40        munsell_0.4.2      colorspace_1.2-6  
-##  [7] R6_2.0.1           stringr_1.0.0      ROCR_1.0-7        
-## [10] highr_0.5          plyr_1.8.3         caTools_1.17.1    
-## [13] tools_3.2.0        parallel_3.2.0     grid_3.2.0        
-## [16] gtable_0.1.2       KernSmooth_2.23-14 DBI_0.3.1         
-## [19] gtools_3.5.0       htmltools_0.2.6    lazyeval_0.1.10   
-## [22] assertthat_0.1     yaml_2.1.13        digest_0.6.8      
-## [25] tidyr_0.2.0        reshape2_1.4.1     formatR_1.2       
-## [28] bitops_1.0-6       evaluate_0.7       rmarkdown_0.7     
-## [31] labeling_0.3       gdata_2.16.1       stringi_0.5-5     
-## [34] gplots_2.17.0      scales_0.2.5       proto_0.3-10
+##  [1] assertthat_0.1     bitops_1.0-6       caTools_1.17.1    
+##  [4] colorspace_1.2-6   DBI_0.3.1          digest_0.6.8      
+##  [7] evaluate_0.7       formatR_1.2        gdata_2.16.1      
+## [10] grid_3.1.3         gtable_0.1.2       gtools_3.4.2      
+## [13] highr_0.5          htmltools_0.2.6    KernSmooth_2.23-14
+## [16] knitr_1.10.5       labeling_0.3       lazyeval_0.1.10   
+## [19] magrittr_1.5       MASS_7.3-39        munsell_0.4.2     
+## [22] parallel_3.1.3     proto_0.3-10       R6_2.1.0          
+## [25] Rcpp_0.11.6        reshape2_1.4.1     rmarkdown_0.7.1   
+## [28] stringi_0.5-5      stringr_1.0.0      tools_3.1.3       
+## [31] yaml_2.1.13
 ```
