@@ -20,5 +20,5 @@ Imports:
     grid,
     partykit,
     broom
-Suggests: knitr
+Suggests: knitr, printr, rmarkdown
 VignetteBuilder: knitr
