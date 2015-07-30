@@ -38,7 +38,7 @@ plot_roc <- function(score, target){
 
 #' Plot Gain Curve
 #'
-#' @description Return a ggplot2::ggplot object. 
+#' @description Return a plot for gains 
 #' @param score A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
 #' @return the plot
@@ -97,7 +97,7 @@ plot_gain <- function(score, target){
 
 #' Plot to compare cumulatives distrbutions
 #'
-#' @description Return a ggplot2::ggplot object. 
+#' @description Return a plot with ecdfs
 #' @param score A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
 #' @return The plot
@@ -149,7 +149,7 @@ plot_ks <- function(score, target){
 
 #' Plot to compare distrbutions
 #'
-#' @description Return a ggplot2::ggplot object. 
+#' @description Return a plot with densities
 #' @param score A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
 #' @return The plot
@@ -190,7 +190,7 @@ plot_dists <- function(score, target){
 
 #' Plot Lift Chart
 #'
-#' @description Return a ggplot2::ggplot object. 
+#' @description Return a plot with the lift chart
 #' @param score A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
 #' @return The plot
@@ -227,7 +227,7 @@ plot_lift <- function(score, target){
 
 #' Plot Performance
 #'
-#' @description Return a ggplot2::ggplot object. 
+#' @description Return a plot with plot_roc, plot_dists, plot_ks, plot_gain
 #' @param score A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
 #' @return The plot

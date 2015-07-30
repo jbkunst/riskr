@@ -15,7 +15,7 @@ plot_ks(score, target)
 The plot
 }
 \description{
-Return a ggplot2::ggplot object.
+Return a plot with ecdfs
 }
 \examples{
 data(predictions)

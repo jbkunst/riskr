@@ -15,7 +15,7 @@ plot_gain(score, target)
 the plot
 }
 \description{
-Return a ggplot2::ggplot object.
+Return a plot for gains
 }
 \examples{
 data(predictions)

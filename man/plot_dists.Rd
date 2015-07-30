@@ -15,7 +15,7 @@ plot_dists(score, target)
 The plot
 }
 \description{
-Return a ggplot2::ggplot object.
+Return a plot with densities
 }
 \examples{
 data(predictions)

@@ -15,7 +15,7 @@ plot_perf(score, target)
 The plot
 }
 \description{
-Return a ggplot2::ggplot object.
+Return a plot with plot_roc, plot_dists, plot_ks, plot_gain
 }
 \examples{
 data(predictions)

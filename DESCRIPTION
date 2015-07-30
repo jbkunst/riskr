@@ -3,7 +3,7 @@ Version: 1.0
 Title: Functions to facilitate the credit scoring tasks
 Description: The riskr package facilitate credit scoring tasks 
   such as measure the scores/models performance
-  and the scoring modelling process, measure in a simple way
+  and the scoring modelling process: measure in a simple way
   the performance of models via wrappers/shortcuts from
   ROCR functions, visualize relationships between variables.
   Also there are functions to compute usual values
@@ -20,11 +20,8 @@ Imports:
     tidyr,
     magrittr,
     ggplot2,
-    ggthemes,
     ROCR,
     scales,
-    grid,
-    partykit,
     broom
-Suggests: knitr, printr, rmarkdown
+Suggests: knitr, printr, rmarkdown, ggthemes
 VignetteBuilder: knitr

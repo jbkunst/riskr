@@ -15,7 +15,7 @@ plot_lift(score, target)
 The plot
 }
 \description{
-Return a ggplot2::ggplot object.
+Return a plot with the lift chart
 }
 \examples{
 data(predictions)
