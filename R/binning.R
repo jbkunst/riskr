@@ -7,53 +7,62 @@
 #' 
 #' data("credit")
 #' 
-#' target <- credit$bad
-#' variable <- credit$age
+#' bin_sup(variable = credit$age, credit$bad)
 #' 
-#' sup_bin(credit$bad, credit$age)
+#' bin_sup(variable = credit$marital_status, credit$bad)
 #' 
 #' @export
-sup_bin <- function(target, variable){
+bin_sup <- function(variable, target){
   
   stopifnot(
     setequal(target, c(0, 1)),
     length(target) == length(variable)
     )
   
-  if (!is.numeric(variable)) {
-    variable <- factor(variable)
-  }
-  
+  df <- dplyr::data_frame(target, variable)
 
-  df <- data.frame(target = factor(target), variable)
-
-  tree <- partykit::ctree(target ~ variable, data = df)
+  tree <- partykit::ctree(factor(target) ~ variable, data = df)
   
   df$node <- predict(tree, type = "node")
   
-  ls <- list()
-  
-  attr(ls, "class") <-  "supervised_binning"
-  
-  ls["tree"] <- tree
-  
-  
-  if (is.numeric(variable)){
+  n
+
+  if (is.numeric(variable)) {
     
-    ls["type"] <- "numeric"
+    type <- "numeric"
     
-    df <-df %>%
+    df2 <- df %>%
       dplyr::group_by(node) %>%
       dplyr::summarise(max = max(variable))
     
-    cuts <- c(-Inf, df$max, Inf)
+    dict <- c(-Inf, df2$max, Inf)
+    
+    nbins <- length(dict)
+    
+    df$new_variable <- cut(df$variable, dict, labels = FALSE)
+    df$new_variable <- cut(df$variable, dict, labels = FALSE)
     
   } else {
-    ls["type"] <- "categorical"
+    
+    type <- "categorical"
+    
+    df2 <- df %>%
+      dplyr::select(variable, node) %>% 
+      dplyr::distinct() %>% 
+      dplyr::mutate(variable_bin =  seq(nrow(.)),
+                    variable_bin = paste0("group_", variable_bin))
+    
+    dict <- df2
+    
+    df <- dplyr::left_join(df,)
+    
+    df$variable_bin <- cut(df$variable, dict)
     
   }
   
-  ls
+  bt(df$node, df$target)
   
+  list(data = dplyr::tbl_df(df), tree = tree, type = type, dict = dict)
+
 }
 

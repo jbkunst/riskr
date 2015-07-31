@@ -24,5 +24,6 @@ Imports:
     scales,
     broom,
     partykit,
+    stringr
 Suggests: knitr, rmarkdown, ggthemes, Formula
 VignetteBuilder: knitr
