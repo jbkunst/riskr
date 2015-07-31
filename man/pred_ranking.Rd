@@ -23,5 +23,7 @@ Calculate the predictive ranking from a data frame.
 data("credit")
 df <- credit
 target_name <- "bad"
+
+pred_ranking(df, target_name)
 }
 

@@ -22,6 +22,7 @@ Imports:
     ggplot2,
     ROCR,
     scales,
-    broom
-Suggests: knitr, rmarkdown, ggthemes
+    broom,
+    partykit,
+Suggests: knitr, rmarkdown, ggthemes, Formula
 VignetteBuilder: knitr
