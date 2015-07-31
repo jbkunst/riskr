@@ -8,6 +8,9 @@
 #' data("credit")
 #' df <- credit
 #' target_name <- "bad"
+#' 
+#' pred_ranking(df, target_name)
+#' 
 #' @export
 pred_ranking <- function(df, target_name = "target", verbose = FALSE){
     

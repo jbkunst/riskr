@@ -23,5 +23,5 @@ Imports:
     ROCR,
     scales,
     broom
-Suggests: knitr, printr, rmarkdown, ggthemes
+Suggests: knitr, rmarkdown, ggthemes
 VignetteBuilder: knitr

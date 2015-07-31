@@ -24,8 +24,13 @@ autobinning <- function(target, variable){
     variable <- factor(variable)
   }
   
-  df <- dplyr::data_frame(target = factor(target), variable)
 
+  df <- data.frame(target = factor(target), variable)
+
+#   partykit::ctree(target ~ variable, data = df)
+#   rpart::rpart(target ~ variable, data = df, control = rpart::rpart.control(cp = 0.00004))
+  
+  
   df
  
 }
