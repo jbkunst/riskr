@@ -40,10 +40,11 @@ bin_sup <- function(variable, target){
       dplyr::group_by(node) %>%
       dplyr::summarise(max = max(variable))
     
-    dict <- c(-Inf, df2$max, Inf)
+    cuts <- c(-Inf, df2$max, Inf)
     
-    df$new_variable <- cut(df$variable, dict, labels = FALSE)
-    df$new_variable <- paste()
+    df$new_variable <- cut(df$variable, cuts, labels = FALSE)
+    df$new_variable <- stringr::str_pad(df$new_variable, width = 10%/%nbins, side = "left", pad = "0")
+    df$new_variable <- paste("group", df$new_variable, sep  = "_")
     
   } else {
     
@@ -57,7 +58,7 @@ bin_sup <- function(variable, target){
     
     dict <- df2
     
-    df <- dplyr::left_join(df,)
+
     
     df$variable_bin <- cut(df$variable, dict)
     
