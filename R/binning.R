@@ -7,9 +7,14 @@
 #' 
 #' data("credit")
 #' 
-#' bin_sup(variable = credit$age, credit$bad)
+#' variable <-  credit$age
+#' target <- credit$bad
+#'
+#' bin_sup(variable, target)
 #' 
-#' bin_sup(variable = credit$marital_status, credit$bad)
+#' variable <- credit$marital_status
+#' 
+#' bin_sup(variable, target)
 #' 
 #' @export
 bin_sup <- function(variable, target){
@@ -25,7 +30,7 @@ bin_sup <- function(variable, target){
   
   df$node <- predict(tree, type = "node")
   
-  n
+  nbins <- partykit::width(tree)
 
   if (is.numeric(variable)) {
     
@@ -37,10 +42,8 @@ bin_sup <- function(variable, target){
     
     dict <- c(-Inf, df2$max, Inf)
     
-    nbins <- length(dict)
-    
     df$new_variable <- cut(df$variable, dict, labels = FALSE)
-    df$new_variable <- cut(df$variable, dict, labels = FALSE)
+    df$new_variable <- paste()
     
   } else {
     
