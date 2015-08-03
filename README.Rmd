@@ -23,7 +23,7 @@ output:
 
 ```{r setup, echo = FALSE, warning=FALSE}
 library("riskr")
-library("printr")
+library("printr") # remove this for vignette
 library("ggplot2")
 library("ggthemes")
 options(digits = 3, knitr.table.format = "markdown")

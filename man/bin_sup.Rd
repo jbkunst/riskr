@@ -4,7 +4,7 @@
 \alias{bin_sup}
 \title{Supervised Binning}
 \usage{
-bin_sup(variable, target, min.p = 0.5)
+bin_sup(variable, target, min.p = 0.05)
 }
 \arguments{
 \item{variable}{A variable}

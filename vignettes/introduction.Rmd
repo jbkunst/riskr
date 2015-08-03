@@ -31,9 +31,6 @@ update_geom_defaults("bar", list(fill = "#7cb5ec"))
 update_geom_defaults("text", list(size = 4, colour = "gray30"))
 ```
 
-
-
-
 [![travis-status](https://api.travis-ci.org/jbkunst/riskr.svg)](https://travis-ci.org/jbkunst/riskr)
 [![Coverage Status](https://coveralls.io/repos/jbkunst/riskr/badge.svg?branch=master&service=github)](https://coveralls.io/github/jbkunst/riskr?branch=master)
 
@@ -63,6 +60,8 @@ devtools::install_github("jbkunst/riskr")
 
 ## Functions
 
+### Performance Indicators & Plots
+
 Usually we have a data frame with a *target* variable and a *score* (or probability) like this:
 
 ```{r}
@@ -72,28 +71,30 @@ data("predictions")
 
 head(predictions)
 
-str(predictions)
-
 score <- predictions$score
 
 target <- predictions$target
 ```
 
-### Performance Indicators
-
 The main statistics or indicators are KS, AUCROC so:
 
 ```{r}
-ks(score, target)
-
-aucroc(score, target)
-
-gini(score, target)
-
 perf(score, target)
 ```
 
+There are functions to calculate every indicator.
+
+```{r}
+aucroc(score, target)
+```
+
 There are some functions to plot the score/model performance (based on ggplot package).
+
+```{r fig.width = 8, fig.height= 8, warning=FALSE, message=FALSE}
+plot_perf(score, target)
+```
+
+And:
 
 ```{r}
 plot_roc(score, target)
@@ -101,16 +102,31 @@ plot_roc(score, target)
 plot_gain(score, target)
 
 plot_lift(score, target)
-
-plot_dists(score, target) +
-  ggtitle(sprintf("The KS statistics is %.0f%%", 100 * ks(score, target)))
-
-plot_ks(score, target) + ggtitle("Comparing ECDF")
 ```
 
-```{r fig.width = 8, fig.height= 8, warning=FALSE, message=FALSE}
-plot_perf(score, target)
+### Tables (Uni/Bivariate) & Plots
+
+```{r}
+data("credit")
+
+ft(credit$marital_status)
+
+bt(credit$marital_status, credit$bad)
+
+credit$age_bin <- bin_sup(credit$age, credit$bad, min.p = 0.20)$variable_new
+
+bt(credit$age_bin, credit$bad)
 ```
+
+```{r fig.width = 12, fig.height= 10}
+plot_ba(credit$age_bin, credit$bad)
+```
+
+The minified version of `plot_ba`
+```{r}
+plot_ba2(credit$age_bin, credit$bad) + ggtitle("Age")
+```
+
 
 ### Odds Tables
 
@@ -120,8 +136,13 @@ The odds tables are other way to show how a score/model performs.
 score <- round(predictions$score * 1000)
 
 odds_table(score, target, nclass = 5) # default is (nclass =) 10 groups of equal size
+```
 
-odds_table(score, target, breaks = c(0, 300, 700, 999))
+### Ranking Predictive Variables
+
+```{r}
+ranks <- pred_ranking(credit, "bad")
+head(ranks)
 ```
 
 ### Confusion Matrix
@@ -129,9 +150,9 @@ odds_table(score, target, breaks = c(0, 300, 700, 999))
 The `conf_matrix` function return a list with the next elements:
 
 ```{r}
-score_cat <- ifelse(score < 500, 0, 1)
+target_pred <- ifelse(score < 500, 0, 1)
 
-cm <- conf_matrix(score_cat, target)
+cm <- conf_matrix(target_pred, target)
 ```
 
 - The confusion matrix:
@@ -142,50 +163,6 @@ cm$confusion.matrix
 - The confusion matrix statistics
 ```{r}
 cm$indicators
-
-cm$indicators.t
-```
-
-
-### Bivariate Tables
-
-```{r}
-data("credit")
-
-str(credit)
-
-ft(credit$marital_status)
-
-bt(credit$marital_status, credit$bad)
-
-library("ggplot2")
-
-credit$age_bin <- cut_interval(credit$age, 3)
-
-bt(credit$age_bin, credit$bad)
-```
-
-```{r fig.width = 12, fig.height= 10}
-plot_ba(credit$age_bin, credit$bad)
-
-# order by odds
-library("dplyr")
-lvls_rt <- bt(credit$residence_type, credit$bad) %>% 
-  arrange(desc(odds)) %>%  .[["class"]]
-
-residence_type2 <- factor(credit$residence_type, levels = lvls_rt)
-
-plot_ba(residence_type2, credit$bad)
-```
-
-The minified version of `plot_ba`
-```{r}
-plot_ba2(credit$age_bin, credit$bad) + ggtitle("Age")
-
-
-plot_ba2(credit$flag_res_phone, credit$bad, labels = FALSE) +
-  ggtitle("Flag Response Phone")
-
 ```
 
 ## Related work

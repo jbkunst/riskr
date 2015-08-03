@@ -130,7 +130,7 @@ plot_lift(score, target)
 
 <img src="vignettes/figures/unnamed-chunk-6-3.png" title="" alt="" style="display: block; margin: auto;" />
 
-### Tables (Uni/Bivaeriate) & Plots
+### Tables (Uni/Bivariate) & Plots
 
 
 ```r
@@ -268,14 +268,14 @@ cm$indicators
 
 
 
-|term                                  |term.short | value|
-|:-------------------------------------|:----------|-----:|
-|Accuracy                              |AC         | 0.574|
-|Recall &#124; True Positive rate (GG) |Recall     | 0.503|
-|False Positive rate                   |FP         | 0.259|
-|True Negative rate (BB)               |TN         | 0.741|
-|False Negative rate                   |FN         | 0.497|
-|Precision                             |P          | 0.818|
+|term                        |term.short | value|
+|:---------------------------|:----------|-----:|
+|Accuracy                    |AC         | 0.574|
+|True Positive rate (Recall) |Recall     | 0.503|
+|False Positive rate         |FP         | 0.259|
+|True Negative rate          |TN         | 0.741|
+|False Negative rate         |FN         | 0.497|
+|Precision                   |P          | 0.818|
 
 ## Related work
 
@@ -288,7 +288,7 @@ cm$indicators
 
 ```r
 library("riskr")
-library("printr")
+library("printr") # remove this for vignette
 library("ggplot2")
 library("ggthemes")
 options(digits = 3, knitr.table.format = "markdown")
