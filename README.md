@@ -16,9 +16,6 @@
 
 
 
-
-
-
 [![travis-status](https://api.travis-ci.org/jbkunst/riskr.svg)](https://travis-ci.org/jbkunst/riskr)
 [![Coverage Status](https://coveralls.io/repos/jbkunst/riskr/badge.svg?branch=master&service=github)](https://coveralls.io/github/jbkunst/riskr?branch=master)
 
@@ -49,6 +46,8 @@ devtools::install_github("jbkunst/riskr")
 
 ## Functions
 
+### Performance Indicators & Plots
+
 Usually we have a data frame with a *target* variable and a *score* (or probability) like this:
 
 
@@ -73,77 +72,33 @@ head(predictions)
 
 ```r
 
-str(predictions)
-## 'data.frame':	10000 obs. of  2 variables:
-##  $ score : num  0.2023 0.8058 0.5134 0.0525 0.3288 ...
-##  $ target: num  1 1 1 0 1 0 1 0 1 1 ...
-
 score <- predictions$score
 
 target <- predictions$target
 ```
 
-### Performance Indicators
-
 The main statistics or indicators are KS, AUCROC so:
 
 
 ```r
-ks(score, target)
-## [1] 0.254
-
-aucroc(score, target)
-## [1] 0.676
-
-gini(score, target)
-## [1] 0.353
-
 perf(score, target)
 ```
 
 
 
-| count| target_count| target_rate|    ks| aucroc|  gini|
-|-----:|------------:|-----------:|-----:|------:|-----:|
-| 10000|         6990|       0.699| 0.254|  0.676| 0.353|
+| count| target_count| target_rate|    ks| aucroc|  gini| divergence|
+|-----:|------------:|-----------:|-----:|------:|-----:|----------:|
+| 10000|         6990|       0.699| 0.254|  0.676| 0.353|      0.408|
+
+There are functions to calculate every indicator.
+
+
+```r
+aucroc(score, target)
+## [1] 0.676
+```
 
 There are some functions to plot the score/model performance (based on ggplot package).
-
-
-```r
-plot_roc(score, target)
-```
-
-<img src="vignettes/figures/unnamed-chunk-4-1.png" title="" alt="" style="display: block; margin: auto;" />
-
-```r
-
-plot_gain(score, target)
-```
-
-<img src="vignettes/figures/unnamed-chunk-4-2.png" title="" alt="" style="display: block; margin: auto;" />
-
-```r
-
-plot_lift(score, target)
-```
-
-<img src="vignettes/figures/unnamed-chunk-4-3.png" title="" alt="" style="display: block; margin: auto;" />
-
-```r
-
-plot_dists(score, target) +
-  ggtitle(sprintf("The KS statistics is %.0f%%", 100 * ks(score, target)))
-```
-
-<img src="vignettes/figures/unnamed-chunk-4-4.png" title="" alt="" style="display: block; margin: auto;" />
-
-```r
-
-plot_ks(score, target) + ggtitle("Comparing ECDF")
-```
-
-<img src="vignettes/figures/unnamed-chunk-4-5.png" title="" alt="" style="display: block; margin: auto;" />
 
 
 ```r
@@ -152,118 +107,34 @@ plot_perf(score, target)
 
 <img src="vignettes/figures/unnamed-chunk-5-1.png" title="" alt="" style="display: block; margin: auto;" />
 
-### Odds Tables
-
-The odds tables are other way to show how a score/model performs.
+And:
 
 
 ```r
-score <- round(predictions$score * 1000)
-
-odds_table(score, target, nclass = 5) # default is (nclass =) 10 groups of equal size
+plot_roc(score, target)
 ```
 
-
-
-|class     | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent| odds|    woe|    iv|
-|:---------|-----:|-------:|------------:|-----------:|--------------:|----------------:|------------------:|----:|------:|-----:|
-|[1,164]   |  2009|   0.201|         1010|       0.503|          0.144|              999|              0.332| 1.01| -0.832| 0.156|
-|(164,331] |  1991|   0.199|         1255|       0.630|          0.180|              736|              0.245| 1.71| -0.309| 0.020|
-|(331,526] |  2008|   0.201|         1429|       0.712|          0.204|              579|              0.192| 2.47|  0.061| 0.001|
-|(526,738] |  2000|   0.200|         1573|       0.786|          0.225|              427|              0.142| 3.68|  0.461| 0.038|
-|(738,996] |  1992|   0.199|         1723|       0.865|          0.246|              269|              0.089| 6.41|  1.015| 0.159|
+<img src="vignettes/figures/unnamed-chunk-6-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 
-odds_table(score, target, breaks = c(0, 300, 700, 999))
+plot_gain(score, target)
 ```
 
-
-
-|class     | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent| odds|    woe|    iv|
-|:---------|-----:|-------:|------------:|-----------:|--------------:|----------------:|------------------:|----:|------:|-----:|
-|(0,300]   |  3675|   0.368|         2052|       0.558|          0.294|             1623|              0.539| 1.26| -0.608| 0.149|
-|(300,700] |  3978|   0.398|         2926|       0.736|          0.419|             1052|              0.350| 2.78|  0.180| 0.012|
-|(700,999] |  2347|   0.235|         2012|       0.857|          0.288|              335|              0.111| 6.01|  0.950| 0.168|
-
-### Confusion Matrix
-
-The `conf_matrix` function return a list with the next elements:
-
-
-```r
-score_cat <- ifelse(score < 500, 0, 1)
-
-cm <- conf_matrix(score_cat, target)
-```
-
-- The confusion matrix:
-
-```r
-cm$confusion.matrix
-```
-
-
-
-|   |class  | pred 0| pred 1|
-|:--|:------|------:|------:|
-|0  |true 0 |   2230|    780|
-|1  |true 1 |   3476|   3514|
-
-- The confusion matrix statistics
-
-```r
-cm$indicators
-```
-
-
-
-|term                                  |term.short | value|
-|:-------------------------------------|:----------|-----:|
-|Accuracy                              |AC         | 0.574|
-|Recall &#124; True Positive rate (GG) |Recall     | 0.503|
-|False Positive rate                   |FP         | 0.259|
-|True Negative rate (BB)               |TN         | 0.741|
-|False Negative rate                   |FN         | 0.497|
-|Precision                             |P          | 0.818|
+<img src="vignettes/figures/unnamed-chunk-6-2.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 
-cm$indicators.t
+plot_lift(score, target)
 ```
 
+<img src="vignettes/figures/unnamed-chunk-6-3.png" title="" alt="" style="display: block; margin: auto;" />
 
-
-|    AC| Recall|    FP|    TN|    FN|     P|
-|-----:|------:|-----:|-----:|-----:|-----:|
-| 0.574|  0.503| 0.259| 0.741| 0.497| 0.818|
-
-
-### Bivariate Tables
+### Tables (Uni/Bivaeriate) & Plots
 
 
 ```r
 data("credit")
-
-str(credit)
-## 'data.frame':	49694 obs. of  17 variables:
-##  $ id_client          : int  1 7 9 12 14 19 22 26 28 30 ...
-##  $ sex                : chr  "F" "F" "F" "F" ...
-##  $ marital_status     : chr  "O" "S" "S" "C" ...
-##  $ age                : int  44 22 27 32 36 46 17 20 71 46 ...
-##  $ flag_res_phone     : chr  "N" "Y" "Y" "Y" ...
-##  $ area_code_res_phone: int  31 31 31 31 31 50 50 50 31 31 ...
-##  $ payment_day        : int  12 12 20 12 12 12 12 12 18 8 ...
-##  $ residence_type     : chr  "P" "A" "A" "P" ...
-##  $ months_in_residence: int  12 0 0 24 120 360 12 12 96 72 ...
-##  $ months_in_the_job  : int  48 48 0 0 36 120 12 24 12 12 ...
-##  $ profession_code    : int  731 999 950 165 15 704 38 39 13 801 ...
-##  $ flag_other_card    : chr  "N" "N" "N" "N" ...
-##  $ flag_mobile_phone  : chr  "N" "N" "N" "N" ...
-##  $ flag_contact_phone : chr  "N" "N" "N" "N" ...
-##  $ personal_net_income: num  300 410 1000 700 1987 ...
-##  $ quant_add_cards    : int  0 0 0 0 1 0 0 0 0 0 ...
-##  $ bad                : int  0 0 1 0 0 0 1 1 0 0 ...
 
 ft(credit$marital_status)
 ```
@@ -295,41 +166,26 @@ bt(credit$marital_status, credit$bad)
 
 ```r
 
-library("ggplot2")
-
-credit$age_bin <- cut_interval(credit$age, 3)
+credit$age_bin <- bin_sup(credit$age, credit$bad, min.p = 0.20)$variable_new
 
 bt(credit$age_bin, credit$bad)
 ```
 
 
 
-|class       | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent|  odds|    woe|    iv|
-|:-----------|-----:|-------:|------------:|-----------:|--------------:|----------------:|------------------:|-----:|------:|-----:|
-|[15,41.7]   | 35654|   0.717|         8174|       0.229|          0.833|            27480|              0.689| 0.297|  0.190| 0.027|
-|(41.7,68.3] | 13313|   0.268|         1585|       0.119|          0.162|            11728|              0.294| 0.135| -0.599| 0.079|
-|(68.3,95]   |   727|   0.015|           54|       0.074|          0.006|              673|              0.017| 0.080| -1.121| 0.013|
+|class   | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent|  odds|    woe|    iv|
+|:-------|-----:|-------:|------------:|-----------:|--------------:|----------------:|------------------:|-----:|------:|-----:|
+|group_1 | 11097|   0.223|         3290|       0.296|          0.335|             7807|              0.196| 0.421|  0.538| 0.075|
+|group_2 | 13465|   0.271|         3061|       0.227|          0.312|            10404|              0.261| 0.294|  0.179| 0.009|
+|group_3 | 14064|   0.283|         2271|       0.161|          0.231|            11793|              0.296| 0.193| -0.245| 0.016|
+|group_4 | 11068|   0.223|         1191|       0.108|          0.121|             9877|              0.248| 0.121| -0.713| 0.090|
 
 
 ```r
 plot_ba(credit$age_bin, credit$bad)
 ```
 
-<img src="vignettes/figures/unnamed-chunk-11-1.png" title="" alt="" style="display: block; margin: auto;" />
-
-```r
-
-# order by odds
-library("dplyr")
-lvls_rt <- bt(credit$residence_type, credit$bad) %>% 
-  arrange(desc(odds)) %>%  .[["class"]]
-
-residence_type2 <- factor(credit$residence_type, levels = lvls_rt)
-
-plot_ba(residence_type2, credit$bad)
-```
-
-<img src="vignettes/figures/unnamed-chunk-11-2.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="vignettes/figures/unnamed-chunk-8-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 The minified version of `plot_ba`
 
@@ -337,16 +193,89 @@ The minified version of `plot_ba`
 plot_ba2(credit$age_bin, credit$bad) + ggtitle("Age")
 ```
 
-<img src="vignettes/figures/unnamed-chunk-12-1.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="vignettes/figures/unnamed-chunk-9-1.png" title="" alt="" style="display: block; margin: auto;" />
+
+
+### Odds Tables
+
+The odds tables are other way to show how a score/model performs.
+
 
 ```r
+score <- round(predictions$score * 1000)
 
-
-plot_ba2(credit$flag_res_phone, credit$bad, labels = FALSE) +
-  ggtitle("Flag Response Phone")
+odds_table(score, target, nclass = 5) # default is (nclass =) 10 groups of equal size
 ```
 
-<img src="vignettes/figures/unnamed-chunk-12-2.png" title="" alt="" style="display: block; margin: auto;" />
+
+
+|class     | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent| odds|    woe|    iv|
+|:---------|-----:|-------:|------------:|-----------:|--------------:|----------------:|------------------:|----:|------:|-----:|
+|[1,164]   |  2009|   0.201|         1010|       0.503|          0.144|              999|              0.332| 1.01| -0.832| 0.156|
+|(164,331] |  1991|   0.199|         1255|       0.630|          0.180|              736|              0.245| 1.71| -0.309| 0.020|
+|(331,526] |  2008|   0.201|         1429|       0.712|          0.204|              579|              0.192| 2.47|  0.061| 0.001|
+|(526,738] |  2000|   0.200|         1573|       0.786|          0.225|              427|              0.142| 3.68|  0.461| 0.038|
+|(738,996] |  1992|   0.199|         1723|       0.865|          0.246|              269|              0.089| 6.41|  1.015| 0.159|
+
+### Ranking Predictive Variables
+
+
+```r
+ranks <- pred_ranking(credit, "bad")
+head(ranks)
+```
+
+
+
+|variable            |    ks| aucroc|
+|:-------------------|-----:|------:|
+|age                 | 0.191|  0.626|
+|age_bin             | 0.191|  0.619|
+|marital_status      | 0.150|  0.577|
+|months_in_the_job   | 0.129|  0.567|
+|flag_res_phone      | 0.112|  0.556|
+|area_code_res_phone | 0.078|  0.547|
+
+### Confusion Matrix
+
+The `conf_matrix` function return a list with the next elements:
+
+
+```r
+target_pred <- ifelse(score < 500, 0, 1)
+
+cm <- conf_matrix(target_pred, target)
+```
+
+- The confusion matrix:
+
+```r
+cm$confusion.matrix
+```
+
+
+
+|   |class  | pred 0| pred 1|
+|:--|:------|------:|------:|
+|0  |true 0 |   2230|    780|
+|1  |true 1 |   3476|   3514|
+
+- The confusion matrix statistics
+
+```r
+cm$indicators
+```
+
+
+
+|term                                  |term.short | value|
+|:-------------------------------------|:----------|-----:|
+|Accuracy                              |AC         | 0.574|
+|Recall &#124; True Positive rate (GG) |Recall     | 0.503|
+|False Positive rate                   |FP         | 0.259|
+|True Negative rate (BB)               |TN         | 0.741|
+|False Negative rate                   |FN         | 0.497|
+|Precision                             |P          | 0.818|
 
 ## Related work
 
@@ -383,9 +312,9 @@ update_geom_defaults("text", list(size = 4, colour = "gray30"))
 
 ```r
 print(sessionInfo())
-## R version 3.1.3 (2015-03-09)
-## Platform: x86_64-w64-mingw32/x64 (64-bit)
-## Running under: Windows 8 x64 (build 9200)
+## R version 3.2.0 (2015-04-16)
+## Platform: i386-w64-mingw32/i386 (32-bit)
+## Running under: Windows 7 (build 7601) Service Pack 1
 ## 
 ## locale:
 ## [1] LC_COLLATE=Spanish_Chile.1252  LC_CTYPE=Spanish_Chile.1252   
@@ -396,20 +325,21 @@ print(sessionInfo())
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] tidyr_0.2.0    plyr_1.8.3     scales_0.2.5   dplyr_0.4.2   
-##  [5] ROCR_1.0-7     gplots_2.17.0  ggthemes_2.2.1 ggplot2_1.0.1 
-##  [9] printr_0.0.4   riskr_1.0     
+## [1] ggthemes_2.2.1 ggplot2_1.0.1  printr_0.0.4   riskr_1.0     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] assertthat_0.1     bitops_1.0-6       caTools_1.17.1    
-##  [4] colorspace_1.2-6   DBI_0.3.1          digest_0.6.8      
-##  [7] evaluate_0.7       formatR_1.2        gdata_2.16.1      
-## [10] grid_3.1.3         gtable_0.1.2       gtools_3.4.2      
-## [13] highr_0.5          htmltools_0.2.6    KernSmooth_2.23-14
-## [16] knitr_1.10.5       labeling_0.3       lazyeval_0.1.10   
-## [19] magrittr_1.5       MASS_7.3-39        munsell_0.4.2     
-## [22] parallel_3.1.3     proto_0.3-10       R6_2.1.0          
-## [25] Rcpp_0.11.6        reshape2_1.4.1     rmarkdown_0.7.1   
-## [28] stringi_0.5-5      stringr_1.0.0      tools_3.1.3       
-## [31] yaml_2.1.13
+##  [1] splines_3.2.0      digest_0.6.8       htmltools_0.2.6   
+##  [4] ROCR_1.0-7         R6_2.1.0           scales_0.2.5      
+##  [7] assertthat_0.1     grid_3.2.0         bitops_1.0-6      
+## [10] stringr_1.0.0      knitr_1.10.5       gdata_2.17.0      
+## [13] survival_2.38-3    munsell_0.4.2      proto_0.3-10      
+## [16] highr_0.5          partykit_1.0-2     tidyr_0.2.0       
+## [19] DBI_0.3.1          labeling_0.3       KernSmooth_2.23-15
+## [22] MASS_7.3-43        plyr_1.8.3         gplots_2.17.0     
+## [25] stringi_0.5-5      magrittr_1.5       reshape2_1.4.1    
+## [28] caTools_1.17.1     rmarkdown_0.7      evaluate_0.7      
+## [31] gtable_0.1.2       colorspace_1.2-6   yaml_2.1.13       
+## [34] tools_3.2.0        Formula_1.2-1      parallel_3.2.0    
+## [37] dplyr_0.4.2.9002   lazyeval_0.1.10    gtools_3.5.0      
+## [40] formatR_1.2        Rcpp_0.12.0
 ```

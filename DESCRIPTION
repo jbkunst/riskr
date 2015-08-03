@@ -25,5 +25,5 @@ Imports:
     broom,
     partykit,
     stringr
-Suggests: knitr, rmarkdown, ggthemes, Formula
+Suggests: knitr, rmarkdown, ggthemes, Formula, printr
 VignetteBuilder: knitr

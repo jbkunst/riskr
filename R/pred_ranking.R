@@ -22,7 +22,7 @@ pred_ranking <- function(df, target_name = "target", verbose = FALSE){
   
   res <- plyr::ldply(names(df2), function(namevar){
     # namevar <- sample(names(df2), size = 1)
-    if(verbose) message(namevar)
+    if (verbose) message(namevar)
     
     pred_var <- df[[namevar]]
     daux <- data.frame(target = target, pred_var = pred_var)
@@ -36,7 +36,7 @@ pred_ranking <- function(df, target_name = "target", verbose = FALSE){
                        ks = ks(score, target),
                        aucroc = aucroc(score, target))
   
-  }, .progress = "text")
+  }, .progress = if (verbose) "text" else "none")
   
   res <- res %>%
     dplyr::tbl_df() %>% 
