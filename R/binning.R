@@ -24,9 +24,13 @@ bin_sup <- function(variable, target){
     length(target) == length(variable)
     )
   
+  if(!is.numeric(variable)) variable <- factor(variable)
+  
   df <- dplyr::data_frame(target, variable)
 
   tree <- partykit::ctree(factor(target) ~ variable, data = df)
+  
+  plot(tree)
   
   df$node <- predict(tree, type = "node")
   
