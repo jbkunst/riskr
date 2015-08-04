@@ -17,6 +17,8 @@
 
 
 [![travis-status](https://api.travis-ci.org/jbkunst/riskr.svg)](https://travis-ci.org/jbkunst/riskr)
+[![version](http://www.r-pkg.org/badges/version/riskr)](http://www.r-pkg.org/pkg/riskr)
+[![downloads](http://cranlogs.r-pkg.org/badges/riskr)](http://www.r-pkg.org/pkg/riskr)
 [![Coverage Status](https://coveralls.io/repos/jbkunst/riskr/badge.svg?branch=master&service=github)](https://coveralls.io/github/jbkunst/riskr?branch=master)
 
 
