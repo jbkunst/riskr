@@ -91,17 +91,17 @@ aucroc(score, target)
 There are some functions to plot the score/model performance (based on ggplot package).
 
 ```{r fig.width = 8, fig.height= 8, warning=FALSE, message=FALSE}
-plot_perf(score, target)
+gg_perf(score, target)
 ```
 
 And:
 
 ```{r}
-plot_roc(score, target)
+gg_roc(score, target)
 
-plot_gain(score, target)
+gg_gain(score, target)
 
-plot_lift(score, target)
+gg_lift(score, target)
 ```
 
 ### Tables (Uni/Bivariate) & Plots

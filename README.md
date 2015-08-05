@@ -104,7 +104,7 @@ There are some functions to plot the score/model performance (based on ggplot pa
 
 
 ```r
-plot_perf(score, target)
+gg_perf(score, target)
 ```
 
 <img src="vignettes/figures/unnamed-chunk-5-1.png" title="" alt="" style="display: block; margin: auto;" />
@@ -113,21 +113,21 @@ And:
 
 
 ```r
-plot_roc(score, target)
+gg_roc(score, target)
 ```
 
 <img src="vignettes/figures/unnamed-chunk-6-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 
-plot_gain(score, target)
+gg_gain(score, target)
 ```
 
 <img src="vignettes/figures/unnamed-chunk-6-2.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 
-plot_lift(score, target)
+gg_lift(score, target)
 ```
 
 <img src="vignettes/figures/unnamed-chunk-6-3.png" title="" alt="" style="display: block; margin: auto;" />
@@ -285,6 +285,7 @@ cm$indicators
 1. [smbinning](http://cran.r-project.org/web/packages/smbinning) package by [Herman Jopia](http://github.com/hjopia). [Github repository](https://github.com/cran/smbinning).
 1. [Guide to Credit Scoring in R](https://cran.r-project.org/doc/contrib/Sharma-CreditScoring.pdf)
 1. [Gains package](https://cran.r-project.org/web/packages/gains/gains.pdf)
+1. [plotROC package](https://github.com/sachsmc/plotROC) by [Michael Sachs](https://github.com/sachsmc/)
 
 ## Session Info
 
@@ -314,9 +315,9 @@ update_geom_defaults("text", list(size = 4, colour = "gray30"))
 
 ```r
 print(sessionInfo())
-## R version 3.2.0 (2015-04-16)
-## Platform: i386-w64-mingw32/i386 (32-bit)
-## Running under: Windows 7 (build 7601) Service Pack 1
+## R version 3.1.3 (2015-03-09)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows 8 x64 (build 9200)
 ## 
 ## locale:
 ## [1] LC_COLLATE=Spanish_Chile.1252  LC_CTYPE=Spanish_Chile.1252   
@@ -330,18 +331,18 @@ print(sessionInfo())
 ## [1] ggthemes_2.2.1 ggplot2_1.0.1  printr_0.0.4   riskr_1.0     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] splines_3.2.0      digest_0.6.8       htmltools_0.2.6   
-##  [4] ROCR_1.0-7         R6_2.1.0           scales_0.2.5      
-##  [7] assertthat_0.1     grid_3.2.0         bitops_1.0-6      
-## [10] stringr_1.0.0      knitr_1.10.5       gdata_2.17.0      
-## [13] survival_2.38-3    munsell_0.4.2      proto_0.3-10      
-## [16] highr_0.5          partykit_1.0-2     tidyr_0.2.0       
-## [19] DBI_0.3.1          labeling_0.3       KernSmooth_2.23-15
-## [22] MASS_7.3-43        plyr_1.8.3         gplots_2.17.0     
-## [25] stringi_0.5-5      magrittr_1.5       reshape2_1.4.1    
-## [28] caTools_1.17.1     rmarkdown_0.7      evaluate_0.7      
-## [31] gtable_0.1.2       colorspace_1.2-6   yaml_2.1.13       
-## [34] tools_3.2.0        Formula_1.2-1      parallel_3.2.0    
-## [37] dplyr_0.4.2.9002   lazyeval_0.1.10    gtools_3.5.0      
-## [40] formatR_1.2        Rcpp_0.12.0
+##  [1] assertthat_0.1     bitops_1.0-6       caTools_1.17.1    
+##  [4] colorspace_1.2-6   DBI_0.3.1          digest_0.6.8      
+##  [7] dplyr_0.4.2        evaluate_0.7       formatR_1.2       
+## [10] Formula_1.2-1      gdata_2.17.0       gplots_2.17.0     
+## [13] grid_3.1.3         gtable_0.1.2       gtools_3.4.2      
+## [16] highr_0.5          htmltools_0.2.6    KernSmooth_2.23-14
+## [19] knitr_1.10.5       labeling_0.3       lazyeval_0.1.10   
+## [22] magrittr_1.5       MASS_7.3-39        munsell_0.4.2     
+## [25] parallel_3.1.3     partykit_1.0-2     plyr_1.8.3        
+## [28] proto_0.3-10       R6_2.1.0           Rcpp_0.12.0       
+## [31] reshape2_1.4.1     rmarkdown_0.7.1    ROCR_1.0-7        
+## [34] scales_0.2.5       splines_3.1.3      stringi_0.5-5     
+## [37] stringr_1.0.0      survival_2.38-1    tidyr_0.2.0       
+## [40] tools_3.1.3        yaml_2.1.13
 ```

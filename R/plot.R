@@ -10,9 +10,9 @@ x <- NULL
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' plot_roc(score, target)
+#' gg_roc(score, target)
 #' @export
-plot_roc <- function(score, target){
+gg_roc <- function(score, target){
   
   stopifnot(
     setequal(target, c(0, 1)),
@@ -48,9 +48,9 @@ plot_roc <- function(score, target){
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' plot_gain(score, target)
+#' gg_gain(score, target)
 #' @export
-plot_gain <- function(score, target){
+gg_gain <- function(score, target){
   
   stopifnot(
     setequal(target, c(0, 1)),
@@ -107,9 +107,9 @@ plot_gain <- function(score, target){
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' plot_ks(score, target)
+#' gg_cum(score, target)
 #' @export
-plot_ks <- function(score, target){
+gg_cum <- function(score, target){
   
   stopifnot(
     setequal(target, c(0, 1)),
@@ -159,9 +159,9 @@ plot_ks <- function(score, target){
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' plot_dists(score, target)
+#' gg_dists(score, target)
 #' @export
-plot_dists <- function(score, target){
+gg_dists <- function(score, target){
   
   stopifnot(
     setequal(target, c(0, 1)),
@@ -200,10 +200,10 @@ plot_dists <- function(score, target){
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' plot_lift(score, target)
+#' gg_lift(score, target)
 #' @references http://www2.cs.uregina.ca/~dbd/cs831/notes/lift_chart/lift_chart.html http://www.saedsayad.com/model_evaluation_c.htm
 #' @export
-plot_lift <- function(score, target){
+gg_lift <- function(score, target){
   
   stopifnot(
     setequal(target, c(0, 1)),
@@ -227,7 +227,7 @@ plot_lift <- function(score, target){
 
 #' Plot Performance
 #'
-#' @description Return a plot with plot_roc, plot_dists, plot_ks, plot_gain
+#' @description Return a plot with gg_roc, gg_dists, gg_cum, gg_gain
 #' @param score A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
 #' @return The plot
@@ -237,9 +237,9 @@ plot_lift <- function(score, target){
 #' score <- 1000 * predictions$score
 #' target <- predictions$target
 #' 
-#' plot_perf(score, target)
+#' gg_perf(score, target)
 #' @export
-plot_perf <- function(score, target){
+gg_perf <- function(score, target){
 
   stopifnot(
     setequal(target, c(0, 1)),

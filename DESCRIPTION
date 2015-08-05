@@ -1,14 +1,11 @@
 Package: riskr
 Version: 1.0
-Title: Functions to facilitate the credit scoring tasks
+Title: Functions To Facilitate Credit Scoring Processes
 Description: The riskr package facilitate credit scoring tasks 
-  such as measure the scores/models performance
-  and the scoring modelling process: measure in a simple way
-  the performance of models via wrappers/shortcuts from
-  ROCR functions, visualize relationships between variables.
-  Also there are functions to compute usual values
-  in the credit scoring PSI, WOE, IV, KS, AUCROC, among others.
-  And finally, make easier the modelling and validation process. 
+  such as measure the scores/models performance,
+  the scoring modelling process, visualize relationships between variables.
+  Also there are functions to compute usual values in the credit scoring
+  like PSI, WOE, IV, KS, AUCROC, among others.
 Author: Joshua Kunst <jbkunst@gmail.com>
 Maintainer: Joshua Kunst <jbkunst@gmail.com>
 License: MIT + file LICENSE

@@ -106,17 +106,17 @@ aucroc(score, target)
 There are some functions to plot the score/model performance (based on ggplot package).
 
 ```{r fig.width = 8, fig.height= 8, warning=FALSE, message=FALSE}
-plot_perf(score, target)
+gg_perf(score, target)
 ```
 
 And:
 
 ```{r}
-plot_roc(score, target)
+gg_roc(score, target)
 
-plot_gain(score, target)
+gg_gain(score, target)
 
-plot_lift(score, target)
+gg_lift(score, target)
 ```
 
 ### Tables (Uni/Bivariate) & Plots
@@ -186,6 +186,7 @@ cm$indicators
 1. [smbinning](http://cran.r-project.org/web/packages/smbinning) package by [Herman Jopia](http://github.com/hjopia). [Github repository](https://github.com/cran/smbinning).
 1. [Guide to Credit Scoring in R](https://cran.r-project.org/doc/contrib/Sharma-CreditScoring.pdf)
 1. [Gains package](https://cran.r-project.org/web/packages/gains/gains.pdf)
+1. [plotROC package](https://github.com/sachsmc/plotROC) by [Michael Sachs](https://github.com/sachsmc/)
 
 ## Session Info
 ```{r setup, eval=FALSE, echo=TRUE}
