@@ -4,12 +4,12 @@
 \alias{gg_roc}
 \title{Plot AUC Curve}
 \usage{
-gg_roc(score, target)
+gg_roc(target, ...)
 }
 \arguments{
-\item{score}{A numeric vector containing scores or probabilities}
-
 \item{target}{A numeric binary vector (0, 1)}
+
+\item{score}{A numeric vector containing scores or probabilities}
 }
 \value{
 the plot
@@ -18,11 +18,20 @@ the plot
 Plot AUC Curve
 }
 \examples{
-data(predictions)
+set.seed(1313)
+n <- 5000
+score <- runif(n)
+score_2 <- score + runif(n)
+score_3 <- score + runif(n)
+target <- rbinom(n, 1, prob = score)
 
-score <- predictions$score
-target <- predictions$target
+df <- data.frame(target, score, score_2, score_3)
 
-gg_roc(score, target)
+gg_roc(target, score)
+gg_roc(target, model = score, score_3)
+
+library("dplyr")
+
+gg_roc(target,  df \%>\% select(starts_with("score")))
 }
 

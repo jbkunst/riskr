@@ -33,8 +33,8 @@ pred_ranking <- function(df, target_name = "target", verbose = FALSE){
     score <- model$fitted.values
     
     resp <- dplyr::data_frame(variable = namevar,
-                       ks = ks(score, target),
-                       aucroc = aucroc(score, target))
+                       ks = ks(target, score),
+                       aucroc = aucroc(target, score))
   
   }, .progress = if (verbose) "text" else "none")
   

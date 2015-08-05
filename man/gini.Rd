@@ -4,12 +4,12 @@
 \alias{gini}
 \title{Calculate Gini Coefficient}
 \usage{
-gini(score, target)
+gini(target, score)
 }
 \arguments{
-\item{score}{A numeric vector containing scores or probabilities}
-
 \item{target}{A numeric binary vector (0, 1)}
+
+\item{score}{A numeric vector containing scores or probabilities}
 }
 \value{
 The Gini Coefficient
@@ -23,7 +23,7 @@ data(predictions)
 score <- predictions$score
 target <- predictions$target
 
-gini(score, target)
+gini(target, score)
 }
 \references{
 https://www.kaggle.com/wiki/RCodeForGini

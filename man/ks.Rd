@@ -4,12 +4,12 @@
 \alias{ks}
 \title{Calculate Kolmogorov-Smirnov statistic}
 \usage{
-ks(score, target)
+ks(target, score)
 }
 \arguments{
-\item{score}{A numeric vector containing scores or probabilities}
-
 \item{target}{A numeric binary vector (0, 1)}
+
+\item{score}{A numeric vector containing scores or probabilities}
 }
 \value{
 The KS statistic
@@ -23,6 +23,6 @@ data(predictions)
 score <- predictions$score
 target <- predictions$target
 
-ks(score, target)
+ks(target, score)
 }
 

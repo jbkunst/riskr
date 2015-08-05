@@ -26,6 +26,6 @@ target <- predictions$target
 score1 <- score[target == 1]
 score1 <- score[target != 1]
 
-ks2(score, target)
+ks2(target, score)
 }
 

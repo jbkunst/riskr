@@ -4,12 +4,12 @@
 \alias{gain}
 \title{Calculate Gains}
 \usage{
-gain(score, target, percents = c(0.1, 0.2, 0.3, 0.4, 0.5))
+gain(target, score, percents = c(0.1, 0.2, 0.3, 0.4, 0.5))
 }
 \arguments{
-\item{score}{A numeric vector containing scores or probabilities}
-
 \item{target}{A numeric binary vector (0, 1)}
+
+\item{score}{A numeric vector containing scores or probabilities}
 
 \item{percents}{Values to calculate the gain}
 }
@@ -25,6 +25,6 @@ data(predictions)
 score <- predictions$score
 target <- predictions$target
 
-gain(score, target)
+gain(target, score)
 }
 

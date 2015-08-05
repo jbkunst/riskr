@@ -9,9 +9,9 @@
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' ks(score, target)
+#' ks(target, score)
 #' @export
-ks <- function(score, target){
+ks <- function(target, score){
   
   stopifnot(
     setequal(target, c(0, 1)),
@@ -40,7 +40,7 @@ ks <- function(score, target){
 #' score1 <- score[target == 1]
 #' score1 <- score[target != 1]
 #' 
-#' ks2(score, target)
+#' ks2(target, score)
 #' @export
 ks2 <- function(score1, score2){
   
@@ -61,9 +61,9 @@ ks2 <- function(score1, score2){
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' aucroc(score, target)
+#' aucroc(target, score)
 #' @export
-aucroc <- function(score, target){
+aucroc <- function(target, score){
   
   stopifnot(
     setequal(target, c(0, 1)),
@@ -89,18 +89,18 @@ aucroc <- function(score, target){
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' gini(score, target)
+#' gini(target, score)
 #' @references https://www.kaggle.com/wiki/RCodeForGini
 #' @export
-gini <- function(score, target){
+gini <- function(target, score){
   
-  # gini <- 2*as.numeric(aucroc(score, target)) - 1
+  # gini <- 2*as.numeric(aucroc(target, score)) - 1
   stopifnot(
     setequal(target, c(0, 1)),
     length(target) == length(score)
   )
   
-  as.numeric(2 * aucroc(score, target) - 1)
+  as.numeric(2 * aucroc(target, score) - 1)
 }
 
 #' Calculate Gains
@@ -115,9 +115,10 @@ gini <- function(score, target){
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' gain(score, target)
+#' gain(target, score)
+#' 
 #' @export
-gain <- function(score, target, percents = c(0.10, 0.20, 0.30, 0.40, 0.50)){
+gain <- function(target, score, percents = c(0.10, 0.20, 0.30, 0.40, 0.50)){
   
   stopifnot(
     setequal(target, c(0, 1)),
@@ -140,9 +141,9 @@ gain <- function(score, target, percents = c(0.10, 0.20, 0.30, 0.40, 0.50)){
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' divergence(score, target)
+#' divergence(target, score)
 #' @export
-divergence <- function(score, target) {
+divergence <- function(target, score) {
   
   stopifnot(
     setequal(target, c(0, 1)),
@@ -168,9 +169,9 @@ divergence <- function(score, target) {
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' perf(score, target)
+#' perf(target, score)
 #' @export
-perf <- function(score, target){
+perf <- function(target, score){
   
   stopifnot(
     setequal(target, c(0, 1)),
@@ -180,10 +181,10 @@ perf <- function(score, target){
   res <- c(count = length(score),
            target_count = length(score[target == 1]),
            target_rate = mean(target),
-           ks = ks(score, target),
-           aucroc = aucroc(score, target),
-           gini = gini(score, target),
-           divergence = divergence(score, target))
+           ks = ks(target, score),
+           aucroc = aucroc(target, score),
+           gini = gini(target, score),
+           divergence = divergence(target, score))
   
   res <- data.frame(t(res))
   

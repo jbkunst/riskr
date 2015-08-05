@@ -12,12 +12,12 @@
 #' score <- round(predictions$score * 1000)
 #' target <- predictions$target
 #'
-#' odds_table(score, target, nclass = 5)
-#' odds_table(score, target, nclass = 5, quantile = FALSE)
-#' odds_table(score, target, breaks = c(-Inf, 250, 750, Inf))
+#' odds_table(target, score, nclass = 5)
+#' odds_table(target, score, nclass = 5, quantile = FALSE)
+#' odds_table(target, score, breaks = c(-Inf, 250, 750, Inf))
 #'  
 #' @export
-odds_table <- function(score, target, nclass = 10, quantile = TRUE, breaks = NULL){
+odds_table <- function(target, score, nclass = 10, quantile = TRUE, breaks = NULL){
   
   stopifnot(
     setequal(target, c(0, 1)),

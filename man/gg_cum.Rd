@@ -4,12 +4,12 @@
 \alias{gg_cum}
 \title{Plot to compare cumulatives distrbutions}
 \usage{
-gg_cum(score, target)
+gg_cum(target, score)
 }
 \arguments{
-\item{score}{A numeric vector containing scores or probabilities}
-
 \item{target}{A numeric binary vector (0, 1)}
+
+\item{score}{A numeric vector containing scores or probabilities}
 }
 \value{
 The plot
@@ -23,6 +23,6 @@ data(predictions)
 score <- predictions$score
 target <- predictions$target
 
-gg_cum(score, target)
+gg_cum(target, score)
 }
 

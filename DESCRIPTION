@@ -16,11 +16,12 @@ Imports:
     dplyr,
     tidyr,
     magrittr,
-    ggplot2,
     ROCR,
+    ggplot2,
+    ggthemes,
     scales,
     broom,
     partykit,
     stringr
-Suggests: knitr, rmarkdown, ggthemes, Formula
+Suggests: knitr, rmarkdown, Formula
 VignetteBuilder: knitr

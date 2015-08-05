@@ -4,12 +4,12 @@
 \alias{gg_gain}
 \title{Plot Gain Curve}
 \usage{
-gg_gain(score, target)
+gg_gain(target, score)
 }
 \arguments{
-\item{score}{A numeric vector containing scores or probabilities}
-
 \item{target}{A numeric binary vector (0, 1)}
+
+\item{score}{A numeric vector containing scores or probabilities}
 }
 \value{
 the plot
@@ -23,6 +23,6 @@ data(predictions)
 score <- predictions$score
 target <- predictions$target
 
-gg_gain(score, target)
+gg_gain(target, score)
 }
 

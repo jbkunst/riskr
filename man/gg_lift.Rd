@@ -4,12 +4,12 @@
 \alias{gg_lift}
 \title{Plot Lift Chart}
 \usage{
-gg_lift(score, target)
+gg_lift(target, score)
 }
 \arguments{
-\item{score}{A numeric vector containing scores or probabilities}
-
 \item{target}{A numeric binary vector (0, 1)}
+
+\item{score}{A numeric vector containing scores or probabilities}
 }
 \value{
 The plot
@@ -23,7 +23,7 @@ data(predictions)
 score <- predictions$score
 target <- predictions$target
 
-gg_lift(score, target)
+gg_lift(target, score)
 }
 \references{
 http://www2.cs.uregina.ca/~dbd/cs831/notes/lift_chart/lift_chart.html http://www.saedsayad.com/model_evaluation_c.htm

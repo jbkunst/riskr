@@ -94,29 +94,29 @@ target <- predictions$target
 The main statistics or indicators are KS, AUCROC so:
 
 ```{r}
-perf(score, target)
+perf(target, score)
 ```
 
 There are functions to calculate every indicator.
 
 ```{r}
-aucroc(score, target)
+aucroc(target, score)
 ```
 
 There are some functions to plot the score/model performance (based on ggplot package).
 
 ```{r fig.width = 8, fig.height= 8, warning=FALSE, message=FALSE}
-gg_perf(score, target)
+gg_perf(target, score)
 ```
 
 And:
 
 ```{r}
-gg_roc(score, target)
+gg_roc(target, score)
 
-gg_gain(score, target)
+gg_gain(target, score)
 
-gg_lift(score, target)
+gg_lift(target, score)
 ```
 
 ### Tables (Uni/Bivariate) & Plots
@@ -150,7 +150,7 @@ The odds tables are other way to show how a score/model performs.
 ```{r}
 score <- round(predictions$score * 1000)
 
-odds_table(score, target, nclass = 5) # default is (nclass =) 10 groups of equal size
+odds_table(target, score, nclass = 5) # default is (nclass =) 10 groups of equal size
 ```
 
 ### Ranking Predictive Variables

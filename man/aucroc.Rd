@@ -4,12 +4,12 @@
 \alias{aucroc}
 \title{Calculate Area Under ROC Curve}
 \usage{
-aucroc(score, target)
+aucroc(target, score)
 }
 \arguments{
-\item{score}{A numeric vector containing scores or probabilities}
-
 \item{target}{A numeric binary vector (0, 1)}
+
+\item{score}{A numeric vector containing scores or probabilities}
 }
 \value{
 The AUROC Curve
@@ -23,6 +23,6 @@ data(predictions)
 score <- predictions$score
 target <- predictions$target
 
-aucroc(score, target)
+aucroc(target, score)
 }
 

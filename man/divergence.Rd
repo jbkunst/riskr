@@ -4,12 +4,12 @@
 \alias{divergence}
 \title{Calculate Divergence}
 \usage{
-divergence(score, target)
+divergence(target, score)
 }
 \arguments{
-\item{score}{A numeric vector containing scores or probabilities}
-
 \item{target}{A numeric binary vector (0, 1)}
+
+\item{score}{A numeric vector containing scores or probabilities}
 }
 \value{
 The Gini Coefficient
@@ -23,6 +23,6 @@ data(predictions)
 score <- predictions$score
 target <- predictions$target
 
-divergence(score, target)
+divergence(target, score)
 }
 

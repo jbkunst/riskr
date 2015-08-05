@@ -4,12 +4,12 @@
 \alias{gg_dists}
 \title{Plot to compare distrbutions}
 \usage{
-gg_dists(score, target)
+gg_dists(target, score)
 }
 \arguments{
-\item{score}{A numeric vector containing scores or probabilities}
-
 \item{target}{A numeric binary vector (0, 1)}
+
+\item{score}{A numeric vector containing scores or probabilities}
 }
 \value{
 The plot
@@ -23,6 +23,6 @@ data(predictions)
 score <- predictions$score
 target <- predictions$target
 
-gg_dists(score, target)
+gg_dists(target, score)
 }
 

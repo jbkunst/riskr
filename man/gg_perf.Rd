@@ -4,12 +4,12 @@
 \alias{gg_perf}
 \title{Plot Performance}
 \usage{
-gg_perf(score, target)
+gg_perf(target, score)
 }
 \arguments{
-\item{score}{A numeric vector containing scores or probabilities}
-
 \item{target}{A numeric binary vector (0, 1)}
+
+\item{score}{A numeric vector containing scores or probabilities}
 }
 \value{
 The plot
@@ -23,6 +23,6 @@ data(predictions)
 score <- 1000 * predictions$score
 target <- predictions$target
 
-gg_perf(score, target)
+gg_perf(target, score)
 }
 

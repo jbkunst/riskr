@@ -1,40 +1,79 @@
 x <- NULL
 #' Plot AUC Curve
 #'
-#' @param score A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
+#' @param ... A data frame of scores, or a multiples score vectors: score1, score2, etc
 #' @return the plot
 #' @examples
-#' data(predictions)
+#'
+#' set.seed(1313)
+#' n <- 5000
+#' score <- runif(n)
+#' score_2 <- score + runif(n)
+#' score_3 <- score + runif(n)
+#' target <- rbinom(n, 1, prob = score)
+#'
+#' df <- data.frame(target, score, score_2, score_3)
 #' 
-#' score <- predictions$score
-#' target <- predictions$target
+#' gg_roc(target, score)
+#' gg_roc(target, model = score, score_3)
 #' 
-#' gg_roc(score, target)
+#' library("dplyr")
+#' 
+#' gg_roc(target,  df %>% select(starts_with("score")))
+#' 
 #' @export
-gg_roc <- function(score, target){
+gg_roc <- function(target, ...){
   
-  stopifnot(
-    setequal(target, c(0, 1)),
-    length(target) == length(score)
-  )
-
-  pred <- ROCR::prediction(score, target)
-  perf <- ROCR::performance(pred, "tpr", "fpr")
+  args <- list(...)
   
-  df <- data.frame(x = unlist(perf@"x.values") , y = unlist(perf@"y.values"))
+  if (length(args) == 1 && is.data.frame(args[[1]])) {
+    
+    scores_list <- as.list(...)
+    
+  } else {
+    
+    arglist <- match.call(expand.dots = FALSE)$...
+    scores_list <- lapply(arglist, eval.parent, n = 2)
+    score_names <- sapply(arglist, deparse)
+    
+    if (!is.null(names(score_names))) {
+      score_names <- ifelse(names(score_names) == "", score_names, names(score_names))
+    }
+    
+    names(scores_list) <- score_names
+    
+  }
   
-  p <- ggplot2::ggplot(df, ggplot2::aes_string("x", "y")) +
-    ggplot2::geom_line() +
-    ggplot2::geom_path(data = data.frame(x = c(0, 1), y = c(0, 1)), colour = "gray") +
+  dfroc <- plyr::ldply(scores_list, function(score){
+    pred <- ROCR::prediction(score, target)
+    perf <- ROCR::performance(pred, "tpr", "fpr")
+    df <- data.frame(x = unlist(perf@"x.values") , y = unlist(perf@"y.values"))
+  })
+  
+  p <- ggplot2::ggplot(dfroc, ggplot2::aes_string("x", "y")) + 
+    ggplot2::geom_path(data = data.frame(x = c(0, 0), y = c(1, 1)), colour = "gray") +
     ggplot2::scale_x_continuous("False Positive Rate (1 - Specificity)",
                                 label = scales::percent_format(),
                                 limits = c(0, 1)) +
     ggplot2::scale_y_continuous("True Positive Rate (Sensivity or Recall)",
                                 label = scales::percent_format(),
                                 limits = c(0, 1))
+  
+  if (length(scores_list) == 1) {
+    
+    p <- p + ggplot2::geom_line()
+    
+  } else {
+    p <- p + ggplot2::geom_line(ggplot2::aes_string(group = ".id", color = ".id")) +
+      ggplot2::labs(color = NULL) +
+      ggplot2::theme(legend.position = "bottom")
+  }
+  
   p
+  
 }
+
 
 #' Plot Gain Curve
 #'
@@ -48,9 +87,9 @@ gg_roc <- function(score, target){
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' gg_gain(score, target)
+#' gg_gain(target, score)
 #' @export
-gg_gain <- function(score, target){
+gg_gain <- function(target, score){
   
   stopifnot(
     setequal(target, c(0, 1)),
@@ -107,9 +146,9 @@ gg_gain <- function(score, target){
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' gg_cum(score, target)
+#' gg_cum(target, score)
 #' @export
-gg_cum <- function(score, target){
+gg_cum <- function(target, score){
   
   stopifnot(
     setequal(target, c(0, 1)),
@@ -159,9 +198,9 @@ gg_cum <- function(score, target){
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' gg_dists(score, target)
+#' gg_dists(target, score)
 #' @export
-gg_dists <- function(score, target){
+gg_dists <- function(target, score){
   
   stopifnot(
     setequal(target, c(0, 1)),
@@ -200,10 +239,10 @@ gg_dists <- function(score, target){
 #' score <- predictions$score
 #' target <- predictions$target
 #' 
-#' gg_lift(score, target)
+#' gg_lift(target, score)
 #' @references http://www2.cs.uregina.ca/~dbd/cs831/notes/lift_chart/lift_chart.html http://www.saedsayad.com/model_evaluation_c.htm
 #' @export
-gg_lift <- function(score, target){
+gg_lift <- function(target, score){
   
   stopifnot(
     setequal(target, c(0, 1)),
@@ -237,9 +276,9 @@ gg_lift <- function(score, target){
 #' score <- 1000 * predictions$score
 #' target <- predictions$target
 #' 
-#' gg_perf(score, target)
+#' gg_perf(target, score)
 #' @export
-gg_perf <- function(score, target){
+gg_perf <- function(target, score){
 
   stopifnot(
     setequal(target, c(0, 1)),

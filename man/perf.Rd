@@ -4,12 +4,12 @@
 \alias{perf}
 \title{Summary of Performance}
 \usage{
-perf(score, target)
+perf(target, score)
 }
 \arguments{
-\item{score}{A numeric vector containing scores or probabilities}
-
 \item{target}{A numeric binary vector (0, 1)}
+
+\item{score}{A numeric vector containing scores or probabilities}
 }
 \value{
 A 1 row data frame with the summary of the performance.
@@ -23,6 +23,6 @@ data(predictions)
 score <- predictions$score
 target <- predictions$target
 
-perf(score, target)
+perf(target, score)
 }
 
