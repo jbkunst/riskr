@@ -52,7 +52,7 @@ gg_roc <- function(target, ...){
   })
   
   p <- ggplot2::ggplot(dfroc, ggplot2::aes_string("x", "y")) + 
-    ggplot2::geom_path(data = data.frame(x = c(0, 0), y = c(1, 1)), colour = "gray") +
+    ggplot2::geom_path(data = data.frame(x = c(0, 1), y = c(0, 1)), colour = "gray") +
     ggplot2::scale_x_continuous("False Positive Rate (1 - Specificity)",
                                 label = scales::percent_format(),
                                 limits = c(0, 1)) +
@@ -69,9 +69,8 @@ gg_roc <- function(target, ...){
       ggplot2::labs(color = NULL) +
       ggplot2::theme(legend.position = "bottom")
   }
-  
+
   p
-  
 }
 
 

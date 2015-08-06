@@ -301,11 +301,14 @@ knitr::opts_chunk$set(collapse = TRUE, warning = FALSE,
                       fig.align = "center", dpi = 72)
 
 theme_set(theme_fivethirtyeight(base_size = 11) +
-            theme(axis.title = element_text(colour = "grey30"),
+            theme(rect = element_rect(fill = "white"),
+                  axis.title = element_text(colour = "grey30"),
                   axis.title.y = element_text(angle = 90),
                   strip.background = element_rect(fill = "#434348"),
                   strip.text = element_text(color = "#F0F0F0"),
-                  plot.title = element_text(face = "plain", size = structure(1.2, class = "rel"))))
+                  plot.title = element_text(face = "plain", size = structure(1.2, class = "rel")),
+                  panel.margin.x =  grid::unit(1, "cm"),
+                  panel.margin.y =  grid::unit(1, "cm")))
 update_geom_defaults("line", list(colour = "#434348", size = 1.05))
 update_geom_defaults("point", list(colour = "#434348", size = 3))
 update_geom_defaults("bar", list(fill = "#7cb5ec"))

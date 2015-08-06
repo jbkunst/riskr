@@ -170,24 +170,47 @@ divergence <- function(target, score) {
 #' target <- predictions$target
 #' 
 #' perf(target, score)
+#' perf(target, score, score2 = score + runif(length(score)))
 #' @export
-perf <- function(target, score){
+perf <- function(target, ...){
+
+  args <- list(...)
   
-  stopifnot(
-    setequal(target, c(0, 1)),
-    length(target) == length(score)
-  )
+  if (length(args) == 1 && is.data.frame(args[[1]])) {
+    
+    scores_list <- as.list(...)
+    
+  } else {
+    
+    arglist <- match.call(expand.dots = FALSE)$...
+    scores_list <- lapply(arglist, eval.parent, n = 2)
+    score_names <- sapply(arglist, deparse)
+    
+    if (!is.null(names(score_names))) {
+      score_names <- ifelse(names(score_names) == "", score_names, names(score_names))
+    }
+    
+    names(scores_list) <- score_names
+    
+  }
   
-  res <- c(count = length(score),
-           target_count = length(score[target == 1]),
-           target_rate = mean(target),
-           ks = ks(target, score),
-           aucroc = aucroc(target, score),
-           gini = gini(target, score),
-           divergence = divergence(target, score))
+  df <- plyr::ldply(scores_list, function(score){
+    
+    aux <- c(ks = ks(target, score),
+             aucroc = aucroc(target, score),
+             gini = gini(target, score),
+             divergence = divergence(target, score))
+    
+    data.frame(t(aux))
+    
+  })
   
-  res <- data.frame(t(res))
-  
-  return(res)
+  if (length(scores_list) == 1) {
+    df <- df[,-1]
+  } else {
+    names(df)[1] <- "score"  
+  } 
+
+  df
 
 }
