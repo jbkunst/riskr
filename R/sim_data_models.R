@@ -48,8 +48,8 @@ gg_gain(target, bad_model)
 
 
 gg_dists(target, model)
-gg_dists(target, other_model)
-gg_dists(target, and_other_model)
+gg_dists(target, model_2)
+gg_dists(target, model_3)
 gg_dists(target, random_model)
 gg_dists(target, perfect_model)
 gg_dists(target, bad_model)
@@ -57,8 +57,8 @@ gg_dists(target, bad_model)
 
 
 gg_perf(target, model)
-gg_perf(target, other_model)
-gg_perf(target, and_other_model)
+gg_perf(target, model_2)
+gg_perf(target, model_3)
 gg_perf(target, random_model)
 gg_perf(target, perfect_model)
 gg_perf(target, bad_model)
