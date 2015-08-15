@@ -22,6 +22,6 @@ gb_sm <- function(data, ...){
     dplyr::ungroup() %>% 
     dplyr::rename(count = n) %>% 
     dplyr::mutate(percent = count/sum(count)) %>% 
-    dplyr::arrange(desc(count))
+    dplyr::arrange(dplyr::desc(count))
 
 }

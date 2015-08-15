@@ -43,7 +43,6 @@ bin_sup <- function(variable, target, min.p = 0.05){
   
   df$node <- predict(tree, type = "node")
 
-  
   nbins <- partykit::width(tree)
   
   if (is.numeric(variable)) {
@@ -56,7 +55,7 @@ bin_sup <- function(variable, target, min.p = 0.05){
     
     cuts <- c(-Inf, df2$max, Inf)
     
-    df$variable_new <- cut(df$variable, cuts, labels = FALSE)
+    df$variable_new <- cut(df$variable, cuts)
 
   } else {
     
@@ -71,12 +70,12 @@ bin_sup <- function(variable, target, min.p = 0.05){
     
     df <- dplyr::left_join(df, df2, by =  c("node"))
     
+    max_width <- max(nchar(df$variable_new))
+    
+    df$variable_new <- stringr::str_pad(df$variable_new, width = max_width, side = "left", pad = "0")
+    df$variable_new <- paste("group", df$variable_new, sep  = "_")
+    
   }
-  
-  max_width <- max(nchar(df$variable_new))
-  
-  df$variable_new <- stringr::str_pad(df$variable_new, width = max_width, side = "left", pad = "0")
-  df$variable_new <- paste("group", df$variable_new, sep  = "_")
   
   dfbt <- riskr::bt(df$variable_new, df$target) %>%
     dplyr::select(class, woe) %>%

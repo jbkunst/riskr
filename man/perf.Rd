@@ -4,12 +4,12 @@
 \alias{perf}
 \title{Summary of Performance}
 \usage{
-perf(target, score)
+perf(target, ...)
 }
 \arguments{
 \item{target}{A numeric binary vector (0, 1)}
 
-\item{score}{A numeric vector containing scores or probabilities}
+\item{...}{A data frame of scores, or a multiples score vectors: score1, score2, etc}
 }
 \value{
 A 1 row data frame with the summary of the performance.
@@ -24,5 +24,6 @@ score <- predictions$score
 target <- predictions$target
 
 perf(target, score)
+perf(target, score, score2 = score + runif(length(score)))
 }
 

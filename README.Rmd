@@ -50,8 +50,6 @@ update_geom_defaults("text", list(size = 4, colour = "gray30"))
 [![travis-status](https://api.travis-ci.org/jbkunst/riskr.svg)](https://travis-ci.org/jbkunst/riskr)
 [![version](http://www.r-pkg.org/badges/version/riskr)](http://www.r-pkg.org/pkg/riskr)
 [![downloads](http://cranlogs.r-pkg.org/badges/riskr)](http://www.r-pkg.org/pkg/riskr)
-[![Coverage Status](https://coveralls.io/repos/jbkunst/riskr/badge.svg?branch=master&service=github)](https://coveralls.io/github/jbkunst/riskr?branch=master)
-
 
 ## Introduction
 
@@ -137,12 +135,12 @@ bt(credit$age_bin, credit$bad)
 ```
 
 ```{r fig.width = 12, fig.height= 10}
-plot_ba(credit$age_bin, credit$bad)
+gg_ba(credit$age_bin, credit$bad)
 ```
 
-The minified version of `plot_ba`
+The minified version of `gg_ba`
 ```{r}
-plot_ba2(credit$age_bin, credit$bad) + ggtitle("Age")
+gg_ba2(credit$age_bin, credit$bad) + ggtitle("Age")
 ```
 
 

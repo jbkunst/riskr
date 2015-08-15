@@ -160,8 +160,8 @@ divergence <- function(target, score) {
 
 #' Summary of Performance
 #'
-#' @param score A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
+#' @param ... A data frame of scores, or a multiples score vectors: score1, score2, etc
 #' @return A 1 row data frame with the summary of the performance.
 #' @examples
 #' data(predictions)

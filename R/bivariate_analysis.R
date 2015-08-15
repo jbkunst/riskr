@@ -60,16 +60,19 @@ bt <- function(variable, target){
 #' @param labels A par
 #' @param order.by A par
 #' @examples
+#' 
+#'\dontrun{
 #' data("credit")
 #' 
 #' variable <- credit$sex
 #' target <- credit$bad
 #' 
-#' plot_ba(variable, target)
+#' gg_ba(variable, target)
 #' 
-#' plot_ba(variable, target, order.by = "target")
+#' gg_ba(variable, target, order.by = "target")
+#' }
 #' @export
-plot_ba <- function(variable, target, labels = TRUE, order.by = NULL){
+gg_ba <- function(variable, target, labels = TRUE, order.by = NULL){
    
   df <- bt(variable, target)
   
@@ -131,7 +134,7 @@ plot_ba <- function(variable, target, labels = TRUE, order.by = NULL){
 }
 
 #' Plot Bivariate Analysis (2) 
-#' @description A minimal version for \emph{plot_ba}
+#' @description A minimal version for \emph{gg_ba}
 #' @param variable A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
 #' @param labels A par
@@ -143,11 +146,11 @@ plot_ba <- function(variable, target, labels = TRUE, order.by = NULL){
 #' variable <- as.character(credit$marital_status)
 #' target <- credit$bad
 #' 
-#' plot_ba2(variable, target)
-#' plot_ba2(variable, target, labels = FALSE)
-#' plot_ba2(variable, target, order.by = "odds")
+#' gg_ba2(variable, target)
+#' gg_ba2(variable, target, labels = FALSE)
+#' gg_ba2(variable, target, order.by = "odds")
 #' @export
-plot_ba2 <- function(variable, target, labels = TRUE, order.by = NULL){
+gg_ba2 <- function(variable, target, labels = TRUE, order.by = NULL){
   
   stopifnot(
     setequal(target, c(0, 1)),
