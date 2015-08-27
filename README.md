@@ -33,7 +33,7 @@ There are function to:
 
 ## Assumptions
 
-`riskr` assume the target variable is *binary* with numeric values: 0 and 1. Usually 1 means the characteristic of interest.
+`riskr` assume the target variable is *binary* with numeric values: 0 and 1. Usually 1 means the characteristic of interest. For example 0 is a default operation and 1 a non-default one.
 
 ## Installation
 
@@ -173,12 +173,12 @@ bt(credit$age_bin, credit$bad)
 
 
 
-|class   | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent|  odds|    woe|    iv|
-|:-------|-----:|-------:|------------:|-----------:|--------------:|----------------:|------------------:|-----:|------:|-----:|
-|group_1 | 11097|   0.223|         3290|       0.296|          0.335|             7807|              0.196| 0.421|  0.538| 0.075|
-|group_2 | 13465|   0.271|         3061|       0.227|          0.312|            10404|              0.261| 0.294|  0.179| 0.009|
-|group_3 | 14064|   0.283|         2271|       0.161|          0.231|            11793|              0.296| 0.193| -0.245| 0.016|
-|group_4 | 11068|   0.223|         1191|       0.108|          0.121|             9877|              0.248| 0.121| -0.713| 0.090|
+|class     | count| percent| target_count| target_rate| target_percent| non_target_count| non_target_percent|  odds|    woe|    iv|
+|:---------|-----:|-------:|------------:|-----------:|--------------:|----------------:|------------------:|-----:|------:|-----:|
+|(-Inf,22] | 11097|   0.223|         3290|       0.296|          0.335|             7807|              0.196| 0.421|  0.538| 0.075|
+|(22,32]   | 13465|   0.271|         3061|       0.227|          0.312|            10404|              0.261| 0.294|  0.179| 0.009|
+|(32,44]   | 14064|   0.283|         2271|       0.161|          0.231|            11793|              0.296| 0.193| -0.245| 0.016|
+|(44,95]   | 11068|   0.223|         1191|       0.108|          0.121|             9877|              0.248| 0.121| -0.713| 0.090|
 
 
 ```r
@@ -284,6 +284,7 @@ cm$indicators
 1. [Guide to Credit Scoring in R](https://cran.r-project.org/doc/contrib/Sharma-CreditScoring.pdf)
 1. [Gains package](https://cran.r-project.org/web/packages/gains/gains.pdf)
 1. [plotROC package](https://github.com/sachsmc/plotROC) by [Michael Sachs](https://github.com/sachsmc/)
+1. [InformationValue](https://github.com/selva86/InformationValue) by (selva86)[https://github.com/selva86/]
 
 ## Session Info
 
@@ -316,9 +317,9 @@ update_geom_defaults("text", list(size = 4, colour = "gray30"))
 
 ```r
 print(sessionInfo())
-## R version 3.1.3 (2015-03-09)
-## Platform: x86_64-w64-mingw32/x64 (64-bit)
-## Running under: Windows 8 x64 (build 9200)
+## R version 3.2.0 (2015-04-16)
+## Platform: i386-w64-mingw32/i386 (32-bit)
+## Running under: Windows 7 (build 7601) Service Pack 1
 ## 
 ## locale:
 ## [1] LC_COLLATE=Spanish_Chile.1252  LC_CTYPE=Spanish_Chile.1252   
@@ -332,18 +333,18 @@ print(sessionInfo())
 ## [1] ggthemes_2.2.1 ggplot2_1.0.1  printr_0.0.4   riskr_1.0     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] assertthat_0.1     bitops_1.0-6       caTools_1.17.1    
-##  [4] colorspace_1.2-6   DBI_0.3.1          digest_0.6.8      
-##  [7] dplyr_0.4.2        evaluate_0.7       formatR_1.2       
-## [10] Formula_1.2-1      gdata_2.17.0       gplots_2.17.0     
-## [13] grid_3.1.3         gtable_0.1.2       gtools_3.4.2      
-## [16] highr_0.5          htmltools_0.2.6    KernSmooth_2.23-14
-## [19] knitr_1.10.5       labeling_0.3       lazyeval_0.1.10   
-## [22] magrittr_1.5       MASS_7.3-39        munsell_0.4.2     
-## [25] parallel_3.1.3     partykit_1.0-2     plyr_1.8.3        
-## [28] proto_0.3-10       R6_2.1.0           Rcpp_0.12.0       
-## [31] reshape2_1.4.1     rmarkdown_0.7.1    ROCR_1.0-7        
-## [34] scales_0.2.5       splines_3.1.3      stringi_0.5-5     
-## [37] stringr_1.0.0      survival_2.38-1    tidyr_0.2.0       
-## [40] tools_3.1.3        yaml_2.1.13
+##  [1] splines_3.2.0      digest_0.6.8       htmltools_0.2.6   
+##  [4] ROCR_1.0-7         R6_2.1.0           scales_0.3.0      
+##  [7] assertthat_0.1     grid_3.2.0         bitops_1.0-6      
+## [10] stringr_1.0.0      knitr_1.11         gdata_2.17.0      
+## [13] survival_2.38-3    munsell_0.4.2      proto_0.3-10      
+## [16] highr_0.5          partykit_1.0-2     tidyr_0.2.0       
+## [19] DBI_0.3.1          labeling_0.3       KernSmooth_2.23-15
+## [22] MASS_7.3-43        plyr_1.8.3         gplots_2.17.0     
+## [25] stringi_0.5-5      magrittr_1.5       reshape2_1.4.1    
+## [28] caTools_1.17.1     rmarkdown_0.7      evaluate_0.7.2    
+## [31] gtable_0.1.2       colorspace_1.2-6   yaml_2.1.13       
+## [34] tools_3.2.0        Formula_1.2-1      parallel_3.2.0    
+## [37] dplyr_0.4.2.9002   lazyeval_0.1.10    gtools_3.5.0      
+## [40] formatR_1.2        Rcpp_0.12.0
 ```

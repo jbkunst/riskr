@@ -64,7 +64,7 @@ There are function to:
 
 ## Assumptions
 
-`riskr` assume the target variable is *binary* with numeric values: 0 and 1. Usually 1 means the characteristic of interest.
+`riskr` assume the target variable is *binary* with numeric values: 0 and 1. Usually 1 means the characteristic of interest. For example 0 is a default operation and 1 a non-default one.
 
 ## Installation
 
@@ -188,6 +188,7 @@ cm$indicators
 1. [Guide to Credit Scoring in R](https://cran.r-project.org/doc/contrib/Sharma-CreditScoring.pdf)
 1. [Gains package](https://cran.r-project.org/web/packages/gains/gains.pdf)
 1. [plotROC package](https://github.com/sachsmc/plotROC) by [Michael Sachs](https://github.com/sachsmc/)
+1. [InformationValue](https://github.com/selva86/InformationValue) by (selva86)[https://github.com/selva86/]
 
 ## Session Info
 ```{r setup, eval=FALSE, echo=TRUE}
