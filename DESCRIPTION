@@ -1,6 +1,6 @@
 Package: riskr
 Version: 1.0
-Title: Functions To Facilitate Credit Scoring Processes
+Title: Functions to Facilitate the Evaluation, Monitoring and Modeling process
 Description: The riskr package facilitate credit scoring tasks 
   such as measure the scores/models performance,
   the scoring modelling process, visualize relationships between variables.
