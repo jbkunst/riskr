@@ -34,7 +34,7 @@ head(models_df)
 
 
 p <- gg_roc(target, models_df %>% select(contains("model"))) +
-  scale_color_hc("darkunica") + 
+  ggthemes::scale_color_hc("darkunica") + 
   coord_equal()
 p
 
