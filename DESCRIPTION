@@ -22,6 +22,7 @@ Imports:
     scales,
     broom,
     partykit,
-    stringr
+    stringr,
+    Kendall
 Suggests: knitr, rmarkdown, Formula
 VignetteBuilder: knitr

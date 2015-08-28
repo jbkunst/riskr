@@ -4,7 +4,7 @@ library("ggthemes")
 # library("riskr")
 
 update_geom_defaults("line", list(size = 1.2))
-theme_set(theme_fivethirtyeight(base_size = 11) +
+theme_set(ggthemes::theme_fivethirtyeight(base_size = 11) +
             theme(rect = element_rect(fill = "white"),
                   axis.title = element_text(colour = "grey30"),
                   axis.title.y = element_text(angle = 90),
@@ -38,6 +38,7 @@ p <- gg_roc(target, models_df %>% select(contains("model"))) +
   coord_equal()
 p
 
+perf(models_df$target, models_df %>% select(contains("model")))
 
 gg_gain(target, model)
 gg_gain(target, model_2)
