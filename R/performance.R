@@ -199,8 +199,7 @@ perf <- function(target, ...){
     aux <- c(ks = ks(target, score),
              aucroc = aucroc(target, score),
              gini = gini(target, score),
-             divergence = divergence(target, score),
-             kendalls_tau = as.numeric(Kendall::Kendall(target, score)$tau))
+             divergence = divergence(target, score))
     
     data.frame(t(aux))
     
