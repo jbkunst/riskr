@@ -8,11 +8,17 @@
 #' x <- sample(LETTERS[1:10], size = 100, prob = 1:10/10, replace = TRUE)
 #' ft(x)
 #' @export
-ft <- function(x) {
+ft <- function(x, order.by.count = TRUE) {
 
   if (any(is.na(x)))  x <- addNA(x)
   
   freqt <- gb_sm(dplyr::data_frame(class = x), class)
   
+  if (order.by.count) {
+    freqt <- freqt %>% 
+      dplyr::arrange(dplyr::desc(count))
+  }
+  
+ 
   return(freqt)
 }

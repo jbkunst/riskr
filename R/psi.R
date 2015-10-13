@@ -49,9 +49,9 @@ psi_table <- function(actual, new){
     setequal(actual, new)
   )
    
-  act_df <- ft(actual)
+  act_df <- ft(actual, order.by.count = FALSE)
   
-  new_df <- ft(new)
+  new_df <- ft(new, order.by.count = FALSE)
   
   names(act_df)[-1] <- paste("act", names(act_df)[-1], sep = "_")
   
