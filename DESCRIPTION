@@ -12,7 +12,9 @@ License: MIT + file LICENSE
 URL: https://github.com/jbkunst/riskr
 BugReports: https://github.com/jbkunst/riskr/issues
 Imports:
+    assertthat,
     plyr,
+    purrr,
     dplyr,
     tidyr,
     magrittr,
@@ -22,7 +24,6 @@ Imports:
     scales,
     broom,
     partykit,
-    stringr,
-    Kendall
+    stringr
 Suggests: knitr, rmarkdown, Formula
 VignetteBuilder: knitr
