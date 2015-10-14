@@ -10,6 +10,9 @@
 #' target <- predictions$target
 #' 
 #' ks(target, score)
+#' 
+#' @import ROCR
+#' 
 #' @export
 ks <- function(target, score){
   
@@ -18,8 +21,8 @@ ks <- function(target, score){
     length(target) == length(score)
   )
   
-  pred <- ROCR::prediction(score, target)
-  perf <- ROCR::performance(pred, "tpr", "fpr")
+  pred <- prediction(score, target)
+  perf <- performance(pred, "tpr", "fpr")
   
   ks <- max(abs(attr(perf, "y.values")[[1]] - attr(perf, "x.values")[[1]]))
   
@@ -70,8 +73,8 @@ aucroc <- function(target, score){
     length(target) == length(score)
   )
   
-  pred <- ROCR::prediction(score, target)
-  perf <- ROCR::performance(pred, "auc")
+  pred <- prediction(score, target)
+  perf <- performance(pred, "auc")
   
   aucroc <- attr(perf, "y.values")[[1]]
   
