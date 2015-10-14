@@ -22,11 +22,9 @@ count_format <- target_rate_format <- NULL
 #' @export
 bt <- function(variable, target){
   
-  stopifnot(
-    setequal(target, c(0, 1)),
-    length(target) == length(variable)
-  )
-
+  assertthat::assert_that(setequal(target, c(0, 1)),
+                          length(target) == length(variable))
+  
   tot_target <- sum(target)
   tot_non_target <- length(target) - tot_target
   
@@ -108,25 +106,25 @@ gg_ba <- function(variable, target, labels = TRUE, order.by = NULL){
     dplyr::mutate(var = factor(var, c("count", "target_count", "non_target_count",
                                       "target_rate", "odds", "woe")))
   
-  p <- ggplot2::ggplot(df2, ggplot2::aes_string("class", "value", group = 1)) +
-    ggplot2::geom_bar(data = subset(df2, var == "count"), stat = "identity", width = 0.5) +
-    ggplot2::geom_bar(data = subset(df2, var == "target_count"), stat = "identity", width = 0.5) +
-    ggplot2::geom_bar(data = subset(df2, var == "non_target_count"), stat = "identity", width = 0.5) +
-    ggplot2::geom_line(data = subset(df2, var == "target_rate")) +
-    ggplot2::geom_point(data = subset(df2, var == "target_rate")) +
-    ggplot2::geom_line(data = subset(df2, var == "odds")) +
-    ggplot2::geom_point(data = subset(df2, var == "odds")) +
-    ggplot2::geom_line(data = subset(df2, var == "woe")) +
-    ggplot2::geom_point(data = subset(df2, var == "woe")) +
-    ggplot2::facet_wrap(~var, scales = "free_y") +
-    ggplot2::xlab(NULL) +
-    ggplot2::ylab(NULL) + 
-    ggplot2::theme(legend.position = "bottom")
+  p <- ggplot(df2, aes_string("class", "value", group = 1)) +
+    geom_bar(data = subset(df2, var == "count"), stat = "identity", width = 0.5) +
+    geom_bar(data = subset(df2, var == "target_count"), stat = "identity", width = 0.5) +
+    geom_bar(data = subset(df2, var == "non_target_count"), stat = "identity", width = 0.5) +
+    geom_line(data = subset(df2, var == "target_rate")) +
+    geom_point(data = subset(df2, var == "target_rate")) +
+    geom_line(data = subset(df2, var == "odds")) +
+    geom_point(data = subset(df2, var == "odds")) +
+    geom_line(data = subset(df2, var == "woe")) +
+    geom_point(data = subset(df2, var == "woe")) +
+    facet_wrap(~var, scales = "free_y") +
+    xlab(NULL) +
+    ylab(NULL) + 
+    theme(legend.position = "bottom")
   
   if (labels) {
     p <- p +
-      ggplot2::geom_text(ggplot2::aes(label = value_fmt), vjust = -0.5) +
-      ggplot2::geom_text(ggplot2::aes(label = value_fmt2), vjust = 1.5)
+      geom_text(aes(label = value_fmt), vjust = -0.5) +
+      geom_text(aes(label = value_fmt2), vjust = 1.5)
   }
   
   p
@@ -139,7 +137,7 @@ gg_ba <- function(variable, target, labels = TRUE, order.by = NULL){
 #' @param target A numeric binary vector (0, 1)
 #' @param labels A par
 #' @param order.by A par
-#' @return A ggplot2::ggplot2 object
+#' @return A ggplot2 object
 #' @examples
 #' data("credit")
 #' 
@@ -149,6 +147,9 @@ gg_ba <- function(variable, target, labels = TRUE, order.by = NULL){
 #' gg_ba2(variable, target)
 #' gg_ba2(variable, target, labels = FALSE)
 #' gg_ba2(variable, target, order.by = "odds")
+#' 
+#' @import ggplot2
+#' 
 #' @export
 gg_ba2 <- function(variable, target, labels = TRUE, order.by = NULL){
   
@@ -164,18 +165,18 @@ gg_ba2 <- function(variable, target, labels = TRUE, order.by = NULL){
           count_format = prettyNum(count, big.mark = ","),
            target_rate_format = scales::percent(target_rate))
 
-  p <- ggplot2::ggplot(daux) +
-    ggplot2::geom_bar(ggplot2::aes(class, percent), stat = "identity", width = 0.5) +
-    ggplot2::geom_line(ggplot2::aes(id, target_rate)) +
-    ggplot2::geom_point(ggplot2::aes(id, target_rate)) +
-    ggplot2::scale_y_continuous(labels = scales::percent_format()) +
-    ggplot2::xlab(NULL) +
-    ggplot2::ylab(NULL)
+  p <- ggplot(daux) +
+    geom_bar(aes(class, percent), stat = "identity", width = 0.5) +
+    geom_line(aes(id, target_rate)) +
+    geom_point(aes(id, target_rate)) +
+    scale_y_continuous(labels = scales::percent_format()) +
+    xlab(NULL) +
+    ylab(NULL)
   
   if (labels) {
     p <- p +
-      ggplot2::geom_text(ggplot2::aes(class, percent, label = count_format), vjust = -0.5) +
-      ggplot2::geom_text(ggplot2::aes(class, target_rate, label = target_rate_format), vjust = -0.5)
+      geom_text(aes(class, percent, label = count_format), vjust = -0.5) +
+      geom_text(aes(class, target_rate, label = target_rate_format), vjust = -0.5)
   }
 
   p
