@@ -4,10 +4,12 @@
 \alias{ft}
 \title{Frecueny table from a vector}
 \usage{
-ft(x)
+ft(x, order.by.count = TRUE)
 }
 \arguments{
 \item{x}{A vector}
+
+\item{order.by.count}{Logical value if the df response have to be order by count.}
 }
 \value{
 The frecuency table of \code{x}. Frecuencies and percents are returned in a

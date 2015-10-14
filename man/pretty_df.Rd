@@ -5,7 +5,8 @@
 \title{Make a data frame looks a bit pretty}
 \usage{
 pretty_df(df, to.lower.df.names = TRUE, factor.to.string = TRUE,
-  fill.num.na.with = 0, fill.chr.na.with = "", trim.chr.vars = TRUE)
+  replace.num.na.with = NULL, replace.chr.na.with = NULL,
+  trim.chr.vars = TRUE)
 }
 \arguments{
 \item{df}{A data frame}
@@ -14,9 +15,9 @@ pretty_df(df, to.lower.df.names = TRUE, factor.to.string = TRUE,
 
 \item{factor.to.string}{Factor to string?}
 
-\item{fill.num.na.with}{Value to replace NA when there are NAs in a numeric variables}
+\item{replace.num.na.with}{Value to replace NA when there are NAs in a numeric variables}
 
-\item{fill.chr.na.with}{Value to replace NA when there are NAs in a character variables}
+\item{replace.chr.na.with}{Value to replace NA when there are NAs in a character variables}
 
 \item{trim.chr.vars}{Trim character vars=}
 }
@@ -34,5 +35,7 @@ df[c(2, 5),1] <- NA
 
 str(df)
 str(pretty_df(df))
+pretty_df(df, replace.num.na.with = 0)
+pretty_df(df, replace.chr.na.with = "no data")
 }
 
