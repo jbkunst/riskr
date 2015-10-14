@@ -3,8 +3,8 @@
 #' @param df A data frame
 #' @param to.lower.df.names df' names to lower?
 #' @param factor.to.string Factor to string?
-#' @param fill.num.na.with Value to replace NA when there are NAs in a numeric variables 
-#' @param fill.chr.na.with Value to replace NA when there are NAs in a character variables 
+#' @param replace.num.na.with Value to replace NA when there are NAs in a numeric variables 
+#' @param replace.chr.na.with Value to replace NA when there are NAs in a character variables 
 #' @param trim.chr.vars Trim character vars=
 #' @return The same df with \code{tbl_df} class, lower names.
 #' @examples
@@ -16,44 +16,39 @@
 #' 
 #' str(df)
 #' str(pretty_df(df))
+#' pretty_df(df, replace.num.na.with = 0)
+#' pretty_df(df, replace.chr.na.with = "no data")
 #' @export
 pretty_df <- function(df,
                       to.lower.df.names = TRUE,
                       factor.to.string = TRUE,
-                      fill.num.na.with = 0,
-                      fill.chr.na.with = "",
+                      replace.num.na.with = NULL,
+                      replace.chr.na.with = NULL,
                       trim.chr.vars = TRUE){
+  
+  assertthat::assert_that(is.data.frame(df))
 
-  if (to.lower.df.names) {
+  if (to.lower.df.names)
     names(df) <- tolower(names(df))  
-  }
+
+  if (factor.to.string)
+    df <- purrr::map_if(df, is.factor, as.character)
+
+  if (!is.null(replace.num.na.with))
+    df <- purrr::map_if(df, is.numeric, .repalce_na_with, replace = replace.num.na.with)
   
-  if (factor.to.string) {
-    
-    df[,plyr::laply(df, is.factor)] <- lapply(df[,plyr::laply(df, is.factor)] , as.character)
+  if (!is.null(replace.chr.na.with))
+    df <- purrr::map_if(df, is.character, .repalce_na_with, replace = replace.chr.na.with)
   
-  } 
-  
-  if (!is.null(fill.num.na.with)) {
-    df[,plyr::laply(df, is.numeric)] <- lapply(df[,plyr::laply(df, is.numeric)] , function(x) {
-      ifelse(is.na(x), fill.num.na.with, x)
-    })
-  }
-  
-  if (!is.null(fill.chr.na.with)) {
-    df[,plyr::laply(df, is.character)] <- lapply(df[,plyr::laply(df, is.character)] , function(x) {
-      ifelse(is.na(x), fill.chr.na.with, x)
-    })
-  }
-  
-  if (trim.chr.vars) {
-    df[,plyr::laply(df, is.character)] <- lapply(df[,plyr::laply(df, is.character)] , function(x) {
-      gsub("^\\s+|\\s+$", "", x)
-    })
-  }
+  if (trim.chr.vars)
+    df <- purrr::map_if(df, is.character, stringr::str_trim)
   
   df <- dplyr::tbl_df(df)
   
   df
   
+}
+
+.repalce_na_with <- function(x, replace = NULL) {
+  ifelse(is.na(x), replace, x)
 }
