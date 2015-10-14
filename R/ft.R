@@ -1,6 +1,7 @@
 #' Frecueny table from a vector
 #'
 #' @param x A vector
+#' @param order.by.count Logical value if the df response have to be order by count.
 #' @return The frecuency table of \code{x}. Frecuencies and percents are returned in a
 #' \code{data.frame} object (adding \code{tbl_df} class).
 #' @examples
