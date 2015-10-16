@@ -13,7 +13,7 @@
 #' 
 #' @export
 pred_ranking <- function(df, target_name = "target", verbose = FALSE){
-    
+  
   target <- df[[target_name]]
   
   df2 <- df %>% subset(select = setdiff(names(df), target_name))
@@ -24,19 +24,28 @@ pred_ranking <- function(df, target_name = "target", verbose = FALSE){
     # namevar <- sample(names(df2), size = 1)
     if (verbose) message(namevar)
     
+    # Prepare data
     pred_var <- df[[namevar]]
     daux <- data.frame(target = target, pred_var = pred_var)
     daux_naomit <- na.omit(daux)
     
+    # Logistic models
     model <- glm(target ~ pred_var, data = daux_naomit, family = binomial(link = logit))
-    
     score <- model$fitted.values
     
+    # Tree models
+    mb <- ceiling(round(5/100 * length(target)))
+    control <- partykit::ctree_control(mincriterion = 0.00001, minbucket = mb)
+    tree <- partykit::ctree(factor(target) ~ pred_var, data = daux_naomit, control = control)
+    
+    iv <- sum(bt( predict(tree, type = "node"), daux_naomit$target)$iv)
+    
     resp <- dplyr::data_frame(variable = namevar,
-                       ks = ks(target, score),
-                       aucroc = aucroc(target, score))
-  
-  }, .progress = if (verbose) "text" else "none")
+                              ks = ks(target, score),
+                              aucroc = aucroc(target, score),
+                              iv = iv)
+    
+  }, .progress = ifelse(verbose, "text", "none"))
   
   res <- res %>%
     dplyr::tbl_df() %>% 

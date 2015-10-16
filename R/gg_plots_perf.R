@@ -51,23 +51,23 @@ gg_roc <- function(target, ...){
     df <- data.frame(x = unlist(perf@"x.values") , y = unlist(perf@"y.values"))
   })
   
-  p <- ggplot2::ggplot(dfroc, ggplot2::aes_string("x", "y")) + 
-    ggplot2::geom_path(data = data.frame(x = c(0, 1), y = c(0, 1)), colour = "gray") +
-    ggplot2::scale_x_continuous("False Positive Rate (1 - Specificity)",
-                                label = scales::percent_format(),
+  p <- ggplot(dfroc, aes_string("x", "y")) + 
+    geom_path(data = data.frame(x = c(0, 1), y = c(0, 1)), colour = "gray") +
+    scale_x_continuous("False Positive Rate (1 - Specificity)",
+                                labels = scales::percent_format(),
                                 limits = c(0, 1)) +
-    ggplot2::scale_y_continuous("True Positive Rate (Sensivity or Recall)",
-                                label = scales::percent_format(),
+    scale_y_continuous("True Positive Rate (Sensivity or Recall)",
+                                labels = scales::percent_format(),
                                 limits = c(0, 1))
   
   if (length(scores_list) == 1) {
     
-    p <- p + ggplot2::geom_line()
+    p <- p + geom_line()
     
   } else {
-    p <- p + ggplot2::geom_line(ggplot2::aes_string(group = ".id", color = ".id")) +
-      ggplot2::labs(color = NULL) +
-      ggplot2::theme(legend.position = "bottom")
+    p <- p + geom_line(aes_string(group = ".id", color = ".id")) +
+      labs(color = NULL) +
+      theme(legend.position = "bottom")
   }
 
   p
@@ -87,6 +87,7 @@ gg_roc <- function(target, ...){
 #' target <- predictions$target
 #' 
 #' gg_gain(target, score)
+#' @import ggplot2
 #' @export
 gg_gain <- function(target, score){
   
@@ -94,8 +95,6 @@ gg_gain <- function(target, score){
     setequal(target, c(0, 1)),
     length(target) == length(score)
   )
-  
-  
   
   ecdf_score <- ecdf(score)
   ecdf_non_target <- ecdf(score[target == 0])
@@ -114,20 +113,18 @@ gg_gain <- function(target, score){
                     target_label = "target")
   )
   
-  p <- ggplot2::ggplot(df) + 
-    ggplot2::geom_line(ggplot2::aes_string("x", "y", color = "target_label")) + 
-    ggplot2::geom_path(ggplot2::aes(x = c(0, 1), y = c(0, 1)), colour = "gray") +
-    ggplot2::scale_color_manual(labels = c("Samples percentiles (- to +) / non target cumulative percents",
+  p <- ggplot(df) + 
+    geom_line(aes_string("x", "y", color = "target_label")) + 
+    geom_path(data = data.frame(x = c(0,1), y = c(0,1)), aes_string("x", "y"), colour = "gray") +
+    scale_color_manual(labels = c("Samples percentiles (- to +) / non target cumulative percents",
                                            "Samples percentiles (+ to -) / target cumulative percents"),
                                 values = c("darkred", "darkblue")) +
-    ggplot2::labs(colour = NULL) +
-    ggplot2::scale_x_continuous("Sample Percentiles",
-                                label = scales::percent_format(),
-                                limits = c(0, 1)) +
-    ggplot2::scale_y_continuous("Cumulative Percent",
-                                label = scales::percent_format(),
-                                limits = c(0, 1)) +
-    ggplot2::theme(legend.position = "bottom", legend.direction = "vertical")
+    labs(colour = NULL) +
+    scale_x_continuous("Sample Percentiles",
+                       labels = scales::percent_format(), limits = c(0, 1)) +
+    scale_y_continuous("Cumulative Percent",
+                       labels = scales::percent_format(), limits = c(0, 1)) +
+    theme(legend.position = "bottom", legend.direction = "vertical")
   
   p
   
@@ -173,14 +170,14 @@ gg_cum <- function(target, score){
 
   cut <- cuts[abs(ecd_1(cuts) - ecd_0(cuts)) == max(abs(ecd_1(cuts) - ecd_0(cuts)))]  
   
-  p <- ggplot2::ggplot(df) +
-    ggplot2::geom_line(ggplot2::aes_string("score", "ecdf", colour = "target_label")) + 
-    ggplot2::scale_colour_manual(values = c("darkred", "darkblue")) + 
-    ggplot2::scale_y_continuous("ecdf", label = scales::percent_format(), limits = c(0, 1)) + 
-    ggplot2::labs(colour = "Legend: ") +
-    ggplot2::xlab("Score") +
-    ggplot2::ylab("ECDF") +
-    ggplot2::theme(legend.position = "bottom")
+  p <- ggplot(df) +
+    geom_line(aes_string("score", "ecdf", colour = "target_label")) + 
+    scale_colour_manual(values = c("darkred", "darkblue")) + 
+    scale_y_continuous("ecdf", labels = scales::percent_format(), limits = c(0, 1)) + 
+    labs(colour = "Legend: ") +
+    xlab("Score") +
+    ylab("ECDF") +
+    theme(legend.position = "bottom")
   
   p
 }
@@ -214,13 +211,13 @@ gg_dists <- function(target, score){
                    target,
                    target_label = ifelse(target == 1, "target", "non target"))
   
-  p <- ggplot2::ggplot(df) +
-    ggplot2::geom_density(ggplot2::aes_string("score", fill = "target_label"), alpha = 0.5) + 
-    ggplot2::scale_fill_manual(values = c("darkred", "darkblue")) +
-    ggplot2::xlab("Score") +
-    ggplot2::ylab("Densities") +
-    ggplot2::labs(fill = "Legend: ") +
-    ggplot2::theme(legend.position = "bottom")
+  p <- ggplot(df) +
+    geom_density(aes_string("score", fill = "target_label"), alpha = 0.5) + 
+    scale_fill_manual(values = c("darkred", "darkblue")) +
+    xlab("Score") +
+    ylab("Densities") +
+    labs(fill = "Legend: ") +
+    theme(legend.position = "bottom")
   
   p
 }
@@ -253,12 +250,12 @@ gg_lift <- function(target, score){
   
   df <- data.frame(x = unlist(perf@"x.values") , y = unlist(perf@"y.values"))
   
-  p <- ggplot2::ggplot(df, ggplot2::aes_string("x", "y")) +
-    ggplot2::geom_line() +
-    ggplot2::geom_path(data = data.frame(x = c(0, 1), y = c(1, 1)), colour = "gray") +
-    ggplot2::scale_x_continuous("Rate of positive predictions",
-                                label = scales::percent_format()) +
-    ggplot2::scale_y_continuous("Lift Value", limits = c(.9, NA))
+  p <- ggplot(df, aes_string("x", "y")) +
+    geom_line() +
+    geom_path(data = data.frame(x = c(0, 1), y = c(1, 1)), colour = "gray") +
+    scale_x_continuous("Rate of positive predictions",
+                                labels = scales::percent_format()) +
+    scale_y_continuous("Lift Value", limits = c(.9, NA))
     
   p
 }
@@ -325,31 +322,31 @@ gg_perf <- function(target, score){
   
   df <- plyr::rbind.fill(df1, df2, df3, df4) %>% dplyr::tbl_df()
   
-  ggplot2::ggplot(df, ggplot2::aes_string(group = 1)) + 
+  ggplot(df, aes_string(group = 1)) + 
     # roc
-    ggplot2::geom_line(data = subset(df, plot == "roc curve"),
-              ggplot2::aes_string(x = "x", y = "y")) +
-    ggplot2::geom_segment(data = subset(df, plot == "roc curve")[1,],
-                 ggplot2::aes(x = 0, y = 0,xend = 1,yend = 1), alpha = 0.5) +
+    geom_line(data = subset(df, plot == "roc curve"),
+              aes_string(x = "x", y = "y")) +
+    geom_segment(data = subset(df, plot == "roc curve")[1,],
+                 aes(x = 0, y = 0,xend = 1,yend = 1), alpha = 0.5) +
     # gain
-    ggplot2::geom_line(data = subset(df, plot == "gain"),
-              ggplot2::aes_string(x = "x", y = "y", color = "target_label", group = "target_label")) +
-    ggplot2::geom_segment(data = subset(df, plot == "gain")[1, ],
-                 ggplot2::aes(x = 0,y = 0,xend = 1,yend = 1), alpha = 0.5) +
+    geom_line(data = subset(df, plot == "gain"),
+              aes_string(x = "x", y = "y", color = "target_label", group = "target_label")) +
+    geom_segment(data = subset(df, plot == "gain")[1, ],
+                 aes(x = 0,y = 0,xend = 1,yend = 1), alpha = 0.5) +
     # ecdf
-    ggplot2::geom_line(data = subset(df, plot == "cumulative"),
-              ggplot2::aes_string(x = "x", y = "y", color = "target_label", group = "target_label")) +
+    geom_line(data = subset(df, plot == "cumulative"),
+              aes_string(x = "x", y = "y", color = "target_label", group = "target_label")) +
     # densities
-    ggplot2::geom_density(data = subset(df, plot == "distributions"),
-                 ggplot2::aes_string(x = "x", fill = "target_label", color = "target_label", group = "target_label"),
+    geom_density(data = subset(df, plot == "distributions"),
+                 aes_string(x = "x", fill = "target_label", color = "target_label", group = "target_label"),
                  alpha = 0.5) +
     # style
-    ggplot2::scale_color_manual(values = c("darkred", "darkblue")) +
-    ggplot2::scale_fill_manual(values = c("darkred", "darkblue")) +
-    ggplot2::facet_wrap(~plot, scales = "free") +
-    ggplot2::labs(color = "Legend: ", fill = "Legend: ") +
-    ggplot2::theme(legend.position = "bottom") + 
-    ggplot2::xlab(NULL) +
-    ggplot2::ylab(NULL)
+    scale_color_manual(values = c("darkred", "darkblue")) +
+    scale_fill_manual(values = c("darkred", "darkblue")) +
+    facet_wrap(~plot, scales = "free") +
+    labs(color = "Legend: ", fill = "Legend: ") +
+    theme(legend.position = "bottom") + 
+    xlab(NULL) +
+    ylab(NULL)
   
 }
