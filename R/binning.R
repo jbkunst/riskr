@@ -93,3 +93,63 @@ bin_sup <- function(variable, target, min.p = 0.05){
   str(bin_sup_ls)
   bin_sup_ls
 }
+
+
+#' Binning Class
+#'
+#' Binning class.
+#'
+#' @import R6
+#' @export
+Binning <- R6::R6Class(
+  "Binning",
+  private = list(
+    tree = NULL
+  ),
+  public = list(
+    initialize = function() {
+    },
+    init_ct = function(){
+    },
+    ### chessjs api
+    ascii = function(){
+    },
+    clear = function(){
+    },
+    #### generic methods
+    summary = function(){
+      message("summary")
+    },
+    plot    = function(){
+      message("plot")
+    },
+    print   = function(){
+      message("print")
+    }))
+
+
+
+#' Generic Summary method for Binning class
+#' @param object A binning object frome the Binning class
+#' @param ... Other parameters
+#' @export
+summary.Binning <- function(object, ...) {
+  object$summary()
+}
+
+#' Generic Plot method for Binning class
+#' @param x A binning object frome the Binning class
+#' @param y A parameter
+#' @param ... Other parameters
+#' @export
+plot.Binning <- function(x, y=NULL, ...) {
+  x$plot(...)
+}
+
+#' Generic Print method for Binning class
+#' @param x A binning object frome the Binning class
+#' @param ... Other parameters
+#' @export
+print.Binning <- function(x, ...) {
+  x$print()
+}
