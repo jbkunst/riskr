@@ -43,7 +43,7 @@ pretty_df <- function(df,
   if (trim.chr.vars)
     df <- purrr::map_if(df, is.character, stringr::str_trim)
   
-  df <- dplyr::tbl_df(df)
+  df <- dplyr::tbl_df(data.frame(df, stringsAsFactors = FALSE))
   
   df
   

@@ -3,7 +3,8 @@ node <- NULL
 #' @description Automatic supervised binning 
 #' @param target A numeric binary vector {0,1}
 #' @param variable A variable 
-#' @param min.p Minimal proportion in a group
+#' @param min.p Minimal proportion in a group (a ctree_control argument).
+#' @param min.cri Minimal critetion (a ctree_control argument).
 #' @return A list of elements
 #' @examples
 #' 
@@ -19,7 +20,7 @@ node <- NULL
 #' bin_sup(variable, target)
 #' 
 #' @export
-bin_sup <- function(variable, target, min.p = 0.05){
+bin_sup <- function(variable, target, min.p = 0.05, min.cri = 0.95, max.depth = Inf){
   
   #### arguments validation ####
   stopifnot(
@@ -30,7 +31,9 @@ bin_sup <- function(variable, target, min.p = 0.05){
   
   ### ctree controls ###
   mb <- ceiling(round(min.p * length(target)))
-  control <- partykit::ctree_control(minbucket = mb)
+  control <- partykit::ctree_control(minbucket = mb,
+                                     mincriterion = min.cri,
+                                     maxdepth = max.depth)
   
   ### tree ####
   if (!is.numeric(variable)) variable <- factor(variable)
