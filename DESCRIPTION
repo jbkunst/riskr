@@ -1,29 +1,31 @@
 Package: riskr
 Version: 1.0
 Title: Functions to Facilitate the Evaluation, Monitoring and Modeling process
-Description: The riskr package facilitate credit scoring tasks 
-  such as measure the scores/models performance,
-  the scoring modelling process, visualize relationships between variables.
-  Also there are functions to compute usual values in the credit scoring
-  like PSI, WOE, IV, KS, AUCROC, among others.
+Description: The riskr package facilitate credit scoring tasks
+    such as measure the scores/models performance,
+    the scoring modelling process, visualize relationships between variables.
+    Also there are functions to compute usual values in the credit scoring
+    like PSI, WOE, IV, KS, AUCROC, among others.
 Author: Joshua Kunst <jbkunst@gmail.com>
 Maintainer: Joshua Kunst <jbkunst@gmail.com>
 License: MIT + file LICENSE
 URL: https://github.com/jbkunst/riskr
 BugReports: https://github.com/jbkunst/riskr/issues
 Imports:
-    R6,
     assertthat,
     plyr,
     purrr,
     dplyr,
     tidyr,
-    magrittr,
     ROCR,
     ggplot2,
     scales,
     broom,
     partykit,
     stringr
-Suggests: knitr, rmarkdown, Formula
+Suggests:
+    knitr,
+    rmarkdown,
+    Formula
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1

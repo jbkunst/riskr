@@ -74,8 +74,6 @@ gg_ba <- function(variable, target, labels = TRUE, order.by = NULL){
    
   df <- bt(variable, target)
   
-  `%>%` <- magrittr::`%>%`
-  
   df2 <- df %>%
     dplyr::select(class, count, target_count, non_target_count, target_rate, odds, woe) %>% 
     tidyr::gather(var, value, -class)
@@ -158,7 +156,6 @@ gg_ba2 <- function(variable, target, labels = TRUE, order.by = NULL){
     length(target) == length(variable)
   )
   
-  `%>%` <- magrittr::`%>%`
   
   daux <- bt(variable, target) %>% 
     dplyr::mutate(id = seq(nrow(.)), 

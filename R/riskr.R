@@ -24,10 +24,26 @@ NULL
 
 #' credit data
 #'
-#' This dataset classifies people dplyr::ungroupribed by a set of attributes as good or bad credit risks
+#' This dataset classifies people by a set of attributes as good or bad credit risks
 #' @docType data
 #' @keywords datasets
 #' @name credit
 #' @usage data(credit)
 #' @format A data frame with 49694 rows and 17 variables
+NULL
+
+
+#' riskr exported operators and S3 methods
+#' 
+#' The following functions are imported and then re-exported
+#' from the riskr package to avoid listing the magrittr
+#' as Depends of riskr
+#' 
+#' @name riskr-exports
+NULL
+
+#' @importFrom dplyr %>%
+#' @name %>%
+#' @export
+#' @rdname riskr-exports
 NULL
