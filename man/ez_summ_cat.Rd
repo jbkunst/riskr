@@ -2,7 +2,7 @@
 % Please edit documentation in R/ez_summ.R
 \name{ez_summ_cat}
 \alias{ez_summ_cat}
-\title{Generate Tables for categorical variables}
+\title{Generate Summary Tables for categorical variables}
 \usage{
 ez_summ_cat(df)
 }
@@ -10,7 +10,7 @@ ez_summ_cat(df)
 \item{df}{A data frame.}
 }
 \description{
-Generate Tables for categorical variables
+Generate Summary Tables for categorical variables
 }
 \examples{
 
