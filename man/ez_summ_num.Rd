@@ -8,6 +8,10 @@ ez_summ_num(df, na.rm = TRUE, probs = c(1:9/10))
 }
 \arguments{
 \item{df}{A data frame.}
+
+\item{na.rm}{A logical indicating whether missing values should be removed.}
+
+\item{probs}{numeric vector of probabilities with values in [0,1].}
 }
 \description{
 Generate Summary Tables for numercial variables

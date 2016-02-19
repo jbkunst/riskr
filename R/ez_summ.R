@@ -75,6 +75,8 @@ ez_summ_cat <- function(df){
 #' Generate Summary Tables for numercial variables
 #'
 #' @param df A data frame.
+#' @param na.rm A logical indicating whether missing values should be removed.
+#' @param probs numeric vector of probabilities with values in [0,1].
 #'
 #' @examples
 #'
@@ -89,10 +91,10 @@ ez_summ_num <- function(df, na.rm = TRUE, probs = c(1:9/10)){
     dplyr::do(
       tidyr::gather(., var, value) %>% 
       dplyr::group_by(var) %>%
-      summarize(
+        dplyr::summarize(
         n = length(value),
         na = sum(is.na(value)),
-        na.percent = na/n,
+        na.percent = sum(is.na(value))/length(value),
         mean = mean(value, na.rm = na.rm),
         sd = sd(value, na.rm = na.rm),
         min = min(value, na.rm = na.rm),
@@ -104,10 +106,10 @@ ez_summ_num <- function(df, na.rm = TRUE, probs = c(1:9/10)){
     dplyr::do(
       tidyr::gather(., var, value) %>% 
         dplyr::group_by(var) %>% 
-        do(data_frame(quantile = paste0("q", round(100*probs)),
-                      quantilevalue = quantile(.$value, probs = probs)))
+        dplyr::do(dplyr::data_frame(quantile = paste0("q", round(100*probs)),
+                                    value = quantile(.$value, probs = probs)))
     ) %>%
-    tidyr::spread(quantile, quantilevalue)
+    tidyr::spread(quantile, value)
   
   
   dplyr::left_join(r1, r2, by = "var")
