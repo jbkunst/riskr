@@ -86,7 +86,7 @@ ez_summ_cat <- function(df){
 #' credit %>% select_numeric() %>% ez_summ_num()
 #' 
 #' @export
-ez_summ_num <- function(df, na.rm = TRUE, probs = c(1:9/10)){
+ez_summ_num <- function(df, na.rm = TRUE, probs = c(0.01, 0.05, 1:9/10, 0.95,.99)){
   
   r1 <- df %>%
     dplyr::do(
@@ -185,8 +185,8 @@ ez_summ <- function(df, nuniques = 10, target_name = NULL, ...){
     ez_summ_cat()
   
   res$numeric <- df %>% 
-    select_numeric(nuniques = nuniques, ...) %>% 
-    ez_summ_num()
+    select_numeric(nuniques = nuniques) %>% 
+    ez_summ_num(...)
   
   if (!is.null(target_name)) {
     
