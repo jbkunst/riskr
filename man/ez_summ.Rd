@@ -13,7 +13,7 @@ ez_summ(df, nuniques = 10, target_name = NULL, ...)
 
 \item{target_name}{Target name if bivariate summary is required}
 
-\item{...}{}
+\item{...}{A list of additional arguments}
 }
 \value{
 A list

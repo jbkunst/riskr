@@ -164,7 +164,7 @@ ez_summ_biv <- function(df, target_name = NULL, nuniques = 10){
 #' @param df A data frame.
 #' @param nuniques Limit to consider a numeric varialbe as categorical one
 #' @param target_name Target name if bivariate summary is required
-#' @param ...
+#' @param ... A list of additional arguments
 #' 
 #' @return A list
 #'
