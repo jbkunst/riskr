@@ -4,8 +4,7 @@
 \alias{superv_bin}
 \title{Supervised Binning}
 \usage{
-superv_bin(variable, target, min.p = 0.05, min.cri = 0.95,
-  max.depth = Inf)
+superv_bin(variable, target, min.p = 0.05, min.cri = 0.95, max.depth = 5)
 }
 \arguments{
 \item{variable}{A variable}

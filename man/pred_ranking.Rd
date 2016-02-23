@@ -4,14 +4,14 @@
 \alias{pred_ranking}
 \title{Ranking for predictives variables}
 \usage{
-pred_ranking(df, target_name = "target", verbose = FALSE)
+pred_ranking(df, target_name = NULL, nuniques = 10)
 }
 \arguments{
 \item{df}{A data frame}
 
 \item{target_name}{The name of response variable}
 
-\item{verbose}{verbose}
+\item{nuniques}{Limit to consider a numeric varialbe as categorical one}
 }
 \value{
 A data frame with statistics like aucroc and ks from de univariate models `response ~ target`

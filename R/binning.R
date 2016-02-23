@@ -23,7 +23,7 @@ node <- NULL
 #' superv_bin(variable, target)
 #' 
 #' @export
-superv_bin <- function(variable, target, min.p = 0.05, min.cri = 0.95, max.depth = Inf){
+superv_bin <- function(variable, target, min.p = 0.05, min.cri = 0.95, max.depth = 5){
   
   #### arguments validation ####
   stopifnot(

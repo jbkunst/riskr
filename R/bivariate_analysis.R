@@ -130,12 +130,16 @@ gg_ba <- function(variable, target, labels = TRUE, order.by = NULL){
 }
 
 #' Plot Bivariate Analysis (2) 
+#' 
 #' @description A minimal version for \emph{gg_ba}
+#' 
 #' @param variable A numeric vector containing scores or probabilities
 #' @param target A numeric binary vector (0, 1)
 #' @param labels A par
 #' @param order.by A par
+#' 
 #' @return A ggplot2 object
+#' 
 #' @examples
 #' data("credit")
 #' 

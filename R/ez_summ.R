@@ -25,6 +25,7 @@ select_categorical <- function(df, nuniques = 10){
 #' Selecting numeric variables from a data frame
 #' 
 #' @param df A data frame.
+#' @param nuniques Limit to consider a numeric varialbe as categorical one
 #' 
 #' @examples 
 #' 
@@ -33,9 +34,9 @@ select_categorical <- function(df, nuniques = 10){
 #' credit %>% select_numeric()
 #' 
 #' @export
-select_numeric <- function(df){
+select_numeric <- function(df, nuniques = 10){
   
-  selections <- purrr::map_lgl(df, function(x) is.numeric(x))
+  selections <- purrr::map_lgl(df, function(x) is.numeric(x) | (length(unique(x)) > nuniques) )
   df[, selections]
   
 }
@@ -107,7 +108,7 @@ ez_summ_num <- function(df, na.rm = TRUE, probs = c(1:9/10)){
       tidyr::gather(., var, value) %>% 
         dplyr::group_by(var) %>% 
         dplyr::do(dplyr::data_frame(quantile = paste0("q", round(100*probs)),
-                                    value = quantile(.$value, probs = probs)))
+                                    value = quantile(.$value, probs = probs, na.rm = na.rm)))
     ) %>%
     tidyr::spread(quantile, value)
   
@@ -116,8 +117,87 @@ ez_summ_num <- function(df, na.rm = TRUE, probs = c(1:9/10)){
   
 }
 
+
+#' Generate Summary Tables for numercial variables
+#'
+#' @param df A data frame.
+#' @param target_name The name of response variable
+#' @param nuniques Limit to consider a numeric varialbe as categorical one
+#' 
+#' @examples
+#'
+#' data("credit")
+#'
+#' credit %>% ez_summ_biv(target_name = "bad") 
+#' 
+#' 
+#' @export
+ez_summ_biv <- function(df, target_name = NULL, nuniques = 10){
+  
+  # library(dplyr)
+  # data(credit)
+  # df <- credit
+  # target_name <- "bad"
+  
+  stopifnot(!is.null(target_name),
+       setequal(df[[target_name]], c(0, 1)))
+  
+  target <- df[[target_name]]
+  
+  df <- df %>% dplyr::select_(paste0("-", target_name))
+  
+  res <- df %>% 
+    purrr::map_df(function(var){
+      
+      if (length(unique(var)) > nuniques) {
+        var <- superv_bin(var, target)$variable_new
+      } 
+      bt(var, target)
+    }, .id = "variable")
+  
+  res
+  
+}
+
+#' Generate Summary Tables for data frames
+#'
+#' @param df A data frame.
+#' @param nuniques Limit to consider a numeric varialbe as categorical one
+#' @param target_name Target name if bivariate summary is required
+#' @param ...
+#' 
+#' @return A list
+#'
+#' @examples
+#'
+#' data("credit")
+#' 
+#' credit %>% ez_summ()
+#' credit %>% ez_summ(target_name = "bad")
+#'
+#' @export
+ez_summ <- function(df, nuniques = 10, target_name = NULL, ...){
+
+  res <- NULL
+  
+  res$categorical <- df %>% 
+    select_categorical(nuniques = nuniques) %>% 
+    ez_summ_cat()
+  
+  res$numeric <- df %>% 
+    select_numeric(nuniques = nuniques, ...) %>% 
+    ez_summ_num()
+  
+  if (!is.null(target_name)) {
     
+    res$predrank <- pred_ranking(df, target_name = target_name, nuniques = nuniques)
     
+    res$bivariate <- df %>% ez_summ_biv(target_name = target_name, nuniques = nuniques) 
     
+  }
+  
+  res
+  
+}
     
     
