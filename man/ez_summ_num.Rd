@@ -4,7 +4,7 @@
 \alias{ez_summ_num}
 \title{Generate Summary Tables for numercial variables}
 \usage{
-ez_summ_num(df, na.rm = TRUE, probs = c(1:9/10))
+ez_summ_num(df, na.rm = TRUE, probs = c(0.01, 0.05, 1:9/10, 0.95, 0.99))
 }
 \arguments{
 \item{df}{A data frame.}

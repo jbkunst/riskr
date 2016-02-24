@@ -99,7 +99,8 @@ ez_summ_num <- function(df, na.rm = TRUE, probs = c(0.01, 0.05, 1:9/10, 0.95,.99
         mean = mean(value, na.rm = na.rm),
         sd = sd(value, na.rm = na.rm),
         min = min(value, na.rm = na.rm),
-        max = max(value, na.rm = na.rm))
+        max = max(value, na.rm = na.rm),
+        variability = variability(value, na.rm = na.rm))
     ) %>%
     dplyr::ungroup() 
   
@@ -197,6 +198,30 @@ ez_summ <- function(df, nuniques = 10, target_name = NULL, ...){
   }
   
   res
+  
+}
+
+
+#' Calculate the variability
+#' 
+#' @examples 
+#' 
+#' x <- rbinom(100, p = .005, 10)
+#' variability(x)
+#' 
+#' x <- rnorm(500)
+#' variability(x)
+#' 
+#' @export
+variability <- function(x, na.rm = TRUE) {
+  
+  q <- quantile(x, setdiff(0:100/100, 0.5), na.rm = na.rm)
+  daux <- dplyr::data_frame(p = 1:50 - 1,
+                            q1 = q[1:50],
+                            q2 = q[100:51]) %>% 
+    dplyr::filter(q1 == q2) 
+  
+  1 - ifelse(nrow(daux) == 0, NA, min(daux$p)/100)
   
 }
     
