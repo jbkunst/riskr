@@ -4,12 +4,10 @@
 \alias{ez_summ}
 \title{Generate Summary Tables for data frames}
 \usage{
-ez_summ(df, nuniques = 10, target_name = NULL, ...)
+ez_summ(df, target_name = NULL, ...)
 }
 \arguments{
 \item{df}{A data frame.}
-
-\item{nuniques}{Limit to consider a numeric varialbe as categorical one}
 
 \item{target_name}{Target name if bivariate summary is required}
 

@@ -4,12 +4,10 @@
 \alias{select_categorical}
 \title{Selecting categorical variables from a data frame}
 \usage{
-select_categorical(df, nuniques = 10)
+select_categorical(df)
 }
 \arguments{
 \item{df}{A data frame.}
-
-\item{nuniques}{Limit to consider a numeric varialbe as categorical one}
 }
 \description{
 Selecting categorical variables from a data frame

@@ -4,14 +4,12 @@
 \alias{ez_summ_biv}
 \title{Generate Summary Tables for numercial variables}
 \usage{
-ez_summ_biv(df, target_name = NULL, nuniques = 10)
+ez_summ_biv(df, target_name = NULL)
 }
 \arguments{
 \item{df}{A data frame.}
 
 \item{target_name}{The name of response variable}
-
-\item{nuniques}{Limit to consider a numeric varialbe as categorical one}
 }
 \description{
 Generate Summary Tables for numercial variables

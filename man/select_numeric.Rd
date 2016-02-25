@@ -4,12 +4,10 @@
 \alias{select_numeric}
 \title{Selecting numeric variables from a data frame}
 \usage{
-select_numeric(df, nuniques = 10)
+select_numeric(df)
 }
 \arguments{
 \item{df}{A data frame.}
-
-\item{nuniques}{Limit to consider a numeric varialbe as categorical one}
 }
 \description{
 Selecting numeric variables from a data frame

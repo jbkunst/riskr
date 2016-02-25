@@ -1,7 +1,6 @@
 #' Selecting categorical variables from a data frame
 #' 
 #' @param df A data frame.
-#' @param nuniques Limit to consider a numeric varialbe as categorical one
 #' 
 #' @examples 
 #' 
@@ -10,13 +9,12 @@
 #' credit %>% select_categorical()
 #' 
 #' @export
-select_categorical <- function(df, nuniques = 10){
+select_categorical <- function(df){
   
   selections <- purrr::map_lgl(df, function(x) {
     is.character(x) ||
       is.factor(x) ||
-      is.logical(x) ||
-      (length(unique(x)) <= nuniques) # this is when you have numeric variables with few uniques (dummies)
+      is.logical(x)
   })
   df[, selections]
   
@@ -25,7 +23,6 @@ select_categorical <- function(df, nuniques = 10){
 #' Selecting numeric variables from a data frame
 #' 
 #' @param df A data frame.
-#' @param nuniques Limit to consider a numeric varialbe as categorical one
 #' 
 #' @examples 
 #' 
@@ -34,9 +31,9 @@ select_categorical <- function(df, nuniques = 10){
 #' credit %>% select_numeric()
 #' 
 #' @export
-select_numeric <- function(df, nuniques = 10){
+select_numeric <- function(df){
   
-  selections <- purrr::map_lgl(df, function(x) is.numeric(x) | (length(unique(x)) > nuniques) )
+  selections <- purrr::map_lgl(df, function(x) is.numeric(x) )
   df[, selections]
   
 }
@@ -123,7 +120,6 @@ ez_summ_num <- function(df, na.rm = TRUE, probs = c(0.01, 0.05, 1:9/10, 0.95,.99
 #'
 #' @param df A data frame.
 #' @param target_name The name of response variable
-#' @param nuniques Limit to consider a numeric varialbe as categorical one
 #' 
 #' @examples
 #'
@@ -133,7 +129,7 @@ ez_summ_num <- function(df, na.rm = TRUE, probs = c(0.01, 0.05, 1:9/10, 0.95,.99
 #' 
 #' 
 #' @export
-ez_summ_biv <- function(df, target_name = NULL, nuniques = 10){
+ez_summ_biv <- function(df, target_name = NULL){
   
   # library(dplyr)
   # data(credit)
@@ -150,10 +146,9 @@ ez_summ_biv <- function(df, target_name = NULL, nuniques = 10){
   res <- df %>% 
     purrr::map_df(function(var){
       
-      if (length(unique(var)) > nuniques) {
-        var <- superv_bin(var, target)$variable_new
-      } 
-      bt(var, target)
+      varb <- superv_bin(var, target)$variable_new
+      bt(varb, target)
+      
     }, .id = "variable")
   
   res
@@ -163,7 +158,6 @@ ez_summ_biv <- function(df, target_name = NULL, nuniques = 10){
 #' Generate Summary Tables for data frames
 #'
 #' @param df A data frame.
-#' @param nuniques Limit to consider a numeric varialbe as categorical one
 #' @param target_name Target name if bivariate summary is required
 #' @param ... A list of additional arguments
 #' 
@@ -177,23 +171,23 @@ ez_summ_biv <- function(df, target_name = NULL, nuniques = 10){
 #' credit %>% ez_summ(target_name = "bad")
 #'
 #' @export
-ez_summ <- function(df, nuniques = 10, target_name = NULL, ...){
+ez_summ <- function(df, target_name = NULL, ...){
 
   res <- NULL
   
   res$categorical <- df %>% 
-    select_categorical(nuniques = nuniques) %>% 
-    ez_summ_cat(...)
+    select_categorical() %>% 
+    ez_summ_cat()
   
   res$numeric <- df %>% 
-    select_numeric(nuniques = nuniques) %>% 
-    ez_summ_num(...)
+    select_numeric() %>% 
+    ez_summ_num()
   
   if (!is.null(target_name)) {
     
-    res$predrank <- pred_ranking(df, target_name = target_name, nuniques = nuniques)
+    res$predrank <- pred_ranking(df, target_name = target_name)
     
-    res$bivariate <- df %>% ez_summ_biv(target_name = target_name, nuniques = nuniques) 
+    res$bivariate <- df %>% ez_summ_biv(target_name = target_name) 
     
   }
   
