@@ -100,7 +100,7 @@ ez_summ_num <- function(df, na.rm = TRUE, probs = c(0.01, 0.05, 1:9/10, 0.95,.99
         sd = sd(value, na.rm = na.rm),
         min = min(value, na.rm = na.rm),
         max = max(value, na.rm = na.rm),
-        variability = variability(value, na.rm = na.rm))
+        unvariability = unvariability(value, na.rm = na.rm))
     ) %>%
     dplyr::ungroup() 
   
@@ -183,7 +183,7 @@ ez_summ <- function(df, nuniques = 10, target_name = NULL, ...){
   
   res$categorical <- df %>% 
     select_categorical(nuniques = nuniques) %>% 
-    ez_summ_cat()
+    ez_summ_cat(...)
   
   res$numeric <- df %>% 
     select_numeric(nuniques = nuniques) %>% 
@@ -197,23 +197,32 @@ ez_summ <- function(df, nuniques = 10, target_name = NULL, ...){
     
   }
   
+  res$variability <- rbind(
+    res$categorical %>% 
+      group_by(var) %>% 
+      summarise(maxp = max(p)),
+    res$numeric %>% 
+      select(var,  maxp = unvariability)
+    ) %>% 
+    dplyr::arrange(desc(maxp))
+  
   res
   
 }
 
 
-#' Calculate the variability
+#' Calculate the unvariability
 #' 
 #' @examples 
 #' 
-#' x <- rbinom(100, p = .005, 10)
-#' variability(x)
+#' x <- rbinom(100, p = .008, 10)
+#' unvariability(x)
 #' 
 #' x <- rnorm(500)
-#' variability(x)
+#' unvariability(x)
 #' 
 #' @export
-variability <- function(x, na.rm = TRUE) {
+unvariability <- function(x, na.rm = TRUE) {
   
   q <- quantile(x, setdiff(0:100/100, 0.5), na.rm = na.rm)
   daux <- dplyr::data_frame(p = 1:50 - 1,
@@ -221,7 +230,7 @@ variability <- function(x, na.rm = TRUE) {
                             q2 = q[100:51]) %>% 
     dplyr::filter(q1 == q2) 
   
-  1 - ifelse(nrow(daux) == 0, NA, min(daux$p)/100)
+  1 - 2 * ifelse(nrow(daux) == 0, 0.5, min(daux$p)/100)
   
 }
     

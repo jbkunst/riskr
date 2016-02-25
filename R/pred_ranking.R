@@ -55,7 +55,8 @@ pred_ranking <- function(df, target_name = NULL, nuniques = 10){
   res <- res %>%
     dplyr::mutate(iv_label = cut(iv, include.lowest = TRUE, 
                                  breaks = c(0, 0.02, 0.1, 0.3, 0.5, Inf),
-                                 labels = c("unpredictive", "weak", "medium", "strong", "suspicious"))) %>% 
+                                 labels = c("unpredictive", "weak", "medium", "strong", "suspicious")),
+                  iv_label = ifelse(is.na(ks), "constant", as.character(iv_label))) %>% 
     dplyr::arrange(-iv)
 
   res
