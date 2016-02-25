@@ -199,10 +199,10 @@ ez_summ <- function(df, nuniques = 10, target_name = NULL, ...){
   
   res$variability <- rbind(
     res$categorical %>% 
-      group_by(var) %>% 
-      summarise(maxp = max(p)),
+      dplyr::group_by(var) %>% 
+      dplyr::summarise(maxp = max(p)),
     res$numeric %>% 
-      select(var,  maxp = unvariability)
+      dplyr::select(var,  maxp = unvariability)
     ) %>% 
     dplyr::arrange(desc(maxp))
   
