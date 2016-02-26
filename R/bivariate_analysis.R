@@ -183,3 +183,73 @@ gg_ba2 <- function(variable, target, labels = TRUE, order.by = NULL){
   p
   
 }
+
+
+
+#' Plot bivariates gg_ba
+#' 
+#' @examples 
+#' 
+#' data("credit")
+#' 
+#' library("ggplot2")
+#' library("ggthemes")
+#' theme_set(theme_fivethirtyeight(base_size = 11) +
+#' theme(rect = element_rect(fill = "white"),
+#' axis.title = element_text(colour = "grey30"),
+#' axis.title.y = element_text(angle = 90),
+#' strip.background = element_rect(fill = "#434348"),
+#' strip.text = element_text(color = "#F0F0F0"),
+#' plot.title = element_text(face = "plain", size = structure(1.2, class = "rel")),
+#' panel.margin.x =  grid::unit(1, "cm"),
+#' panel.margin.y =  grid::unit(1, "cm")))
+#' update_geom_defaults("line", list(colour = "#434348", size = 1.05))
+#' update_geom_defaults("point", list(colour = "#434348", size = 3))
+#' update_geom_defaults("bar", list(fill = "#7cb5ec"))
+#' update_geom_defaults("text", list(size = 4, colour = "gray30"))
+#' 
+#' plots <- ggs_biv(credit, "bad")
+#' 
+#  pdf("~/all.pdf", height = 9, width = 16)
+#' bquiet = lapply(plots, print)
+#' dev.off()
+#'
+#' @export
+ggs_biv <- function(df, target_name, verbose = TRUE) {
+  
+  stopifnot(!is.null(target_name),
+            target_name %in% names(df),
+            setequal(df[[target_name]], c(0, 1)))
+  
+  target <- df[[target_name]]
+  
+  df <- df %>% dplyr::select_(paste0("-", target_name))
+  
+  res <- purrr::map(names(df),function(pred_var_name){
+    # pred_var_name <- sample(names(df), size = 1)
+    
+    if (verbose) message("gg bivariate: ", pred_var_name)
+    
+    pred_var <- df[[pred_var_name]]
+    
+    # Prepare data
+    daux <- data.frame(target = target, pred_var = pred_var)
+    daux_naomit <- na.omit(daux)
+    
+    if (length(unique(pred_var)) == 1)
+      return(ggplot2::ggplot(daux_naomit) + ggplot2::ggtitle(pred_var_name))
+    
+    if (length(unique(daux_naomit$target)) == 1)
+      return(ggplot2::ggplot(daux_naomit) + ggplot2::ggtitle(pred_var_name))
+    
+    pred_var <- superv_bin(pred_var, target)$variable_new
+    p <- gg_ba(pred_var, target) + ggplot2::ggtitle(pred_var_name)
+    
+    p
+    
+  })
+  
+  res
+}
+
+

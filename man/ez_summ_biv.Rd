@@ -4,7 +4,7 @@
 \alias{ez_summ_biv}
 \title{Generate Summary Tables for numercial variables}
 \usage{
-ez_summ_biv(df, target_name = NULL)
+ez_summ_biv(df, target_name = NULL, verbose = TRUE)
 }
 \arguments{
 \item{df}{A data frame.}
