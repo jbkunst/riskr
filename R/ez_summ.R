@@ -129,7 +129,7 @@ ez_summ_num <- function(df, na.rm = TRUE, probs = c(0.01, 0.05, 1:9/10, 0.95,.99
 #' 
 #' 
 #' @export
-ez_summ_biv <- function(df, target_name = NULL){
+ez_summ_biv <- function(df, target_name = NULL, verbose = TRUE){
   
   # library(dplyr)
   # data(credit)
@@ -143,13 +143,17 @@ ez_summ_biv <- function(df, target_name = NULL){
   
   df <- df %>% dplyr::select_(paste0("-", target_name))
   
-  res <- df %>% 
-    purrr::map_df(function(var){
+  res <- purrr::map_df(names(df),function(pred_var_name){
+    
+    if(verbose) message("bivariate: ", pred_var_name)
+    
+    var <- df[[pred_var_name]]
+    
+    varb <- superv_bin(var, target)$variable_new
+    
+    cbind(variable = pred_var_name, bt(varb, target))
       
-      varb <- superv_bin(var, target)$variable_new
-      bt(varb, target)
-      
-    }, .id = "variable")
+    })
   
   res
   
@@ -171,7 +175,7 @@ ez_summ_biv <- function(df, target_name = NULL){
 #' credit %>% ez_summ(target_name = "bad")
 #'
 #' @export
-ez_summ <- function(df, target_name = NULL, ...){
+ez_summ <- function(df, target_name = NULL, verbose = TRUE,...){
 
   res <- NULL
   
@@ -185,9 +189,9 @@ ez_summ <- function(df, target_name = NULL, ...){
   
   if (!is.null(target_name)) {
     
-    res$predrank <- pred_ranking(df, target_name = target_name)
+    res$predrank <- pred_ranking(df, target_name = target_name, verbose = verbose)
     
-    res$bivariate <- df %>% ez_summ_biv(target_name = target_name) 
+    res$bivariate <- df %>% ez_summ_biv(target_name = target_name, verbose = verbose) 
     
   }
   
@@ -207,6 +211,9 @@ ez_summ <- function(df, target_name = NULL, ...){
 
 #' Calculate the unvariability
 #' 
+#' @param x A numeric vector
+#' @param na.rm A logical indicating whether missing values should be removed.
+#' 
 #' @examples 
 #' 
 #' x <- rbinom(100, p = .008, 10)
@@ -219,9 +226,9 @@ ez_summ <- function(df, target_name = NULL, ...){
 unvariability <- function(x, na.rm = TRUE) {
   
   q <- quantile(x, setdiff(0:100/100, 0.5), na.rm = na.rm)
-  daux <- dplyr::data_frame(p = 1:50 - 1,
-                            q1 = q[1:50],
-                            q2 = q[100:51]) %>% 
+  q1 <- q[1:50]
+  q2 <- q[100:51]
+  daux <- dplyr::data_frame(p = 1:50 - 1, q1, q2) %>% 
     dplyr::filter(q1 == q2) 
   
   1 - 2 * ifelse(nrow(daux) == 0, 0.5, min(daux$p)/100)

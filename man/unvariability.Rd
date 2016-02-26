@@ -6,6 +6,11 @@
 \usage{
 unvariability(x, na.rm = TRUE)
 }
+\arguments{
+\item{x}{A numeric vector}
+
+\item{na.rm}{A logical indicating whether missing values should be removed.}
+}
 \description{
 Calculate the unvariability
 }
