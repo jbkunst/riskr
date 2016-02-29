@@ -43,6 +43,14 @@ superv_bin <- function(variable, target, min.p = 0.05, min.cri = 0.95, max.depth
   
   df <- dplyr::data_frame(target, variable)
   
+  if (any(is.na(variable))) {
+    
+    message("warning : removing ", sum(is.na(variable)), " NA' values to construct tree")
+    
+    df <- df %>% filter(!is.na(variable))
+    
+  }
+    
   tree <- partykit::ctree(factor(target) ~ variable, data = df, control = control)
   
   # plot(tree, gp = grid::gpar(fontsize = 10)) 
@@ -54,12 +62,12 @@ superv_bin <- function(variable, target, min.p = 0.05, min.cri = 0.95, max.depth
   if (is.numeric(variable)) {
     
     type <- "numeric"
-
+    
     df2 <- df %>%
       dplyr::group_by(node) %>%
-      dplyr::summarise(max = max(variable))
+      dplyr::summarise(max = max(variable, na.rm = TRUE))
     
-    cuts <- c(-Inf, df2$max, Inf)
+    cuts <- c(-Inf, head(df2$max, -1), Inf)
     
     df$variable_new <- cut(df$variable, cuts)
 
@@ -81,6 +89,8 @@ superv_bin <- function(variable, target, min.p = 0.05, min.cri = 0.95, max.depth
     df$variable_new <- stringr::str_pad(df$variable_new, width = max_width, side = "left", pad = "0")
     df$variable_new <- paste("group", df$variable_new, sep  = "_")
     
+    cuts <- NA
+    
   }
   
   dfbt <- riskr::bt(df$variable_new, df$target) %>%
@@ -89,8 +99,8 @@ superv_bin <- function(variable, target, min.p = 0.05, min.cri = 0.95, max.depth
   
   df <- dplyr::left_join(df, dfbt, by =  c("variable_new")) 
 
-  
   list(data = dplyr::tbl_df(df), tree = tree, type = type,
-       variable_new = df$variable_new, variable_new_woe = df$variable_new_woe)
+       variable_new = df$variable_new, variable_new_woe = df$variable_new_woe,
+       cuts = cuts)
 
 }
