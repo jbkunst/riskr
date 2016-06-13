@@ -29,7 +29,7 @@ pred_ranking <- function(df, target_name = "bm", verbose = TRUE){
     
     pred_var <- df[[pred_var_name]]
     
-    if (length(unique(pred_var)) == 1)
+    if (length(na.omit(unique(pred_var))) == 1)
       return(dplyr::data_frame(variable = pred_var_name,
                                iv_label = "constant variable"))
     

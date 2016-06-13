@@ -136,20 +136,19 @@ ez_summ_biv <- function(df, target_name = NULL, verbose = TRUE){
   # df <- credit
   # target_name <- "bad"
   
-  stopifnot(!is.null(target_name),
-       setequal(df[[target_name]], c(0, 1)))
+  stopifnot(!is.null(target_name), setequal(df[[target_name]], c(0, 1)))
   
   target <- df[[target_name]]
   
   df <- df %>% dplyr::select_(paste0("-", target_name))
   
-  res <- purrr::map_df(names(df),function(pred_var_name){
+  res <- purrr::map_df(names(df),function(pred_var_name){ # pred_var_name <- sample(names(df), size = 1)
     
-    if(verbose) message("bivariate: ", pred_var_name)
+    if (verbose) message("bivariate: ", pred_var_name)
     
-    var <- df[[pred_var_name]]
+    variable <- df[[pred_var_name]]
     
-    varb <- superv_bin(var, target)$variable_new
+    varb <- superv_bin(variable, target)$variable_new
     
     cbind(variable = pred_var_name, bt(varb, target))
       
@@ -173,9 +172,29 @@ ez_summ_biv <- function(df, target_name = NULL, verbose = TRUE){
 #' 
 #' credit %>% ez_summ()
 #' credit %>% ez_summ(target_name = "bad")
+#' 
+#' 
+#' 
+#' \dontrun {
+#' 
+#' df <- credit
+#' 
+#' set.seed(123)
+#' 
+#' for(var in names(df)){
+#'   message(var)
+#'   df[[var]] <- ifelse(runif(nrow(df)) < 0.05, NA, df[[var]])
+#' }
+#' 
+#' df <- df %>% filter(!is.na(bad))
+#' df %>% ez_summ()
+#' df %>% ez_summ_biv(target_name = "bad")
+#' df %>% ez_summ(target_name = "bad")
+#' }
+#' 
 #'
 #' @export
-ez_summ <- function(df, target_name = NULL, verbose = TRUE,...){
+ez_summ <- function(df, target_name = NULL, verbose = TRUE, ...){
 
   res <- NULL
   
