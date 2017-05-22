@@ -71,6 +71,10 @@ There are function to:
 You can install the latest development version from github with:
 
 ```{r, eval=FALSE}
+source("https://install-github.me/jbkunst/riskr")
+
+# or
+
 devtools::install_github("jbkunst/riskr")
 ```
 
