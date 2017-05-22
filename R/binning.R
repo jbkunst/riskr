@@ -45,7 +45,7 @@ superv_bin <- function(variable, target, min.p = 0.05, min.cri = 0.95, max.depth
   
   if (any(is.na(variable))) {
     
-    message("warning : removing ", sum(is.na(variable)), " NA' values to construct tree")
+    message("warning: removing ", sum(is.na(variable)), " NA' values to construct tree")
     
     dftreena <- dftree %>% filter(!is.na(variable))
     

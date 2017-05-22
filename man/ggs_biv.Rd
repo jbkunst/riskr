@@ -4,7 +4,8 @@
 \alias{ggs_biv}
 \title{Plot bivariates gg_ba}
 \usage{
-ggs_biv(df, target_name, verbose = TRUE)
+ggs_biv(df, target_name, numeric.treatment = c("width", "autobin"),
+  nbins = 5, verbose = TRUE)
 }
 \description{
 Plot bivariates gg_ba
@@ -29,7 +30,7 @@ update_geom_defaults("point", list(colour = "#434348", size = 3))
 update_geom_defaults("bar", list(fill = "#7cb5ec"))
 update_geom_defaults("text", list(size = 4, colour = "gray30"))
 
-plots <- ggs_biv(credit, "bad")
+plots <- ggs_biv(df = credit, target_name = "bad")
 
 bquiet = lapply(plots, print)
 dev.off()

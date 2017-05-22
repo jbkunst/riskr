@@ -23,14 +23,18 @@ pred_ranking <- function(df, target_name = "bm", verbose = TRUE){
   
   df <- df %>% dplyr::select_(paste0("-", target_name))
   
-  res <- purrr::map_df(names(df),function(pred_var_name){
+  res <- purrr::map_df(names(df), function(pred_var_name){
+    
+    # pred_var_name <- sample(names(df), size = 1)
     
     if (verbose) message("pred_ranking: ", pred_var_name)
     
     pred_var <- df[[pred_var_name]]
+    pred_var_type <- class(pred_var)
     
     if (length(na.omit(unique(pred_var))) == 1)
       return(dplyr::data_frame(variable = pred_var_name,
+                               type = pred_var_type,
                                iv_label = "constant variable"))
     
     # Prepare data
@@ -39,6 +43,7 @@ pred_ranking <- function(df, target_name = "bm", verbose = TRUE){
     
     if (length(unique(daux_naomit$target)) == 1)
       return(dplyr::data_frame(variable = pred_var_name,
+                               type = pred_var_type,
                                iv_label = "constant label"))
     
     # Logistic models
@@ -51,6 +56,7 @@ pred_ranking <- function(df, target_name = "bm", verbose = TRUE){
     dplyr::data_frame(variable = pred_var_name,
                       ks = ks(daux_naomit$target, score),
                       aucroc = aucroc(daux_naomit$target, score),
+                      type = pred_var_type,
                       na = nrow(daux) - nrow(daux_naomit),
                       iv = sum(bvtb$iv))
     

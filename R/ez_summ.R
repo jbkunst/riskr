@@ -172,26 +172,6 @@ ez_summ_biv <- function(df, target_name = NULL, verbose = TRUE){
 #' 
 #' credit %>% ez_summ()
 #' credit %>% ez_summ(target_name = "bad")
-#' 
-#' 
-#' 
-#' \dontrun {
-#' 
-#' df <- credit
-#' 
-#' set.seed(123)
-#' 
-#' for(var in names(df)){
-#'   message(var)
-#'   df[[var]] <- ifelse(runif(nrow(df)) < 0.05, NA, df[[var]])
-#' }
-#' 
-#' df <- df %>% filter(!is.na(bad))
-#' df %>% ez_summ()
-#' df %>% ez_summ_biv(target_name = "bad")
-#' df %>% ez_summ(target_name = "bad")
-#' }
-#' 
 #'
 #' @export
 ez_summ <- function(df, target_name = NULL, verbose = TRUE, ...){

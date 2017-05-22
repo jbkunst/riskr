@@ -208,14 +208,15 @@ gg_ba2 <- function(variable, target, labels = TRUE, order.by = NULL){
 #' update_geom_defaults("bar", list(fill = "#7cb5ec"))
 #' update_geom_defaults("text", list(size = 4, colour = "gray30"))
 #' 
-#' plots <- ggs_biv(credit, "bad")
+#' plots <- ggs_biv(df = credit, target_name = "bad")
 #' 
 #  pdf("~/all.pdf", height = 9, width = 16)
 #' bquiet = lapply(plots, print)
 #' dev.off()
 #'
 #' @export
-ggs_biv <- function(df, target_name, verbose = TRUE) {
+ggs_biv <- function(df, target_name, numeric.treatment = c("width", "autobin"),
+                    nbins = 5, verbose = TRUE) {
   
   stopifnot(!is.null(target_name),
             target_name %in% names(df),
@@ -227,6 +228,7 @@ ggs_biv <- function(df, target_name, verbose = TRUE) {
   
   res <- purrr::map(names(df),function(pred_var_name){
     # pred_var_name <- sample(names(df), size = 1)
+    # pred_var_name <- "flag_other_card"
     
     if (verbose) message("gg bivariate: ", pred_var_name)
     
@@ -242,8 +244,25 @@ ggs_biv <- function(df, target_name, verbose = TRUE) {
     if (length(unique(daux_naomit$target)) == 1)
       return(ggplot2::ggplot(daux_naomit) + ggplot2::ggtitle(pred_var_name))
     
-    pred_var <- superv_bin(pred_var, target)$variable_new
-    p <- gg_ba(pred_var, target) + ggplot2::ggtitle(pred_var_name)
+    if(is.numeric(pred_var)) {
+      
+      if(numeric.treatment == "width") {
+        pred_var_bin <- ggplot2::cut_interval(pred_var, nbins)
+      } else {
+        pred_var_bin <- superv_bin(pred_var, target)$variable_new
+      }
+      
+    } else {
+      
+      if(length(unique(pred_var)) < nbins) {
+        pred_var_bin <- pred_var
+      } else {
+        pred_var_bin <- superv_bin(pred_var, target)$variable_new
+      }
+      
+    }
+    
+    p <- gg_ba(pred_var_bin, target) + ggplot2::ggtitle(pred_var_name)
     
     p
     
